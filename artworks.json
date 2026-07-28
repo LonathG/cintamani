@@ -1,0 +1,317 @@
+[
+    {
+        "id": 1,
+        "title": "Background Graphic",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/6734928e2af1829d3c568460/67474474ad8257aab934d534_bg-overlay.avif",
+        "local_image_path": "downloaded_images/1_background_graphic.jpg"
+    },
+    {
+        "id": 2,
+        "title": "Lacquer background",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/6734928e2af1829d3c568460/67473acb31f954e0d1117f0c_header_bg_img.avif",
+        "local_image_path": "downloaded_images/2_lacquer_background.jpg"
+    },
+    {
+        "id": 3,
+        "title": "Untitled 1",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/678779fbbebddb19b16be359_untitle-4.avif",
+        "local_image_path": "downloaded_images/3_untitled_1.jpg"
+    },
+    {
+        "id": 4,
+        "title": "Untitled 2",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/678769a2ebfab8e3dfcc3ae6_main-img.avif",
+        "local_image_path": "downloaded_images/4_untitled_2.jpg"
+    },
+    {
+        "id": 5,
+        "title": "Hue Traces II",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877443f7e26549e71733d7_main-img.avif",
+        "local_image_path": "downloaded_images/5_hue_traces_ii.jpg"
+    },
+    {
+        "id": 6,
+        "title": "Hue Traces III",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877afaf7e26549e71f98bc_Hue%20traces%20III.avif",
+        "local_image_path": "downloaded_images/6_hue_traces_iii.jpg"
+    },
+    {
+        "id": 7,
+        "title": "Untitled 3",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877b1274fe16d98dc88948_untitled-1.avif",
+        "local_image_path": "downloaded_images/7_untitled_3.jpg"
+    },
+    {
+        "id": 8,
+        "title": "Untitled 4",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877b2a334e5d497b8029e0_untitled-3.avif",
+        "local_image_path": "downloaded_images/8_untitled_4.jpg"
+    },
+    {
+        "id": 9,
+        "title": "Untitled 5",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877b4c547cafad2062ec11_untitled-5.avif",
+        "local_image_path": "downloaded_images/9_untitled_5.jpg"
+    },
+    {
+        "id": 10,
+        "title": "Untitled 6",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877b60ede03a2ec58b4d5b_untitled-6.avif",
+        "local_image_path": "downloaded_images/10_untitled_6.jpg"
+    },
+    {
+        "id": 11,
+        "title": "Untitled 7",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877b75a9276cc58f4d8123_untitled-7.avif",
+        "local_image_path": "downloaded_images/11_untitled_7.jpg"
+    },
+    {
+        "id": 12,
+        "title": "Untitled 8",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877b9121c3c3abba626673_untitled-8.avif",
+        "local_image_path": "downloaded_images/12_untitled_8.jpg"
+    },
+    {
+        "id": 13,
+        "title": "Untitled 9",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877bc15e5fb82ebb7ca7a8_untitled-10.avif",
+        "local_image_path": "downloaded_images/13_untitled_9.jpg"
+    },
+    {
+        "id": 14,
+        "title": "Untitled 10",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877bd4f6fba6015d16820f_untitled-11.avif",
+        "local_image_path": "downloaded_images/14_untitled_10.jpg"
+    },
+    {
+        "id": 15,
+        "title": "Untitled 11",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877bebede03a2ec58bc48c_untitled-12.avif",
+        "local_image_path": "downloaded_images/15_untitled_11.jpg"
+    },
+    {
+        "id": 16,
+        "title": "Untitled 12",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877ba954002c07106bfa50_untitled-9.avif",
+        "local_image_path": "downloaded_images/16_untitled_12.jpg"
+    },
+    {
+        "id": 17,
+        "title": "Background Graphic",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/6734928e2af1829d3c568460/67aca7c5df93a525b9799963_Abstract%20Cosmic%20Landscape%201.avif",
+        "local_image_path": "downloaded_images/17_background_graphic.jpg"
+    },
+    {
+        "id": 18,
+        "title": "Untitled 1",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/678779fbbebddb19b16be359_untitle-4.avif",
+        "local_image_path": "downloaded_images/18_untitled_1.jpg"
+    },
+    {
+        "id": 19,
+        "title": "Untitled 2",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/678769a2ebfab8e3dfcc3ae6_main-img.avif",
+        "local_image_path": "downloaded_images/19_untitled_2.jpg"
+    },
+    {
+        "id": 20,
+        "title": "Hue Traces II",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877443f7e26549e71733d7_main-img.avif",
+        "local_image_path": "downloaded_images/20_hue_traces_ii.jpg"
+    },
+    {
+        "id": 21,
+        "title": "Hue Traces III",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877afaf7e26549e71f98bc_Hue%20traces%20III.avif",
+        "local_image_path": "downloaded_images/21_hue_traces_iii.jpg"
+    },
+    {
+        "id": 22,
+        "title": "Untitled 3",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877b1274fe16d98dc88948_untitled-1.avif",
+        "local_image_path": "downloaded_images/22_untitled_3.jpg"
+    },
+    {
+        "id": 23,
+        "title": "Untitled 4",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877b2a334e5d497b8029e0_untitled-3.avif",
+        "local_image_path": "downloaded_images/23_untitled_4.jpg"
+    },
+    {
+        "id": 24,
+        "title": "Untitled 5",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877b4c547cafad2062ec11_untitled-5.avif",
+        "local_image_path": "downloaded_images/24_untitled_5.jpg"
+    },
+    {
+        "id": 25,
+        "title": "Untitled 6",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877b60ede03a2ec58b4d5b_untitled-6.avif",
+        "local_image_path": "downloaded_images/25_untitled_6.jpg"
+    },
+    {
+        "id": 26,
+        "title": "Untitled 7",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877b75a9276cc58f4d8123_untitled-7.avif",
+        "local_image_path": "downloaded_images/26_untitled_7.jpg"
+    },
+    {
+        "id": 27,
+        "title": "Untitled 8",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877b9121c3c3abba626673_untitled-8.avif",
+        "local_image_path": "downloaded_images/27_untitled_8.jpg"
+    },
+    {
+        "id": 28,
+        "title": "Untitled 9",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877bc15e5fb82ebb7ca7a8_untitled-10.avif",
+        "local_image_path": "downloaded_images/28_untitled_9.jpg"
+    },
+    {
+        "id": 29,
+        "title": "Untitled 10",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877bd4f6fba6015d16820f_untitled-11.avif",
+        "local_image_path": "downloaded_images/29_untitled_10.jpg"
+    },
+    {
+        "id": 30,
+        "title": "Untitled 11",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877bebede03a2ec58bc48c_untitled-12.avif",
+        "local_image_path": "downloaded_images/30_untitled_11.jpg"
+    },
+    {
+        "id": 31,
+        "title": "Untitled 12",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877ba954002c07106bfa50_untitled-9.avif",
+        "local_image_path": "downloaded_images/31_untitled_12.jpg"
+    },
+    {
+        "id": 32,
+        "title": "Untitled 1",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/678779fbbebddb19b16be359_untitle-4.avif",
+        "local_image_path": "downloaded_images/32_untitled_1.jpg"
+    },
+    {
+        "id": 33,
+        "title": "Untitled 2",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/678769a2ebfab8e3dfcc3ae6_main-img.avif",
+        "local_image_path": "downloaded_images/33_untitled_2.jpg"
+    },
+    {
+        "id": 34,
+        "title": "Hue Traces II",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877443f7e26549e71733d7_main-img.avif",
+        "local_image_path": "downloaded_images/34_hue_traces_ii.jpg"
+    },
+    {
+        "id": 35,
+        "title": "Hue Traces III",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877afaf7e26549e71f98bc_Hue%20traces%20III.avif",
+        "local_image_path": "downloaded_images/35_hue_traces_iii.jpg"
+    },
+    {
+        "id": 36,
+        "title": "Untitled 3",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877b1274fe16d98dc88948_untitled-1.avif",
+        "local_image_path": "downloaded_images/36_untitled_3.jpg"
+    },
+    {
+        "id": 37,
+        "title": "Untitled 4",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877b2a334e5d497b8029e0_untitled-3.avif",
+        "local_image_path": "downloaded_images/37_untitled_4.jpg"
+    },
+    {
+        "id": 38,
+        "title": "Untitled 5",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877b4c547cafad2062ec11_untitled-5.avif",
+        "local_image_path": "downloaded_images/38_untitled_5.jpg"
+    },
+    {
+        "id": 39,
+        "title": "Untitled 6",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877b60ede03a2ec58b4d5b_untitled-6.avif",
+        "local_image_path": "downloaded_images/39_untitled_6.jpg"
+    },
+    {
+        "id": 40,
+        "title": "Untitled 7",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877b75a9276cc58f4d8123_untitled-7.avif",
+        "local_image_path": "downloaded_images/40_untitled_7.jpg"
+    },
+    {
+        "id": 41,
+        "title": "Untitled 8",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877b9121c3c3abba626673_untitled-8.avif",
+        "local_image_path": "downloaded_images/41_untitled_8.jpg"
+    },
+    {
+        "id": 42,
+        "title": "Untitled 9",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877bc15e5fb82ebb7ca7a8_untitled-10.avif",
+        "local_image_path": "downloaded_images/42_untitled_9.jpg"
+    },
+    {
+        "id": 43,
+        "title": "Untitled 10",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877bd4f6fba6015d16820f_untitled-11.avif",
+        "local_image_path": "downloaded_images/43_untitled_10.jpg"
+    },
+    {
+        "id": 44,
+        "title": "Untitled 11",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877bebede03a2ec58bc48c_untitled-12.avif",
+        "local_image_path": "downloaded_images/44_untitled_11.jpg"
+    },
+    {
+        "id": 45,
+        "title": "Untitled 12",
+        "medium": "Lacquer on Wood",
+        "original_image_url": "https://cdn.prod.website-files.com/67862174a33a316e969b0659/67877ba954002c07106bfa50_untitled-9.avif",
+        "local_image_path": "downloaded_images/45_untitled_12.jpg"
+    }
+]
