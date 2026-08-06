@@ -1,2 +1,13 @@
 [build]
   publish = "frontend_assets"
+
+[[redirects]]
+  from = "/art/:slug"
+  to = "/art/:slug.html"
+  status = 200
+
+[[redirects]]
+  from = "/art/:slug/"
+  to = "/art/:slug.html"
+  status = 200
+
