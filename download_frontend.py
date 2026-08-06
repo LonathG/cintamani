@@ -4,7 +4,7 @@ from urllib.parse import urljoin, urlparse
 from bs4 import BeautifulSoup
 import requests
 
-BASE_URL = "https://www.lumenartspace.com/"
+BASE_URL = "https://www.cintamanilinens.com/"
 HEADERS = {
     "User-Agent": (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -74,8 +74,8 @@ def capture_all_pages():
         href = a["href"]
         if href in [
             "/",
-            "https://www.lumenartspace.com",
-            "https://www.lumenartspace.com/",
+            "https://www.cintamanilinens.com",
+            "https://www.cintamanilinens.com/",
         ]:
           a["href"] = "../index.html"
         elif "/about" in href:
@@ -100,8 +100,8 @@ def capture_all_pages():
         href = a["href"]
         if href in [
             "/",
-            "https://www.lumenartspace.com",
-            "https://www.lumenartspace.com/",
+            "https://www.cintamanilinens.com",
+            "https://www.cintamanilinens.com/",
         ]:
           a["href"] = "index.html"
         elif "/about" in href:

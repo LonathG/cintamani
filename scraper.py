@@ -5,8 +5,8 @@ from bs4 import BeautifulSoup
 import requests
 
 # Set up target URL and local image output directory
-BASE_URL = "https://www.lumenartspace.com/"
-GALLERY_URL = "https://www.lumenartspace.com/gallery"
+BASE_URL = "https://www.cintamanilinens.com/"
+GALLERY_URL = "https://www.cintamanilinens.com/gallery"
 IMAGE_DIR = "downloaded_images"
 
 # Create image folder if it doesn't exist
@@ -36,8 +36,8 @@ def download_image(img_url, filename):
   return None
 
 
-def scrape_lumen_artspace():
-  print("Connecting to Lumen Artspace...")
+def scrape_cintamani_linens():
+  print("Connecting to Cintamani Linens...")
   response = requests.get(GALLERY_URL, headers=HEADERS)
 
   if response.status_code != 200:
@@ -89,4 +89,4 @@ def scrape_lumen_artspace():
 
 
 if __name__ == "__main__":
-  scrape_lumen_artspace()
+  scrape_cintamani_linens()
