@@ -4132,8 +4132,8 @@ figure {
 }
 
 .home_hero {
-  min-height: 100svh;
-  padding-bottom: 2rem;
+  min-height: 85svh;
+  padding-bottom: 1rem;
 }
 
 .home_gallery_grid.u-grid-custom {
@@ -4267,10 +4267,11 @@ figure {
 .home_hero_wrap {
   grid-column-gap: 1em;
   grid-row-gap: 1em;
-  flex: 1;
+  flex: 0 1 auto;
+  max-height: 75vh;
   justify-content: space-between;
   align-items: center;
-  padding-top: 4rem;
+  padding-top: 2rem;
   display: flex;
 }
 
