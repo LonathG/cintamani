@@ -4184,7 +4184,7 @@ figure {
 
 .home_hero_layout {
   flex-flow: column;
-  justify-content: flex-end;
+  justify-content: center;
   height: 100svh;
   max-height: 67.5rem;
   display: flex;
@@ -4193,7 +4193,8 @@ figure {
 .home_hero_heading_wrap {
   text-align: center;
   padding-bottom: 5svh;
-  font-size: 15cqw;
+  font-size: 18.5cqw;
+  white-space: nowrap;
 }
 
 .home_hero_heading {
@@ -4201,6 +4202,7 @@ figure {
   line-height: var(--line-height--1em);
   letter-spacing: var(--h1--letter-spacing);
   font-size: inherit;
+  white-space: nowrap;
 }
 
 .home_gallery_heading {
