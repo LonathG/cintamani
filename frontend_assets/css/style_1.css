@@ -4429,9 +4429,10 @@ figure {
 }
 
 .navbar_logo {
-  width: var(--size--3rem);
-  height: var(--size--3rem);
+  width: 2.25rem;
+  height: 2.25rem;
   flex: none;
+  object-fit: contain;
 }
 
 .u-icon-20 {
@@ -4500,8 +4501,9 @@ figure {
 }
 
 .home_gallery_logo {
-  width: 4.6875rem;
-  height: 2.5rem;
+  width: 3.2rem;
+  height: 1.7rem;
+  object-fit: contain;
 }
 
 .footer_container.u-container {
@@ -6369,11 +6371,12 @@ figure {
 
 .transition_logo {
   z-index: 1;
-  width: var(--size--4rem);
-  height: var(--size--4rem);
+  width: 2.75rem;
+  height: 2.75rem;
   opacity: .1;
   flex: none;
   position: relative;
+  object-fit: contain;
 }
 
 .transition_logo.is-overlay {
@@ -6384,20 +6387,21 @@ figure {
   position: absolute;
   inset: 0%;
   transform: translateZ(.1px);
+  object-fit: contain;
 }
 
 .transition_logo_wrapper {
   z-index: 1;
-  width: 4rem;
-  height: 4rem;
+  width: 2.75rem;
+  height: 2.75rem;
   position: relative;
 }
 
 .transition_logo_clip {
   justify-content: center;
   align-items: center;
-  width: 4rem;
-  height: 4rem;
+  width: 2.75rem;
+  height: 2.75rem;
   display: flex;
   overflow: clip;
 }
