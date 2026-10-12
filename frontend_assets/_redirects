@@ -1,2 +1,3 @@
 /art/:slug    /art/:slug.html    200
 /art/:slug/   /art/:slug.html    200
+/admin        /admin.html        200
