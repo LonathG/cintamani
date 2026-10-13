@@ -1,0 +1,173 @@
+/* Product detail pages (art/u-*.html): price + add to cart */
+
+.art_price {
+  font-family: var(--font--primary-family);
+  font-weight: var(--font--primary-light);
+  font-size: 1.75rem;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.art_price_currency {
+  font-size: 0.55em;
+  letter-spacing: 0.12em;
+  opacity: 0.6;
+  margin-right: 0.35em;
+  vertical-align: 0.35em;
+}
+
+.art_cart {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  font-family: inherit;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  font-size: 0.72rem;
+  line-height: 1;
+}
+
+.art_cart:focus-visible {
+  outline: 1px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 4px;
+}
+
+/* ---------- Desktop: floating text that rises into the image ---------- */
+
+.art_cart--overlay {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) and (min-width: 992px) {
+  .art_main_image::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(8, 8, 8, 0.55) 0%, rgba(8, 8, 8, 0) 38%);
+    opacity: 0;
+    transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+
+  .art_cart--overlay {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    z-index: 2;
+    padding: 0.95rem 1.6rem;
+    white-space: nowrap;
+    /* resting: just inside the bottom edge of the image */
+    transform: translate(-50%, -0.75rem);
+    transition:
+      transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+      letter-spacing 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 0.6s ease,
+      border-color 0.6s ease;
+    border: 1px solid transparent;
+    background-color: rgba(10, 10, 10, 0.22);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    animation: art-cart-breathe 2.8s ease-in-out infinite;
+  }
+
+  .art_cart--overlay::before,
+  .art_cart--overlay::after {
+    content: "";
+    width: 1.4rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.5;
+    transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s ease;
+  }
+
+  .art_main_image:hover::after,
+  .art_main_image:focus-within::after {
+    opacity: 1;
+  }
+
+  .art_main_image:hover .art_cart--overlay,
+  .art_main_image:focus-within .art_cart--overlay {
+    /* hovered: risen inside the bottom of the image */
+    transform: translate(-50%, -1.75rem);
+    letter-spacing: 0.34em;
+    background-color: rgba(10, 10, 10, 0.38);
+    border-color: rgba(255, 255, 255, 0.28);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    animation: none;
+    opacity: 1;
+  }
+
+  .art_main_image:hover .art_cart--overlay::before,
+  .art_main_image:hover .art_cart--overlay::after,
+  .art_main_image:focus-within .art_cart--overlay::before,
+  .art_main_image:focus-within .art_cart--overlay::after {
+    width: 0.6rem;
+    opacity: 0.8;
+  }
+
+  .art_cart--overlay:hover {
+    background-color: rgba(10, 10, 10, 0.55);
+    border-color: rgba(255, 255, 255, 0.55);
+  }
+}
+
+@keyframes art-cart-breathe {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.95; }
+}
+
+/* ---------- Mobile / touch: full-width button under the details ---------- */
+
+.art_cart--button {
+  display: block;
+  width: 100%;
+  padding: 1.1rem 1.5rem;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+}
+
+.art_cart--button:active {
+  background-color: #f2ede4;
+  border-color: #f2ede4;
+  color: #0b0b0b;
+}
+
+@media (hover: hover) and (pointer: fine) and (min-width: 992px) {
+  .art_cart--button {
+    display: none;
+  }
+}
+
+/* Confirmation state after click */
+.art_cart.is-added {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .art_cart--overlay {
+    animation: none;
+    opacity: 0.85;
+  }
+  .art_cart--overlay,
+  .art_main_image::after {
+    transition-duration: 0.01s;
+  }
+}
+
+/* ---------- Mobile: hide the artist biography section ---------- */
+
+@media screen and (max-width: 767px) {
+  .section_art_artist {
+    display: none;
+  }
+}
