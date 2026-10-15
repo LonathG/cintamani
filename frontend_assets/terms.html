@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html data-wf-domain="www.cintamanilinens.com" lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<title>Terms &amp; Conditions | Cintamani Linens</title>
+	<meta content="The terms that apply when you shop made-to-order linen with Cintamani Linens: orders, bank-transfer payment, tailoring, delivery across Sri Lanka, exchanges and care." name="description" />
+	<meta content="Terms &amp; Conditions | Cintamani Linens" property="og:title" />
+	<meta content="width=device-width, initial-scale=1" name="viewport" />
+	<link href="css/style_1.css" rel="stylesheet" type="text/css" />
+	<link href="https://cdn.prod.website-files.com/6734928e2af1829d3c568460/67358f05ba55d37beb0410d3_favicon.jpg" rel="shortcut icon" type="image/x-icon" />
+	<style>
+		*, *::before, *::after { box-sizing: border-box; }
+
+		:root {
+			--serif: var(--font--primary-family, "La Ivyprestodisplay", "Times New Roman", serif);
+			--sans: var(--font--secondary-family, "LA Neue Montreal", Arial, sans-serif);
+			--gold: #c9b46d;
+			--gold-light: #e2d3a8;
+			--text: rgba(255, 255, 255, 0.86);
+			--muted: rgba(255, 255, 255, 0.55);
+			--line: rgba(255, 255, 255, 0.09);
+			--ease: cubic-bezier(0.16, 1, 0.3, 1);
+		}
+
+		html { scroll-behavior: smooth; }
+
+		body {
+			margin: 0;
+			min-height: 100vh;
+			background: #080808;
+			color: #fff;
+			font-family: var(--sans);
+			-webkit-font-smoothing: antialiased;
+			overflow-x: hidden;
+		}
+
+		.t_page {
+			position: relative;
+			min-height: 100vh;
+			background: radial-gradient(circle at 50% 0%, #17140f 0%, #080808 60%);
+		}
+
+		.t_glow {
+			position: absolute;
+			top: -10vw;
+			left: 50%;
+			width: 70vw;
+			max-width: 820px;
+			aspect-ratio: 1;
+			border-radius: 50%;
+			background: radial-gradient(circle, rgba(201, 180, 109, 0.13) 0%, rgba(201, 180, 109, 0.02) 50%, transparent 70%);
+			transform: translateX(-50%);
+			filter: blur(80px);
+			pointer-events: none;
+		}
+
+		/* ---------- header ---------- */
+		.t_nav {
+			position: relative;
+			z-index: 2;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 1.5rem;
+			max-width: 1400px;
+			margin: 0 auto;
+			padding: 1.75rem 2rem;
+		}
+
+		.t_logo {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.8rem;
+			color: #fff;
+			text-decoration: none;
+			transition: opacity 0.3s;
+		}
+		.t_logo:hover { opacity: 0.8; }
+		.t_logo img { width: 52px; height: 52px; object-fit: contain; }
+		.t_logo span {
+			font-family: var(--serif);
+			font-size: 1.1rem;
+			font-weight: 300;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+		}
+
+		.t_links { display: flex; gap: 2.25rem; margin: 0; padding: 0; list-style: none; }
+		.t_links a {
+			color: rgba(255, 255, 255, 0.7);
+			font-size: 0.85rem;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+			text-decoration: none;
+			transition: color 0.3s;
+		}
+		.t_links a:hover { color: #fff; }
+
+		/* ---------- hero ---------- */
+		.t_hero {
+			position: relative;
+			z-index: 1;
+			max-width: 1100px;
+			margin: 0 auto;
+			padding: 4.5rem 2rem 3.5rem;
+			text-align: center;
+			animation: t-rise 0.9s var(--ease) both;
+		}
+
+		.t_eyebrow {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.6rem;
+			margin-bottom: 1.6rem;
+			font-size: 0.75rem;
+			letter-spacing: 0.32em;
+			text-transform: uppercase;
+			color: var(--gold);
+		}
+		.t_eyebrow::before,
+		.t_eyebrow::after { content: ""; width: 28px; height: 1px; background: currentColor; opacity: 0.6; }
+
+		.t_title {
+			margin: 0 0 1.4rem;
+			font-family: var(--serif);
+			font-size: clamp(2.8rem, 7vw, 6rem);
+			font-weight: 300;
+			line-height: 1;
+			letter-spacing: -0.02em;
+		}
+		.t_title em { font-weight: 100; color: var(--gold-light); }
+
+		.t_intro {
+			max-width: 640px;
+			margin: 0 auto;
+			font-size: clamp(1rem, 1.3vw, 1.15rem);
+			line-height: 1.7;
+			color: var(--muted);
+			text-wrap: balance;
+		}
+
+		.t_updated {
+			margin-top: 1.6rem;
+			font-size: 0.75rem;
+			letter-spacing: 0.2em;
+			text-transform: uppercase;
+			color: rgba(255, 255, 255, 0.35);
+		}
+
+		/* ---------- body ---------- */
+		.t_layout {
+			position: relative;
+			z-index: 1;
+			display: grid;
+			grid-template-columns: 240px minmax(0, 1fr);
+			gap: 4.5rem;
+			max-width: 1100px;
+			margin: 0 auto;
+			padding: 2rem 2rem 6rem;
+			animation: t-rise 0.9s 0.12s var(--ease) both;
+		}
+
+		.t_toc {
+			position: sticky;
+			top: 2rem;
+			align-self: start;
+			padding-top: 0.5rem;
+		}
+		.t_toc p {
+			margin: 0 0 1rem;
+			font-size: 0.7rem;
+			letter-spacing: 0.3em;
+			text-transform: uppercase;
+			color: var(--gold);
+		}
+		.t_toc ol { margin: 0; padding: 0; list-style: none; counter-reset: toc; }
+		.t_toc li { counter-increment: toc; }
+		.t_toc a {
+			display: flex;
+			gap: 0.75rem;
+			padding: 0.42rem 0;
+			color: var(--muted);
+			font-size: 0.85rem;
+			text-decoration: none;
+			transition: color 0.3s, transform 0.4s var(--ease);
+		}
+		.t_toc a::before {
+			content: counter(toc, decimal-leading-zero);
+			color: rgba(201, 180, 109, 0.6);
+			font-size: 0.72rem;
+			padding-top: 0.12rem;
+		}
+		.t_toc a:hover,
+		.t_toc a.is-active { color: #fff; transform: translateX(4px); }
+
+		.t_section {
+			padding: 2.4rem 0;
+			border-top: 1px solid var(--line);
+			scroll-margin-top: 1.5rem;
+		}
+		.t_section:first-child { border-top: 0; padding-top: 0; }
+
+		.t_section h2 {
+			display: flex;
+			align-items: baseline;
+			gap: 1rem;
+			margin: 0 0 1.1rem;
+			font-family: var(--serif);
+			font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+			font-weight: 300;
+			line-height: 1.15;
+		}
+		.t_section h2 span {
+			font-family: var(--sans);
+			font-size: 0.75rem;
+			letter-spacing: 0.2em;
+			color: var(--gold);
+		}
+
+		.t_section p,
+		.t_section li {
+			color: var(--text);
+			font-size: 1rem;
+			line-height: 1.75;
+		}
+		.t_section p { margin: 0 0 1rem; }
+		.t_section ul { margin: 0 0 1rem; padding-left: 1.2rem; }
+		.t_section li { margin-bottom: 0.45rem; }
+		.t_section li::marker { color: var(--gold); }
+		.t_section strong { color: #fff; font-weight: 500; }
+		.t_section a { color: var(--gold-light); text-underline-offset: 3px; }
+
+		.t_note {
+			margin: 1.2rem 0 0;
+			padding: 1.1rem 1.3rem;
+			border: 1px solid rgba(201, 180, 109, 0.28);
+			border-radius: 4px;
+			background: rgba(201, 180, 109, 0.05);
+			font-size: 0.92rem !important;
+			color: var(--muted) !important;
+		}
+
+		/* ---------- footer ---------- */
+		.t_footer {
+			position: relative;
+			z-index: 1;
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			justify-content: space-between;
+			gap: 1rem;
+			max-width: 1400px;
+			margin: 0 auto;
+			padding: 2rem;
+			border-top: 1px solid var(--line);
+			font-size: 0.8rem;
+			color: rgba(255, 255, 255, 0.4);
+		}
+		.t_footer span:nth-child(2) { letter-spacing: 0.22em; text-transform: uppercase; }
+		.t_footer a { color: rgba(255, 255, 255, 0.65); text-decoration: none; transition: color 0.3s; }
+		.t_footer a:hover { color: #fff; }
+
+		@keyframes t-rise {
+			from { opacity: 0; transform: translateY(20px); }
+			to { opacity: 1; transform: none; }
+		}
+
+		@media (max-width: 860px) {
+			.t_layout { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+			.t_toc { position: static; padding: 1.2rem 1.3rem; border: 1px solid var(--line); border-radius: 4px; }
+		}
+
+		@media (max-width: 768px) {
+			.t_nav { padding: 1.25rem 1rem; }
+			.t_links { display: none; }
+			.t_hero { padding: 3rem 1rem 2.5rem; }
+			.t_layout { padding: 1rem 1rem 4rem; }
+			.t_footer { flex-direction: column; text-align: center; padding: 2rem 1rem; }
+		}
+
+		@media (prefers-reduced-motion: reduce) {
+			html { scroll-behavior: auto; }
+			.t_hero, .t_layout { animation: none; }
+		}
+	</style>
+</head>
+
+<body>
+	<div class="t_page">
+		<div class="t_glow" aria-hidden="true"></div>
+
+		<header class="t_nav">
+			<a class="t_logo" href="index.html" aria-label="Cintamani Linens home">
+				<img alt="" src="downloaded_images/logo.png" />
+				<span>Cintamani Linens</span>
+			</a>
+			<nav aria-label="Main">
+				<ul class="t_links">
+					<li><a href="index.html">Home</a></li>
+					<li><a href="about.html">About</a></li>
+					<li><a href="gallery.html">Collections</a></li>
+					<li><a href="contact.html">Contact</a></li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="t_hero">
+			<div class="t_eyebrow">The fine print</div>
+			<h1 class="t_title">Terms &amp; <em>Conditions</em></h1>
+			<p class="t_intro">Every Cintamani piece is cut and tailored for you in pure linen. These terms explain how ordering, payment, tailoring and delivery work, so you know exactly what to expect from the moment you choose a piece.</p>
+			<div class="t_updated">Last updated · October 2026</div>
+		</section>
+
+		<div class="t_layout">
+			<aside class="t_toc" aria-label="Contents">
+				<p>Contents</p>
+				<ol>
+					<li><a href="#about">About these terms</a></li>
+					<li><a href="#account">Your account</a></li>
+					<li><a href="#orders">Orders &amp; pricing</a></li>
+					<li><a href="#payment">Payment</a></li>
+					<li><a href="#tailoring">Tailoring &amp; sizing</a></li>
+					<li><a href="#delivery">Delivery</a></li>
+					<li><a href="#exchanges">Exchanges &amp; returns</a></li>
+					<li><a href="#linen">The nature of linen</a></li>
+					<li><a href="#privacy">Your information</a></li>
+					<li><a href="#content">Our designs &amp; images</a></li>
+					<li><a href="#liability">Liability</a></li>
+					<li><a href="#law">Governing law &amp; contact</a></li>
+				</ol>
+			</aside>
+
+			<main id="main">
+				<section class="t_section" id="about">
+					<h2><span>01</span>About these terms</h2>
+					<p>These terms apply to every purchase made through the Cintamani Linens website ("Cintamani", "we", "us"). By creating an account or placing an order, you agree to them. We may update these terms from time to time; the version shown here when you place your order is the one that applies to it.</p>
+				</section>
+
+				<section class="t_section" id="account">
+					<h2><span>02</span>Your account</h2>
+					<ul>
+						<li>You need an account to add pieces to your selection and to place an order, so we can keep your delivery details and show the progress of your orders.</li>
+						<li>Please give accurate details. Your name, contact number and delivery address are used to tailor, confirm and deliver your order.</li>
+						<li>Keep your password private. You are responsible for orders placed through your account; if you think someone else has access to it, contact us straight away.</li>
+						<li>We may suspend an account that is used for fraudulent orders or to misuse the website.</li>
+					</ul>
+				</section>
+
+				<section class="t_section" id="orders">
+					<h2><span>03</span>Orders &amp; pricing</h2>
+					<ul>
+						<li>All prices are in Sri Lankan Rupees (LKR). The island-wide delivery charge is shown on your receipt before you pay.</li>
+						<li>Placing an order is an offer to buy. Your order is <strong>accepted</strong> only once we have verified your payment; you can follow this on your account page.</li>
+						<li>Each piece is made in limited quantities. If we cannot fulfil an order — for example, if a fabric runs out — we will contact you and offer an alternative or a full refund.</li>
+						<li>If a price is displayed incorrectly because of an error, we will contact you before accepting the order.</li>
+					</ul>
+				</section>
+
+				<section class="t_section" id="payment">
+					<h2><span>04</span>Payment</h2>
+					<ul>
+						<li>We accept payment by <strong>bank transfer</strong> only. The account details are shown at checkout.</li>
+						<li>After transferring, upload a clear photo or PDF of your bank slip with your order. Please use your order number as the transfer reference where your bank allows it.</li>
+						<li>We check every slip against our bank account, usually within one to two working days. If the slip is unclear or the amount does not match, we will contact you on the number you provided.</li>
+						<li>Orders with no matching payment within 3 days may be cancelled.</li>
+					</ul>
+				</section>
+
+				<section class="t_section" id="tailoring">
+					<h2><span>05</span>Tailoring &amp; sizing</h2>
+					<ul>
+						<li>Pieces are offered in sizes XS to XL. Please check your size carefully before ordering; we are happy to advise if you contact us first.</li>
+						<li>Every piece is cut and sewn to order once your payment is accepted. Tailoring usually takes around two to three weeks, depending on the piece and the season. Your account page shows each stage — Accepted, Tailoring, Packed and Dispatched.</li>
+						<li>Once tailoring has begun, an order cannot be cancelled or changed.</li>
+					</ul>
+				</section>
+
+				<section class="t_section" id="delivery">
+					<h2><span>06</span>Delivery</h2>
+					<ul>
+						<li>We deliver island-wide within Sri Lanka by courier. Once your order is dispatched, a tracking reference appears on your account page.</li>
+						<li>Delivery normally takes two to five working days after dispatch. Delays caused by couriers, weather or public holidays are outside our control.</li>
+						<li>Please make sure someone can receive the parcel at the address given. If a parcel is returned because of an incorrect address or failed delivery, re-delivery may be charged.</li>
+						<li>Inspect your parcel on arrival and tell us within 48 hours if it is damaged or anything is missing.</li>
+					</ul>
+				</section>
+
+				<section class="t_section" id="exchanges">
+					<h2><span>07</span>Exchanges &amp; returns</h2>
+					<p>Because each piece is tailored for you, we do not offer refunds for a change of mind. We do want you to love what you wear, so:</p>
+					<ul>
+						<li><strong>Size exchanges</strong> — contact us within 7 days of delivery. The piece must be unworn, unwashed and in its original packaging. Courier charges for exchanges are paid by the customer.</li>
+						<li><strong>Faulty or incorrect pieces</strong> — if a piece arrives with a manufacturing fault or is not what you ordered, tell us within 7 days with photos. We will repair, remake or refund it, including delivery costs.</li>
+						<li>Refunds, where they apply, are made by bank transfer to an account you nominate, within 14 working days.</li>
+					</ul>
+				</section>
+
+				<section class="t_section" id="linen">
+					<h2><span>08</span>The nature of linen</h2>
+					<p>Linen is a natural, living fabric, and its character is part of its beauty. Small slubs, variations in weave, gentle creasing and slight differences in shade between the screen and real life are natural and are not considered faults.</p>
+					<p>Linen softens with every wash. To keep your piece at its best, follow the care label — gentle cold wash, no bleach, line dry in the shade, and press while slightly damp. Damage caused by not following the care instructions is not covered.</p>
+				</section>
+
+				<section class="t_section" id="privacy">
+					<h2><span>09</span>Your information</h2>
+					<ul>
+						<li>We collect only what we need to fulfil your orders: your name, email, contact number, delivery address, order history and the bank slips you upload.</li>
+						<li>Your password is stored in encrypted (hashed) form; we can never see it.</li>
+						<li>Your details are shared only with our courier for delivery. We never sell your information.</li>
+						<li>You can ask us to see, correct or delete your personal information at any time, in line with Sri Lanka's Personal Data Protection Act. Order records may be kept where the law requires it.</li>
+					</ul>
+				</section>
+
+				<section class="t_section" id="content">
+					<h2><span>10</span>Our designs &amp; images</h2>
+					<p>All designs, photographs, text and branding on this website belong to Cintamani Linens. Please do not copy, reproduce or use them commercially without our written permission. You are welcome to share links to our pages.</p>
+				</section>
+
+				<section class="t_section" id="liability">
+					<h2><span>11</span>Liability</h2>
+					<p>We take great care with every piece and every order. Our liability for any order is limited to the amount you paid for it. Nothing in these terms limits your rights as a consumer under Sri Lankan law.</p>
+				</section>
+
+				<section class="t_section" id="law">
+					<h2><span>12</span>Governing law &amp; contact</h2>
+					<p>These terms are governed by the laws of Sri Lanka, and any dispute will be handled by the courts of Sri Lanka.</p>
+					<p>Questions about an order, a size or these terms? Visit our <a href="contact.html">contact page</a> for answers to common questions, or to send us a message on WhatsApp — we are always happy to help.</p>
+					<p class="t_note">Cintamani Linens · Artistry in Linen. Thank you for choosing slow, considered craft.</p>
+				</section>
+			</main>
+		</div>
+
+		<footer class="t_footer">
+			<span>©26 Cintamani Linens – All rights reserved</span>
+			<span>The essence of heritage in linen</span>
+			<span>Site by: <a href="https://www.themindsstudio.com/" rel="noopener" target="_blank">The Minds Studio</a></span>
+		</footer>
+	</div>
+
+	<script>
+		// highlight the section being read in the contents list
+		(function () {
+			var links = document.querySelectorAll(".t_toc a");
+			if (!("IntersectionObserver" in window)) return;
+			var io = new IntersectionObserver(function (entries) {
+				entries.forEach(function (e) {
+					if (!e.isIntersecting) return;
+					links.forEach(function (a) { a.classList.toggle("is-active", a.getAttribute("href") === "#" + e.target.id); });
+				});
+			}, { rootMargin: "-30% 0px -60% 0px" });
+			document.querySelectorAll(".t_section").forEach(function (s) { io.observe(s); });
+		})();
+	</script>
+</body>
+
+</html>

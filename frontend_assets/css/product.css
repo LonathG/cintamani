@@ -171,3 +171,37 @@
     display: none;
   }
 }
+
+/* ---------- piece description under the name + price ---------- */
+.art_desc {
+  width: 100%;
+  margin-top: -0.1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.art_desc_fabric {
+  margin-bottom: 0.45rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #c9b46d;
+}
+
+.art_desc_text {
+  max-width: 34rem;
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+@media (max-width: 767px) {
+  .art_desc { margin-top: 0.75rem; padding-top: 0.75rem; }
+  .art_desc_text { font-size: 0.9rem; }
+}
+
+/* desktop: shrink the square photo on shorter screens so name, price and description all fit */
+@media (min-width: 768px) {
+  .art_main_wrap { width: min(35rem, calc(100svh - 17rem)); }
+}

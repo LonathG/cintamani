@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html data-wf-domain="www.cintamanilinens.com" lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<title>Contact | Cintamani Linens</title>
+	<meta content="Questions about a piece, sizing, payment or delivery? Read how ordering works, browse our answers, or send us a message on WhatsApp." name="description" />
+	<meta content="Contact | Cintamani Linens" property="og:title" />
+	<meta content="width=device-width, initial-scale=1" name="viewport" />
+	<link href="css/style_1.css" rel="stylesheet" type="text/css" />
+	<link href="css/cart.css" rel="stylesheet" type="text/css" />
+	<!-- site grid + fluid sizes, same as the other pages (the nav's margins come from these) -->
+	<style>
+					:root {
+						--site--column-count: 12;
+						--site--width-inner: calc(var(--site--width) - (var(--site--margin) * 2));
+						--site--gutter-total: calc(var(--site--gutter) * (var(--site--column-count) - 1));
+						--site--grid-width: min(var(--site--width-inner), var(--container--full));
+						--container--full: calc(100vw - (var(--site--margin) * 2));
+						--container--small: calc(var(--column-width) * (var(--site--column-count) - 2) - var(--site--gutter));
+						--container--main: calc(var(--column-width) * var(--site--column-count) - var(--site--gutter));
+						--column-width: calc((var(--site--grid-width) - var(--site--gutter-total)) / var(--site--column-count) + var(--site--gutter));
+						--column-width--1: calc(var(--column-width) * 1 - var(--site--gutter));
+						--column-width--2: calc(var(--column-width) * 2 - var(--site--gutter));
+						--column-width--3: calc(var(--column-width) * 3 - var(--site--gutter));
+						--column-width--4: calc(var(--column-width) * 4 - var(--site--gutter));
+						--column-width--5: calc(var(--column-width) * 5 - var(--site--gutter));
+						--column-width--6: calc(var(--column-width) * 6 - var(--site--gutter));
+						--column-width--7: calc(var(--column-width) * 7 - var(--site--gutter));
+						--column-width--8: calc(var(--column-width) * 8 - var(--site--gutter));
+						--column-width--9: calc(var(--column-width) * 9 - var(--site--gutter));
+						--column-width--10: calc(var(--column-width) * 10 - var(--site--gutter));
+						--column-width--11: calc(var(--column-width) * 11 - var(--site--gutter));
+						--column-width--12: calc(var(--column-width) * 12 - var(--site--gutter));
+						--column-margin--1: calc(var(--column-width) * 1);
+						--column-margin--2: calc(var(--column-width) * 2);
+						--column-margin--3: calc(var(--column-width) * 3);
+						--column-margin--4: calc(var(--column-width) * 4);
+						--column-margin--5: calc(var(--column-width) * 5);
+						--column-margin--6: calc(var(--column-width) * 6);
+						--column-margin--7: calc(var(--column-width) * 7);
+						--column-margin--8: calc(var(--column-width) * 8);
+						--column-margin--9: calc(var(--column-width) * 9);
+						--column-margin--10: calc(var(--column-width) * 10);
+						--column-margin--11: calc(var(--column-width) * 11);
+						--column-margin--12: calc(var(--column-width) * 12);
+						--breakout-start: [full-start] minmax(0, 1fr) [content-start];
+						--breakout-end: [content-end] minmax(0, 1fr) [full-end];
+						--grid-breakout-single: var(--breakout-start) minmax(0, var(--site--grid-width)) var(--breakout-end);
+						--grid-breakout: var(--breakout-start) repeat(var(--site--column-count), minmax(0, calc((var(--site--grid-width) - var(--site--gutter-total)) / var(--site--column-count)))) var(--breakout-end);
+						--grid-main: repeat(var(--site--column-count), minmax(0, 1fr));
+						--grid-1: repeat(1, minmax(0, 1fr));
+						--grid-2: repeat(2, minmax(0, 1fr));
+						--grid-3: repeat(3, minmax(0, 1fr));
+						--grid-4: repeat(4, minmax(0, 1fr));
+						--grid-5: repeat(5, minmax(0, 1fr));
+						--grid-6: repeat(6, minmax(0, 1fr));
+						--grid-7: repeat(7, minmax(0, 1fr));
+						--grid-8: repeat(8, minmax(0, 1fr));
+						--grid-9: repeat(9, minmax(0, 1fr));
+						--grid-10: repeat(10, minmax(0, 1fr));
+						--grid-11: repeat(11, minmax(0, 1fr));
+						--grid-12: repeat(12, minmax(0, 1fr));
+
+						--font-weight--inherit: inherit;
+						--font-weight--100: 100;
+						--font-weight--200: 200;
+						--font-weight--300: 300;
+						--font-weight--400: 400;
+						--font-weight--500: 500;
+						--font-weight--600: 600;
+						--font-weight--700: 700;
+						--font-weight--800: 800;
+						--font-weight--900: 900;
+						--text-transform--none: none;
+						--text-transform--uppercase: uppercase;
+						--text-transform--capitalize: capitalize;
+						--text-transform--lowercase: lowercase;
+						--text-transform--inherit: inherit;
+					}
+
+					* {
+						vertical-align: bottom;
+					}
+
+					body {
+						font-weight: var(--text-main--font-weight);
+						text-transform: var(--text-main--text-transform);
+						font-smoothing: antialiased;
+						-webkit-font-smoothing: antialiased;
+					}
+
+					label,
+					blockquote {
+						font-size: inherit;
+						line-height: inherit;
+						font-weight: inherit;
+						margin-top: 0;
+						margin-bottom: 0;
+					}
+
+					button {
+						background-color: unset;
+						padding: unset;
+						text-align: inherit;
+					}
+
+					button:not(:disabled) {
+						cursor: pointer;
+					}
+
+					video {
+						width: 100%;
+						object-fit: cover;
+					}
+
+					video.wf-empty {
+						padding: 0;
+					}
+
+					svg {
+						max-width: 100%;
+					}
+
+					section,
+					header,
+					footer {
+						position: relative;
+					}
+
+					@media (prefers-color-scheme: light) {
+						option {
+							color: black;
+						}
+					}
+
+					img::selection {
+						background: transparent;
+					}
+
+					a:not([class]) {
+						text-decoration: underline;
+					}
+
+					.w-richtext a {
+						position: relative;
+						z-index: 4;
+					}
+
+					[class*="u-text-style-"]> :where(h1, h2, h3, h4, h5, h6, p, blockquote) {
+						font-family: inherit;
+						font-size: inherit;
+						font-weight: inherit;
+						line-height: inherit;
+						letter-spacing: inherit;
+						text-transform: inherit;
+						text-wrap: inherit;
+						margin-top: inherit;
+						margin-bottom: inherit;
+					}
+
+					:not(.u-margin-trim-off, .u-block-gap, .w-background-video)> :not(:not(.w-condition-invisible) ~ :not(.w-condition-invisible)) {
+						margin-top: 0;
+					}
+
+					:not(.u-margin-trim-off, .u-block-gap, .w-background-video)> :not(:has(~ :not(.w-condition-invisible))) {
+						margin-bottom: 0;
+					}
+
+					.u-hide-if-empty:empty,
+					.u-hide-if-empty:not(:has(> :not(.w-condition-invisible))),
+					.u-hide-if-empty-cms:not(:has(.w-dyn-item)),
+					.w-richtext[class*="u-text-style-"]> :not(h1, h2, h3, h4, h5, h6, p, blockquote, ul, ol, span),
+					.u-embed-js,
+					.u-embed-css {
+						display: none !important;
+					}
+
+					.u-line-clamp-1,
+					.u-line-clamp-2,
+					.u-line-clamp-3,
+					.u-line-clamp-4 {
+						-webkit-line-clamp: 1;
+						-webkit-box-orient: vertical;
+					}
+
+					.u-line-clamp-2 {
+						-webkit-line-clamp: 2;
+					}
+
+					.u-line-clamp-3 {
+						-webkit-line-clamp: 3;
+					}
+
+					.u-line-clamp-4 {
+						-webkit-line-clamp: 4;
+					}
+
+					a,
+					button,
+					[tabindex],
+					.w-checkbox-input--inputType-custom,
+					.w-form-formradioinput--inputType-custom {
+						outline-offset: var(--focus--offset-outer);
+					}
+
+					a:focus-visible,
+					button:focus-visible,
+					[tabindex]:focus-visible,
+					.w-checkbox:has(:focus-visible) .w-checkbox-input--inputType-custom,
+					.w-radio:has(:focus-visible) .w-form-formradioinput--inputType-custom {
+						outline-color: var(--theme--text);
+						outline-width: var(--focus--width);
+						outline-style: solid;
+					}
+
+					.w-checkbox-input--inputType-custom.w--redirected-focus,
+					.w-form-formradioinput--inputType-custom.w--redirected-focus {
+						box-shadow: none;
+					}
+
+					.u-block-gap {
+						--gap: var(--content-space--button-group-gap);
+						--gap-x: var(--gap);
+						--gap-y: var(--gap);
+					}
+
+					.u-block-gap>* {
+						margin-inline: calc(var(--gap-x) / 2);
+						margin-top: var(--gap-y);
+						vertical-align: inherit;
+					}
+
+					:where(.u-block-gap > *) {
+						display: inline-block;
+					}
+
+					.u-block-gap::before {
+						content: "";
+						display: block;
+						margin-bottom: calc(var(--gap-y) * -1);
+					}
+
+					.u-block-gap-vertical {
+						--gap: 0;
+						--margin: var(--gap);
+					}
+
+					.u-block-gap-vertical>* {
+						margin-top: var(--margin);
+						margin-bottom: 0;
+					}
+
+					.u-gap-0 {
+						--gap: 0;
+					}
+
+					.u-gap-1 {
+						--gap: var(--space--1);
+					}
+
+					.u-gap-2 {
+						--gap: var(--space--2);
+					}
+
+					.u-gap-3 {
+						--gap: var(--space--3);
+					}
+
+					.u-gap-4 {
+						--gap: var(--space--4);
+					}
+
+					.u-gap-5 {
+						--gap: var(--space--5);
+					}
+
+					.u-gap-6 {
+						--gap: var(--space--6);
+					}
+
+					.u-gap-7 {
+						--gap: var(--space--7);
+					}
+
+					.u-gap-8 {
+						--gap: var(--space--8);
+					}
+
+					.u-gap-gutter {
+						--gap: var(--site--gutter);
+					}
+
+					.u-gap-row-0 {
+						--gap-y: 0;
+					}
+
+					.u-gap-row-1 {
+						--gap-y: var(--space--1);
+					}
+
+					.u-gap-row-2 {
+						--gap-y: var(--space--2);
+					}
+
+					.u-gap-row-3 {
+						--gap-y: var(--space--3);
+					}
+
+					.u-gap-row-4 {
+						--gap-y: var(--space--4);
+					}
+
+					.u-gap-row-5 {
+						--gap-y: var(--space--5);
+					}
+
+					.u-gap-row-6 {
+						--gap-y: var(--space--6);
+					}
+
+					.u-gap-row-7 {
+						--gap-y: var(--space--7);
+					}
+
+					.u-gap-row-8 {
+						--gap-y: var(--space--8);
+					}
+
+					.u-gap-row-gutter {
+						--gap-y: var(--site--gutter);
+					}
+
+					.u-child-contain>* {
+						display: inline-block;
+						width: 100%;
+						max-width: inherit;
+						margin-top: 0;
+					}
+
+					.u-text-margin-none :is([class*="u-text-style-"], h1, h2, h3, h4, h5, h6, p) {
+						margin-top: 0;
+						margin-bottom: 0;
+					}
+
+					[data-padding-top="none"] {
+						padding-top: var(--section-space--none);
+					}
+
+					[data-padding-bottom="none"] {
+						padding-bottom: var(--section-space--none);
+					}
+
+					[data-padding-top="small"] {
+						padding-top: var(--section-space--small);
+					}
+
+					[data-padding-bottom="small"] {
+						padding-bottom: var(--section-space--small);
+					}
+
+					[data-padding-top="main"] {
+						padding-top: var(--section-space--main);
+					}
+
+					[data-padding-bottom="main"] {
+						padding-bottom: var(--section-space--main);
+					}
+
+					[data-padding-top="large"] {
+						padding-top: var(--section-space--large);
+					}
+
+					[data-padding-bottom="large"] {
+						padding-bottom: var(--section-space--large);
+					}
+
+					.wf-design-mode .g_clickable_wrap {
+						z-index: 0;
+					}
+
+					.g_clickable_wrap a[href="#"] {
+						display: none;
+					}
+
+					.g_clickable_wrap a[href="#"]~button {
+						display: block;
+					}
+
+					:is(.home_about_bg_text, .marquee-text_text, .home_gallery_heading, .home_hue_text)::before {
+						content: "";
+						display: table;
+						margin-bottom: calc(-0.5lh + 0.38em);
+					}
+
+					:is(.home_about_bg_text, .marquee-text_text, .home_gallery_heading, .home_hue_text)::after {
+						content: "";
+						display: table;
+						margin-bottom: calc(-0.5lh + 0.42em);
+					}
+
+					.fixed {
+						position: fixed;
+						z-index: 0;
+						top: 0;
+						left: 0;
+						right: 0;
+					}
+				</style>
+	<style>
+					/* https://fluidbuilder.webflow.io/?design=90&max=90&min=20&f&g=--site--margin,3,1_--size--2rem,2,1.75_--size--2-5rem,2.5,2_--size--3rem,3,2.25_--size--3-5rem,3.5,2.375_--size--4rem,4,2.5_--size--4-5rem,4.5,2.75_--size--5rem,5,3_--size--5-5rem,5.5,3.25_--size--6rem,6,3.5_--size--6-5rem,6.5,3.75_--size--7rem,7,4_--size--7-5rem,7.5,4.25_--size--8rem,8,4.5_--size--8-5rem,8.5,4.75_--size--9rem,9,5_--size--9-5rem,9.5,5.25_--size--10rem,10,5.5_--size--11rem,11,5.75_--size--12rem,12,6_--size--13rem,13,6.5_--size--14rem,14,7_--size--15rem,15,7.5_--size--16rem,16,8 */
+
+					:root {
+						--site--margin: clamp(1rem, 0.428rem + 2.86vw, 3rem);
+						--size--2rem: clamp(1.75rem, 1.678rem + 0.36vw, 2rem);
+						--size--2-5rem: clamp(2rem, 1.858rem + 0.71vw, 2.5rem);
+						--size--3rem: clamp(2.25rem, 2.036rem + 1.07vw, 3rem);
+						--size--3-5rem: clamp(2.375rem, 2.053rem + 1.61vw, 3.5rem);
+						--size--4rem: clamp(2.5rem, 2.072rem + 2.14vw, 4rem);
+						--size--4-5rem: clamp(2.75rem, 2.25rem + 2.5vw, 4.5rem);
+						--size--5rem: clamp(3rem, 2.428rem + 2.86vw, 5rem);
+						--size--5-5rem: clamp(3.25rem, 2.608rem + 3.21vw, 5.5rem);
+						--size--6rem: clamp(3.5rem, 2.786rem + 3.57vw, 6rem);
+						--size--6-5rem: clamp(3.75rem, 2.964rem + 3.93vw, 6.5rem);
+						--size--7rem: clamp(4rem, 3.142rem + 4.29vw, 7rem);
+						--size--7-5rem: clamp(4.25rem, 3.322rem + 4.64vw, 7.5rem);
+						--size--8rem: clamp(4.5rem, 3.5rem + 5vw, 8rem);
+						--size--8-5rem: clamp(4.75rem, 3.678rem + 5.36vw, 8.5rem);
+						--size--9rem: clamp(5rem, 3.858rem + 5.71vw, 9rem);
+						--size--9-5rem: clamp(5.25rem, 4.036rem + 6.07vw, 9.5rem);
+						--size--10rem: clamp(5.5rem, 4.214rem + 6.43vw, 10rem);
+						--size--11rem: clamp(5.75rem, 4.25rem + 7.5vw, 11rem);
+						--size--12rem: clamp(6rem, 4.286rem + 8.57vw, 12rem);
+						--size--13rem: clamp(6.5rem, 4.642rem + 9.29vw, 13rem);
+						--size--14rem: clamp(7rem, 5rem + 10vw, 14rem);
+						--size--15rem: clamp(7.5rem, 5.358rem + 10.71vw, 15rem);
+						--size--16rem: clamp(8rem, 5.714rem + 11.43vw, 16rem);
+					}
+				</style>
+	<link href="css/account.css" rel="stylesheet" type="text/css" />
+	<link href="https://cdn.prod.website-files.com/6734928e2af1829d3c568460/67358f05ba55d37beb0410d3_favicon.jpg" rel="shortcut icon" type="image/x-icon" />
+	<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+	<style>
+		*, *::before, *::after { box-sizing: border-box; }
+
+		:root {
+			--serif: var(--font--primary-family, "La Ivyprestodisplay", "Times New Roman", serif);
+			--sans: var(--font--secondary-family, "LA Neue Montreal", Arial, sans-serif);
+			--mono: "Courier Prime", "Courier New", monospace;
+			--gold: #c9b46d;
+			--gold-light: #e2d3a8;
+			--text: rgba(255, 255, 255, 0.86);
+			--muted: rgba(255, 255, 255, 0.58);
+			--line: rgba(255, 255, 255, 0.1);
+			--brown: #2b1d14;
+			--olive: #5f6332;
+			--cream: #ece4d0;
+			--ease: cubic-bezier(0.16, 1, 0.3, 1);
+		}
+
+		html { scroll-behavior: smooth; }
+
+		body {
+			margin: 0;
+			background: #080808;
+			color: #fff;
+			font-family: var(--sans);
+			-webkit-font-smoothing: antialiased;
+			overflow-x: hidden;
+		}
+
+		img { display: block; max-width: 100%; }
+
+		.c_wrap { max-width: 1180px; margin: 0 auto; padding: 0 2rem; }
+
+		.c_eyebrow {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.6rem;
+			font-size: 0.72rem;
+			letter-spacing: 0.32em;
+			text-transform: uppercase;
+			color: var(--gold);
+		}
+		.c_eyebrow::before,
+		.c_eyebrow::after { content: ""; width: 26px; height: 1px; background: currentColor; opacity: 0.6; }
+
+		.c_h2 {
+			margin: 1rem 0 0;
+			font-family: var(--serif);
+			font-size: clamp(2.2rem, 4.6vw, 3.8rem);
+			font-weight: 300;
+			line-height: 1.02;
+			letter-spacing: -0.01em;
+		}
+		.c_h2 em { font-weight: 100; color: var(--gold-light); }
+
+		/* ---------- site nav (same markup as About; the menu toggle lives at the bottom of this page) ---------- */
+		.nav_wrapper .menu-button-line { transition: transform 0.45s var(--ease), opacity 0.3s; }
+		.nav_wrapper.is-menu-open .nav_links_wrapper { display: block; }
+
+		/* ---------- hero ---------- */
+		.c_hero {
+			position: relative;
+			display: grid;
+			align-items: end;
+			min-height: min(92svh, 860px);
+			padding: 8rem 0 4.5rem;
+			overflow: hidden;
+		}
+		.c_hero_bg {
+			position: absolute;
+			inset: 0;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: 50% 30%;
+			transform: scale(1.04);
+			animation: c-settle 2.2s var(--ease) forwards;
+		}
+		.c_hero::after {
+			content: "";
+			position: absolute;
+			inset: 0;
+			background: linear-gradient(to bottom, rgba(8, 8, 8, 0.55), rgba(8, 8, 8, 0.25) 40%, rgba(8, 8, 8, 0.92));
+		}
+		.c_hero .c_wrap { position: relative; z-index: 1; width: 100%; }
+		.c_hero_title {
+			margin: 1.2rem 0 1.4rem;
+			font-family: var(--serif);
+			font-size: clamp(3rem, 8vw, 7rem);
+			font-weight: 300;
+			line-height: 0.95;
+			letter-spacing: -0.02em;
+		}
+		.c_hero_title em { font-weight: 100; color: var(--gold-light); }
+		.c_hero_text { max-width: 560px; margin: 0; font-size: clamp(1rem, 1.3vw, 1.15rem); line-height: 1.7; color: var(--text); }
+		.c_hero_actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2.2rem; }
+
+		.c_btn {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.7rem;
+			padding: 0.95rem 1.7rem;
+			border: 1px solid rgba(255, 255, 255, 0.3);
+			border-radius: 999px;
+			color: #fff;
+			font-size: 0.85rem;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+			text-decoration: none;
+			transition: background-color 0.4s var(--ease), color 0.4s, border-color 0.4s;
+		}
+		.c_btn:hover { background: #f2ede4; border-color: #f2ede4; color: #0b0b0b; }
+		.c_btn.is-gold { background: var(--gold); border-color: var(--gold); color: #120d08; }
+		.c_btn.is-gold:hover { background: var(--gold-light); border-color: var(--gold-light); }
+
+		/* ---------- how ordering works ---------- */
+		.c_steps_sec { padding: 6.5rem 0; border-bottom: 1px solid var(--line); background: #0d0b09; }
+		.c_center { text-align: center; }
+		/* milestone bar: a line runs through the five stops and ends in an arrow; when the
+		   section comes into view a gold line draws along it and each stop lights up in turn */
+		.c_steps {
+			--count: 5;
+			--progress: 0;
+			position: relative;
+			display: grid;
+			grid-template-columns: repeat(var(--count), minmax(0, 1fr));
+			gap: 2rem;
+			margin: 4rem 0 0;
+			padding: 0;
+			list-style: none;
+		}
+		.c_track {
+			position: absolute;
+			top: 1.85rem;
+			left: calc((100% - (var(--count) - 1) * 2rem) / var(--count) / 2); /* centre of the first stop */
+			right: -1.2rem;
+			height: 1px;
+			background: rgba(201, 180, 109, 0.22);
+			pointer-events: none;
+		}
+		.c_track::before {
+			content: "";
+			position: absolute;
+			left: 0;
+			top: -0.5px;
+			height: 2px;
+			width: calc((100% - 1.2rem) * var(--progress));
+			background: linear-gradient(90deg, rgba(201, 180, 109, 0.4), var(--gold));
+			box-shadow: 0 0 12px rgba(201, 180, 109, 0.6);
+			transition: width 2.6s cubic-bezier(0.45, 0, 0.2, 1);
+		}
+		/* arrowhead at the end of the line */
+		.c_track::after {
+			content: "";
+			position: absolute;
+			right: 0;
+			top: -5px;
+			width: 10px;
+			height: 10px;
+			border-top: 1px solid rgba(201, 180, 109, 0.5);
+			border-right: 1px solid rgba(201, 180, 109, 0.5);
+			transform: rotate(45deg);
+		}
+		.c_steps.is-in { --progress: 1; }
+
+		.c_step { position: relative; text-align: center; }
+		.c_node {
+			position: relative;
+			z-index: 1;
+			display: grid;
+			place-items: center;
+			width: 3.7rem;
+			height: 3.7rem;
+			margin: 0 auto 1.5rem;
+			border: 1px solid rgba(201, 180, 109, 0.4);
+			border-radius: 50%;
+			background: #0d0b09;
+			color: rgba(201, 180, 109, 0.6);
+			transition: background-color 0.6s var(--ease), color 0.6s, border-color 0.6s, box-shadow 0.6s, transform 0.6s var(--ease);
+			transition-delay: var(--delay, 0s), var(--delay, 0s), var(--delay, 0s), var(--delay, 0s), 0s;
+		}
+		.c_node svg { width: 1.45rem; height: 1.45rem; }
+		.c_num {
+			position: absolute;
+			top: -0.35rem;
+			right: -0.35rem;
+			display: grid;
+			place-items: center;
+			width: 1.35rem;
+			height: 1.35rem;
+			border-radius: 50%;
+			background: #0d0b09;
+			border: 1px solid rgba(201, 180, 109, 0.5);
+			font-family: var(--mono);
+			font-size: 0.62rem;
+			color: var(--gold);
+		}
+		.c_steps.is-in .c_node {
+			border-color: var(--gold);
+			background: var(--gold);
+			color: #120d08;
+			box-shadow: 0 0 0 6px rgba(201, 180, 109, 0.12), 0 0 24px rgba(201, 180, 109, 0.35);
+		}
+		/* each stop lights up as the gold line reaches it */
+		.c_step:nth-child(2) { --delay: 0.1s; }
+		.c_step:nth-child(3) { --delay: 0.7s; }
+		.c_step:nth-child(4) { --delay: 1.3s; }
+		.c_step:nth-child(5) { --delay: 1.9s; }
+		.c_step:nth-child(6) { --delay: 2.5s; }
+		.c_step:hover .c_node { transform: translateY(-4px) scale(1.06); }
+		.c_step h3 {
+			margin: 0 0 0.8rem;
+			font-family: var(--mono);
+			font-size: 0.78rem;
+			font-weight: 700;
+			letter-spacing: 0.2em;
+			line-height: 1.5;
+			text-transform: uppercase;
+			transition: color 0.4s;
+		}
+		.c_step:hover h3 { color: var(--gold-light); }
+		.c_step p { margin: 0; font-size: 0.92rem; line-height: 1.6; color: var(--muted); }
+
+		/* ---------- FAQ ---------- */
+		.c_faq_sec { padding: 6.5rem 0; background: #11100c; }
+		.c_faq {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) 280px minmax(0, 1fr);
+			gap: 3rem;
+			align-items: start;
+			margin-top: 3.5rem;
+		}
+		.c_faq_photo {
+			position: sticky;
+			top: 2rem;
+			padding: 0.6rem;
+			border: 1px solid rgba(201, 180, 109, 0.4);
+		}
+		.c_faq_photo img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; object-position: 50% 20%; }
+		.c_faq_photo p { margin: 0.9rem 0 0.2rem; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.2em; text-align: center; text-transform: uppercase; color: var(--muted); }
+		.c_faq_photo a { color: var(--gold-light); }
+
+		.c_q {
+			position: relative;
+			border-bottom: 1px solid var(--line);
+			transition: background-color 0.5s var(--ease);
+		}
+		/* gold line sweeps along the bottom edge on hover / while open */
+		.c_q::after {
+			content: "";
+			position: absolute;
+			left: 0;
+			bottom: -1px;
+			width: 100%;
+			height: 1px;
+			background: linear-gradient(90deg, var(--gold), rgba(201, 180, 109, 0.15));
+			transform: scaleX(0);
+			transform-origin: left;
+			transition: transform 0.7s var(--ease);
+		}
+		.c_q:hover::after,
+		.c_q[open]::after { transform: scaleX(1); }
+		.c_q[open] { background: linear-gradient(90deg, rgba(201, 180, 109, 0.07), transparent 85%); }
+
+		.c_q summary {
+			position: relative;
+			display: flex;
+			align-items: baseline;
+			gap: 0.9rem;
+			padding: 1.25rem 3rem 1.25rem 0.2rem;
+			font-family: var(--serif);
+			font-size: 1.25rem;
+			font-weight: 300;
+			line-height: 1.3;
+			list-style: none;
+			cursor: pointer;
+			transition: color 0.4s, padding-left 0.5s var(--ease);
+		}
+		.c_q summary::-webkit-details-marker { display: none; }
+		.c_q summary:hover,
+		.c_q[open] summary { color: var(--gold-light); padding-left: 0.9rem; }
+		.c_q summary:focus-visible { outline: 1px dashed var(--gold); outline-offset: 4px; }
+		.c_qn {
+			flex: none;
+			font-family: var(--mono);
+			font-size: 0.7rem;
+			letter-spacing: 0.1em;
+			color: rgba(201, 180, 109, 0.6);
+		}
+		/* plus that turns into a minus */
+		.c_qi {
+			position: absolute;
+			right: 0.2rem;
+			top: 50%;
+			width: 1.9rem;
+			height: 1.9rem;
+			margin-top: -0.95rem;
+			border: 1px solid rgba(201, 180, 109, 0.35);
+			border-radius: 50%;
+			transition: background-color 0.4s, border-color 0.4s, transform 0.6s var(--ease);
+		}
+		.c_qi::before,
+		.c_qi::after {
+			content: "";
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			width: 0.65rem;
+			height: 1px;
+			margin-left: -0.325rem;
+			background: var(--gold);
+			transition: transform 0.5s var(--ease), background-color 0.4s;
+		}
+		.c_qi::after { transform: rotate(90deg); }
+		.c_q summary:hover .c_qi { border-color: var(--gold); transform: rotate(90deg); }
+		.c_q[open] .c_qi { background: var(--gold); border-color: var(--gold); transform: rotate(180deg); }
+		.c_q[open] .c_qi::before,
+		.c_q[open] .c_qi::after { background: #120d08; }
+		.c_q[open] .c_qi::after { transform: rotate(0deg); }
+
+		.c_q_body { overflow: hidden; }
+		.c_q_inner {
+			padding: 0 3rem 1.4rem 2.55rem;
+			font-size: 0.95rem;
+			line-height: 1.7;
+			color: var(--text);
+		}
+		.c_q_inner p { margin: 0 0 0.6rem; }
+		.c_q_inner a { color: var(--gold-light); text-underline-offset: 3px; }
+		/* answer text rises in as it opens */
+		.c_q[open] .c_q_inner { animation: c-answer 0.7s var(--ease) both; }
+		@keyframes c-answer { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
+		/* the photo in the middle responds: gold frame + slow zoom while a question is open */
+		.c_faq_photo { overflow: hidden; transition: border-color 0.6s; }
+		.c_faq_photo img { transition: transform 1.4s var(--ease), filter 1.4s var(--ease); }
+		.c_faq.has-open .c_faq_photo { border-color: var(--gold); }
+		.c_faq.has-open .c_faq_photo img { transform: scale(1.05); filter: saturate(1.1); }
+
+		/* ---------- message form (postcard) ---------- */
+		.c_form_sec { position: relative; padding: 7rem 0; overflow: hidden; }
+		.c_form_sec > img {
+			position: absolute;
+			inset: 0;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: 50% 40%;
+		}
+		.c_form_sec::before {
+			content: "";
+			position: absolute;
+			inset: 0;
+			z-index: 1;
+			background: rgba(8, 8, 8, 0.7);
+		}
+		.c_form_sec .c_wrap { position: relative; z-index: 2; }
+		.c_form_intro { max-width: 640px; margin: 0 auto 3rem; text-align: center; }
+		.c_form_intro p { margin: 1.2rem 0 0; color: var(--text); line-height: 1.7; }
+
+		.c_card {
+			position: relative;
+			display: grid;
+			grid-template-columns: 0.8fr 1.2fr;
+			max-width: 1020px;
+			margin: 0 auto;
+			background: var(--cream);
+			color: var(--brown);
+			border-radius: 4px;
+			box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
+		}
+		.c_card::before {
+			content: "";
+			position: absolute;
+			inset: 12px;
+			border: 1px solid rgba(43, 29, 20, 0.28);
+			pointer-events: none;
+		}
+		.c_card_photo { padding: 28px 0 28px 28px; }
+		.c_card_photo img { width: 100%; height: 100%; min-height: 420px; object-fit: cover; object-position: 50% 25%; }
+		.c_card_form { padding: 2.6rem 2.8rem 2.4rem 2.6rem; }
+		.c_card_form h3 {
+			margin: 0 0 1.6rem;
+			font-family: var(--serif);
+			font-size: clamp(1.7rem, 2.6vw, 2.3rem);
+			font-weight: 400;
+			line-height: 1.05;
+		}
+		.c_card_form h3 em { color: var(--olive); }
+
+		.c_fields { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem 1.6rem; }
+		.c_field { position: relative; }
+		.c_field.is-wide { grid-column: 1 / -1; }
+		.c_field label {
+			display: block;
+			margin-bottom: 0.3rem;
+			font-family: var(--mono);
+			font-size: 0.7rem;
+			font-weight: 700;
+			letter-spacing: 0.22em;
+			text-transform: uppercase;
+			color: var(--olive);
+		}
+		.c_field input,
+		.c_field select,
+		.c_field textarea {
+			width: 100%;
+			padding: 0.45rem 0.4rem;
+			border: 0;
+			border-bottom: 1px solid rgba(43, 29, 20, 0.4);
+			border-radius: 0;
+			background: transparent;
+			color: var(--brown);
+			font-family: var(--mono);
+			font-size: 1rem;
+			outline: none;
+			transition: border-color 0.3s, background-color 0.3s;
+		}
+		.c_field select { appearance: none; cursor: pointer; background-image: linear-gradient(45deg, transparent 50%, var(--brown) 50%), linear-gradient(-45deg, transparent 50%, var(--brown) 50%); background-position: calc(100% - 12px) 55%, calc(100% - 7px) 55%; background-size: 5px 5px; background-repeat: no-repeat; padding-right: 1.6rem; }
+		.c_field textarea { min-height: 6.5rem; resize: vertical; line-height: 1.5; }
+		.c_field input:focus,
+		.c_field select:focus,
+		.c_field textarea:focus { border-bottom-color: var(--olive); background-color: rgba(185, 189, 159, 0.3); }
+		.c_field input:-webkit-autofill { -webkit-box-shadow: 0 0 0 100px var(--cream) inset; -webkit-text-fill-color: var(--brown); }
+		.c_err { min-height: 1rem; margin: 0.3rem 0 0; font-family: var(--mono); font-size: 0.72rem; color: #8c2938; }
+		.c_field.is-invalid input,
+		.c_field.is-invalid textarea { border-bottom-color: #8c2938; }
+
+		.c_send {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 1.2rem;
+			margin-top: 1.6rem;
+			flex-wrap: wrap;
+		}
+		.c_send p { margin: 0; max-width: 18rem; font-family: var(--mono); font-size: 0.74rem; line-height: 1.5; color: rgba(43, 29, 20, 0.7); }
+		.c_send_btn {
+			position: relative;
+			display: inline-flex;
+			align-items: center;
+			gap: 0.7rem;
+			padding: 1rem 1.6rem;
+			border: 1px solid var(--brown);
+			border-radius: 2px;
+			background: var(--brown);
+			color: var(--cream);
+			font-family: var(--mono);
+			font-size: 0.8rem;
+			font-weight: 700;
+			letter-spacing: 0.24em;
+			text-transform: uppercase;
+			cursor: pointer;
+			overflow: hidden;
+			isolation: isolate;
+			transition: border-color 0.5s var(--ease), letter-spacing 0.5s var(--ease);
+		}
+		.c_send_btn::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--olive); transform: scaleY(0); transform-origin: bottom; transition: transform 0.5s var(--ease); }
+		.c_send_btn:hover,
+		.c_send_btn:focus-visible { border-color: var(--olive); letter-spacing: 0.28em; }
+		.c_send_btn:hover::before,
+		.c_send_btn:focus-visible::before { transform: scaleY(1); }
+		.c_send_btn svg { width: 1.1rem; height: 1.1rem; }
+
+		/* ---------- footer ---------- */
+		.c_footer {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			justify-content: space-between;
+			gap: 1rem;
+			max-width: 1400px;
+			margin: 0 auto;
+			padding: 2rem;
+			border-top: 1px solid var(--line);
+			font-size: 0.8rem;
+			color: rgba(255, 255, 255, 0.42);
+		}
+		.c_footer a { color: rgba(255, 255, 255, 0.68); text-decoration: none; transition: color 0.3s; }
+		.c_footer a:hover { color: #fff; }
+
+		.c_reveal { opacity: 0; transform: translateY(24px); transition: opacity 1s var(--ease), transform 1s var(--ease); }
+		.c_reveal.is-in { opacity: 1; transform: none; }
+
+		@keyframes c-settle { to { transform: scale(1); } }
+
+		@media (max-width: 991px) {
+			/* the bar turns vertical: stops down the left, text beside them */
+			.c_steps { grid-template-columns: minmax(0, 1fr); row-gap: 2.2rem; max-width: 560px; margin-left: auto; margin-right: auto; }
+			.c_track { top: 1.85rem; bottom: -1.2rem; left: 1.85rem; right: auto; width: 1px; height: auto; }
+			.c_track::before { top: 0; left: -0.5px; width: 2px; height: calc((100% - 1.2rem) * var(--progress)); transition-property: height; }
+			.c_track::after { right: auto; left: -5px; top: auto; bottom: 0; transform: rotate(135deg); }
+			.c_step { display: grid; grid-template-columns: 3.7rem 1fr; column-gap: 1.4rem; text-align: left; }
+			.c_node { grid-row: span 2; margin: 0; }
+			.c_step h3 { margin: 0.55rem 0 0.4rem; }
+			.c_faq { grid-template-columns: minmax(0, 1fr); gap: 0; }
+			.c_faq_photo { display: none; }
+			.c_card { grid-template-columns: 1fr; }
+			.c_card_photo { padding: 28px 28px 0; }
+			.c_card_photo img { min-height: 0; aspect-ratio: 16 / 10; }
+		}
+
+		@media (max-width: 767px) {
+			.c_wrap { padding: 0 1rem; }
+			.c_hero { padding: 7rem 0 3rem; }
+			.c_steps_sec, .c_faq_sec { padding: 4.5rem 0; }
+			.c_form_sec { padding: 4.5rem 0; }
+			.c_card::before { inset: 8px; }
+			.c_card_photo { padding: 18px 18px 0; }
+			.c_card_form { padding: 1.8rem 1.5rem 1.8rem; }
+			.c_fields { grid-template-columns: minmax(0, 1fr); }
+			.c_send_btn { width: 100%; justify-content: center; }
+			.c_footer { flex-direction: column; text-align: center; padding: 2rem 1rem; }
+		}
+
+		@media (prefers-reduced-motion: reduce) {
+			html { scroll-behavior: auto; }
+			.c_hero_bg { animation: none; transform: none; }
+			.c_reveal { opacity: 1; transform: none; transition: none; }
+		}
+	</style>
+</head>
+
+<body>
+	<nav class="nav_wrapper">
+		<div class="nav_container u-container"><button aria-label="toggle menu" aria-expanded="false" class="nav_hamburger" data-menu-button="burger" data-menu-toggle="">
+				<div class="menu-button-line"></div>
+				<div class="menu-button-line is-middle"></div>
+				<div class="menu-button-line"></div>
+				<div class="menu-button-bg"></div>
+			</button>
+			<div class="nav_links_wrapper">
+				<div class="nav_links_inner"><a aria-label="home" class="nav_link w-inline-block" href="index.html">
+							<div class="nav_link_mobile_separator"></div>
+							<div>
+								<div class="nav_link_mobile_bracket">(</div>
+								<div class="u-display-inline">Home</div>
+								<div class="nav_link_mobile_bracket">)</div>
+							</div>
+							<div class="nav_link_mobile_separator"></div>
+						</a><a aria-label="about" class="nav_link w-inline-block" href="about.html">
+							<div class="nav_link_mobile_separator"></div>
+							<div>
+								<div class="nav_link_mobile_bracket">(</div>
+								<div class="u-display-inline">About</div>
+								<div class="nav_link_mobile_bracket">)</div>
+							</div>
+							<div class="nav_link_mobile_separator"></div>
+						</a><a aria-label="collections" class="nav_link w-inline-block" href="gallery.html">
+							<div class="nav_link_mobile_separator"></div>
+							<div>
+								<div class="nav_link_mobile_bracket">(</div>
+								<div class="u-display-inline">Collections</div>
+								<div class="nav_link_mobile_bracket">)</div>
+							</div>
+							<div class="nav_link_mobile_separator"></div>
+						</a><a aria-label="contact" aria-current="page" class="nav_link w-inline-block w--current" href="contact.html">
+							<div class="nav_link_mobile_separator"></div>
+							<div>
+								<div class="nav_link_mobile_bracket">(</div>
+								<div class="u-display-inline">Contact</div>
+								<div class="nav_link_mobile_bracket">)</div>
+							</div>
+							<div class="nav_link_mobile_separator"></div>
+						</a></div>
+			</div>
+		</div>
+		<div class="menu_overlay"></div>
+	</nav>
+
+	<main id="main">
+		<!-- hero -->
+		<section class="c_hero">
+			<img class="c_hero_bg" alt="Cintamani ivory linen set at the Walawwa" src="Images/walawwa compressed/CWS (6).jpg" />
+			<div class="c_wrap">
+				<div class="c_eyebrow">Get in touch</div>
+				<h1 class="c_hero_title">Let's talk <em>linen</em></h1>
+				<p class="c_hero_text">A question about a piece, your size or a delivery? Most answers are just below. If yours isn't, send us a note and it will reach us directly on WhatsApp.</p>
+				<div class="c_hero_actions">
+					<a class="c_btn is-gold" href="#message">Send a message</a>
+					<a class="c_btn" href="#faq">Read the FAQ</a>
+				</div>
+			</div>
+		</section>
+
+		<!-- how ordering works -->
+		<section class="c_steps_sec">
+			<div class="c_wrap">
+				<div class="c_center c_reveal">
+					<div class="c_eyebrow">From selection to your door</div>
+					<h2 class="c_h2">How ordering <em>works</em></h2>
+				</div>
+				<ol class="c_steps c_reveal">
+					<li class="c_track" aria-hidden="true"></li>
+					<li class="c_step">
+						<div class="c_node" aria-hidden="true"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4" viewBox="0 0 24 24"><path d="M12 4.5a1.6 1.6 0 1 1 1.6 1.6c-.6 0-1.6.4-1.6 1.4v.8"/><path d="M12 8.3 3.5 14.2c-.9.6-.5 2 .6 2h15.8c1.1 0 1.5-1.4.6-2L12 8.3z"/></svg><span class="c_num">1</span></div>
+						<h3>Choose your piece</h3>
+						<p>Add a piece to your selection, pick your size from XS to XL and check your delivery details.</p>
+					</li>
+					<li class="c_step">
+						<div class="c_node" aria-hidden="true"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4" viewBox="0 0 24 24"><path d="M3 9.5 12 4l9 5.5"/><path d="M4.5 10v8M9 10v8M15 10v8M19.5 10v8"/><path d="M3 20h18"/></svg><span class="c_num">2</span></div>
+						<h3>Pay by bank transfer</h3>
+						<p>Transfer the total to the account shown at checkout and upload a photo of your bank slip.</p>
+					</li>
+					<li class="c_step">
+						<div class="c_node" aria-hidden="true"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4" viewBox="0 0 24 24"><path d="M12 3 19 6v5.5c0 4.2-3 7.6-7 9.5-4-1.9-7-5.3-7-9.5V6l7-3z"/><path d="m8.8 12.2 2.2 2.2 4.3-4.6"/></svg><span class="c_num">3</span></div>
+						<h3>We confirm your order</h3>
+						<p>We check your slip against our account and confirm with you on WhatsApp or by phone.</p>
+					</li>
+					<li class="c_step">
+						<div class="c_node" aria-hidden="true"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4" viewBox="0 0 24 24"><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="6.5" cy="17.5" r="2.5"/><path d="M8.6 8 20 18M8.6 16 20 6"/></svg><span class="c_num">4</span></div>
+						<h3>Tailored for you</h3>
+						<p>Your piece is cut and sewn to order in pure linen. You can follow every stage on your account page.</p>
+					</li>
+					<li class="c_step">
+						<div class="c_node" aria-hidden="true"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4" viewBox="0 0 24 24"><path d="M2.5 6.5h11v9h-11z"/><path d="M13.5 9.5h4l3 3.2v2.8h-7"/><circle cx="6.5" cy="17" r="1.7"/><circle cx="17" cy="17" r="1.7"/></svg><span class="c_num">5</span></div>
+						<h3>Delivered island-wide</h3>
+						<p>We send it by courier anywhere in Sri Lanka, with a tracking reference on your account.</p>
+					</li>
+				</ol>
+			</div>
+		</section>
+
+		<!-- FAQ -->
+		<section class="c_faq_sec" id="faq">
+			<div class="c_wrap">
+				<div class="c_center c_reveal">
+					<div class="c_eyebrow">Before you write</div>
+					<h2 class="c_h2">Ask us <em>anything</em></h2>
+				</div>
+				<div class="c_faq c_reveal">
+					<div class="c_faq_col">
+						<details class="c_q">
+							<summary><span class="c_qn">01</span><span>How do I choose the right size?</span><span class="c_qi" aria-hidden="true"></span></summary>
+							<div class="c_q_body"><div class="c_q_inner"><p>Our pieces come in XS to XL. If you are between sizes or unsure how a cut will sit, send us your usual size and height and we'll advise before you order.</p></div></div>
+						</details>
+						<details class="c_q">
+							<summary><span class="c_qn">02</span><span>How long does tailoring take?</span><span class="c_qi" aria-hidden="true"></span></summary>
+							<div class="c_q_body"><div class="c_q_inner"><p>Every piece is made to order once your payment is confirmed, usually in around two to three weeks. Your account page shows when it moves from tailoring to packed and dispatched.</p></div></div>
+						</details>
+						<details class="c_q">
+							<summary><span class="c_qn">03</span><span>How do I pay?</span><span class="c_qi" aria-hidden="true"></span></summary>
+							<div class="c_q_body"><div class="c_q_inner"><p>By bank transfer only. The account details are shown at checkout; after transferring, upload a clear photo or PDF of your slip with your order.</p></div></div>
+						</details>
+						<details class="c_q">
+							<summary><span class="c_qn">04</span><span>When is my order confirmed?</span><span class="c_qi" aria-hidden="true"></span></summary>
+							<div class="c_q_body"><div class="c_q_inner"><p>As soon as we've matched your slip with our bank account, usually within one to two working days. We'll let you know, and your order status changes to Accepted.</p></div></div>
+						</details>
+						<details class="c_q">
+							<summary><span class="c_qn">05</span><span>Do you deliver outside Colombo?</span><span class="c_qi" aria-hidden="true"></span></summary>
+							<div class="c_q_body"><div class="c_q_inner"><p>Yes, island-wide by courier. Delivery normally takes two to five working days after dispatch, and the delivery charge is shown before you pay.</p></div></div>
+						</details>
+					</div>
+
+					<figure class="c_faq_photo">
+						<img alt="Cintamani linen up close at the Walawwa" loading="lazy" src="Images/walawwa compressed/CWS (11).jpg" />
+						<p>Still wondering?<br /><a href="#message">Write to us &rarr;</a></p>
+					</figure>
+
+					<div class="c_faq_col">
+						<details class="c_q">
+							<summary><span class="c_qn">06</span><span>Can I exchange for a different size?</span><span class="c_qi" aria-hidden="true"></span></summary>
+							<div class="c_q_body"><div class="c_q_inner"><p>Yes, within 7 days of delivery, as long as the piece is unworn, unwashed and in its original packaging. See our <a href="terms.html#exchanges">exchanges policy</a>.</p></div></div>
+						</details>
+						<details class="c_q">
+							<summary><span class="c_qn">07</span><span>What if my piece arrives damaged?</span><span class="c_qi" aria-hidden="true"></span></summary>
+							<div class="c_q_body"><div class="c_q_inner"><p>Tell us within 7 days with a few photos and we'll repair, remake or refund it, delivery included.</p></div></div>
+						</details>
+						<details class="c_q">
+							<summary><span class="c_qn">08</span><span>Can you make a piece in another colour?</span><span class="c_qi" aria-hidden="true"></span></summary>
+							<div class="c_q_body"><div class="c_q_inner"><p>Sometimes, depending on the linen we have. Send us the piece and the colour you have in mind and we'll tell you what's possible.</p></div></div>
+						</details>
+						<details class="c_q">
+							<summary><span class="c_qn">09</span><span>How should I care for linen?</span><span class="c_qi" aria-hidden="true"></span></summary>
+							<div class="c_q_body"><div class="c_q_inner"><p>Gentle cold wash, no bleach, line dry in the shade and press while slightly damp. Linen softens beautifully with every wash.</p></div></div>
+						</details>
+						<details class="c_q">
+							<summary><span class="c_qn">10</span><span>Where can I see my order?</span><span class="c_qi" aria-hidden="true"></span></summary>
+							<div class="c_q_body"><div class="c_q_inner"><p>Sign in with the person icon at the top of any page. Your account shows each order and the stage it's at, from payment review to dispatched.</p></div></div>
+						</details>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- message -> WhatsApp -->
+		<section class="c_form_sec" id="message">
+			<img alt="" loading="lazy" src="Images/walawwa compressed/CWS (12).jpg" />
+			<div class="c_wrap">
+				<div class="c_form_intro c_reveal">
+					<div class="c_eyebrow">Write to us</div>
+					<h2 class="c_h2">A note, <em>straight to us</em></h2>
+					<p>Fill in a few details and press send. WhatsApp will open with your message ready, so you only need to tap send there.</p>
+				</div>
+
+				<div class="c_card c_reveal">
+					<div class="c_card_photo">
+						<img alt="Cintamani ivory linen set" loading="lazy" src="Images/walawwa compressed/CWS (3).jpg" />
+					</div>
+					<form class="c_card_form" id="contact-form" novalidate>
+						<h3>Tell us what you <em>have in mind</em></h3>
+						<div class="c_fields">
+							<div class="c_field">
+								<label for="cf-name">Your name</label>
+								<input autocomplete="name" id="cf-name" maxlength="80" name="name" type="text" />
+								<p class="c_err" aria-live="polite"></p>
+							</div>
+							<div class="c_field">
+								<label for="cf-phone">WhatsApp / phone</label>
+								<input autocomplete="tel" id="cf-phone" inputmode="tel" maxlength="16" name="phone" placeholder="077 123 4567" type="tel" />
+								<p class="c_err" aria-live="polite"></p>
+							</div>
+							<div class="c_field">
+								<label for="cf-topic">About</label>
+								<select id="cf-topic" name="topic">
+									<option>A question about a piece</option>
+									<option>Sizing</option>
+									<option>My order</option>
+									<option>Payment</option>
+									<option>Delivery</option>
+									<option>A custom request</option>
+									<option>Something else</option>
+								</select>
+								<p class="c_err"></p>
+							</div>
+							<div class="c_field">
+								<label for="cf-piece">Piece (optional)</label>
+								<select id="cf-piece" name="piece"><option value="">—</option></select>
+								<p class="c_err"></p>
+							</div>
+							<div class="c_field">
+								<label for="cf-order">Order number (optional)</label>
+								<input id="cf-order" maxlength="20" name="order" placeholder="CM-12345" type="text" />
+								<p class="c_err"></p>
+							</div>
+							<div class="c_field">
+								<label for="cf-email">Email (optional)</label>
+								<input autocomplete="email" id="cf-email" maxlength="120" name="email" type="email" />
+								<p class="c_err" aria-live="polite"></p>
+							</div>
+							<div class="c_field is-wide">
+								<label for="cf-message">Your message</label>
+								<textarea id="cf-message" maxlength="1000" name="message"></textarea>
+								<p class="c_err" aria-live="polite"></p>
+							</div>
+						</div>
+						<div class="c_send">
+							<p>Opens WhatsApp with your message filled in. Nothing is sent until you tap send there.</p>
+							<button class="c_send_btn" type="submit">
+								<svg aria-hidden="true" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>
+								Send on WhatsApp
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="c_footer">
+		<span>©26 Cintamani Linens – All rights reserved · <a href="terms.html">Terms &amp; Conditions</a></span>
+		<span>The essence of heritage in linen</span>
+		<span>Site by: <a href="https://www.themindsstudio.com/" rel="noopener" target="_blank">The Minds Studio</a></span>
+	</footer>
+
+	<script src="js/shop-data.js"></script>
+	<script src="js/cart.js"></script>
+	<script>
+		// phone menu: same open/close look as the rest of the site
+		(function () {
+			var nav = document.querySelector(".nav_wrapper");
+			var btn = nav.querySelector(".nav_hamburger");
+			var menu = nav.querySelector(".nav_links_wrapper");
+			var lines = btn.querySelectorAll(".menu-button-line");
+			function set(open) {
+				nav.classList.toggle("is-menu-open", open);
+				btn.setAttribute("aria-expanded", String(open));
+				document.documentElement.style.overflow = open ? "hidden" : "";
+				lines[0].style.transform = open ? "translate(0rem, 0.35rem) rotate(-135deg)" : "";
+				lines[1].style.transform = open ? "scale(0, 1)" : "";
+				lines[1].style.opacity = open ? "0" : "";
+				lines[2].style.transform = open ? "translate(0rem, -0.27rem) rotate(135deg)" : "";
+				if (open) {
+					menu.style.opacity = "0";
+					setTimeout(function () { menu.style.transition = "opacity 0.5s ease"; menu.style.opacity = "1"; }, 20);
+				} else {
+					menu.style.opacity = "";
+					menu.style.transition = "";
+				}
+			}
+			btn.addEventListener("click", function () { set(!nav.classList.contains("is-menu-open")); });
+			menu.addEventListener("click", function (e) { if (e.target.closest("a")) set(false); });
+			document.addEventListener("keydown", function (e) { if (e.key === "Escape" && nav.classList.contains("is-menu-open")) set(false); });
+			window.matchMedia("(min-width: 768px)").addEventListener("change", function () { set(false); });
+		})();
+	</script>
+	<script>
+		(function () {
+			var SHOP = window.CINTAMANI_SHOP || {};
+			var form = document.getElementById("contact-form");
+
+			// pieces for the optional "Piece" list
+			var pieceSelect = document.getElementById("cf-piece");
+			(SHOP.products || []).slice().sort(function (a, b) { return a.name.localeCompare(b.name); }).forEach(function (p) {
+				var o = document.createElement("option");
+				o.textContent = p.name;
+				pieceSelect.appendChild(o);
+			});
+
+			// signed-in customers: start with their name and number filled in
+			try {
+				var account = JSON.parse(localStorage.getItem("cintamani_account_v1") || "null");
+				var profile = account && account.profile;
+				if (profile) {
+					if (profile.name) form.name.value = profile.name;
+					if (profile.phone) form.phone.value = profile.phone;
+					if (profile.email) form.email.value = profile.email;
+				}
+			} catch (e) { /* storage blocked */ }
+
+			// ?piece=Leela%20Co-ord pre-selects a piece (for links from product pages)
+			var wanted = new URLSearchParams(location.search).get("piece");
+			if (wanted) pieceSelect.value = wanted;
+
+			var digits = function (v) { return String(v || "").replace(/\D/g, ""); };
+			var RULES = {
+				name: function (v) { return v.length >= 2 ? "" : "Please tell us your name."; },
+				phone: function (v) {
+					if (!v) return "Please add a number we can reply to.";
+					if (!/^\+?[0-9 ()-]+$/.test(v)) return "Use digits only.";
+					var n = digits(v).length;
+					return n >= 9 && n <= 12 ? "" : "That number doesn't look complete.";
+				},
+				email: function (v) { return !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? "" : "Please check this email."; },
+				message: function (v) { return v.length >= 5 ? "" : "Please write a short message."; }
+			};
+
+			function check(name) {
+				var el = form[name];
+				var msg = RULES[name] ? RULES[name](el.value.trim()) : "";
+				var field = el.closest(".c_field");
+				field.classList.toggle("is-invalid", Boolean(msg));
+				field.querySelector(".c_err").textContent = msg;
+				return !msg;
+			}
+
+			form.phone.addEventListener("input", function () {
+				var v = form.phone.value.replace(/[^\d+ ()-]/g, "").replace(/(?!^)\+/g, "");
+				if (v !== form.phone.value) form.phone.value = v;
+			});
+			form.addEventListener("focusout", function (e) {
+				if (RULES[e.target.name] && e.target.value.trim()) check(e.target.name);
+			});
+			form.addEventListener("input", function (e) {
+				if (e.target.closest(".c_field.is-invalid")) check(e.target.name);
+			});
+
+			form.addEventListener("submit", function (e) {
+				e.preventDefault();
+				var ok = ["name", "phone", "email", "message"].map(check).every(Boolean);
+				if (!ok) {
+					var bad = form.querySelector(".is-invalid input, .is-invalid textarea");
+					if (bad) bad.focus();
+					return;
+				}
+				var v = function (n) { return form[n].value.trim(); };
+				var lines = ["Hello Cintamani,", "", v("message"), "", "— " + v("name"), "About: " + v("topic")];
+				if (v("piece")) lines.push("Piece: " + v("piece"));
+				if (v("order")) lines.push("Order: " + v("order"));
+				lines.push("Phone: " + v("phone"));
+				if (v("email")) lines.push("Email: " + v("email"));
+				var url = "https://wa.me/" + digits(SHOP.whatsapp) + "?text=" + encodeURIComponent(lines.join("\n"));
+				window.open(url, "_blank", "noopener");
+			});
+
+			// FAQ: smooth open/close, one answer open at a time, photo reacts while one is open
+			var faq = document.querySelector(".c_faq");
+			var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+			function setOpen(d, open) {
+				var body = d.querySelector(".c_q_body");
+				if (d._anim) d._anim.cancel();
+				if (reduce || !body.animate) { d.open = open; syncFaq(); return; }
+				var from = body.offsetHeight;
+				d._closing = !open;
+				if (open) {
+					d.open = true;
+					d._anim = body.animate([{ height: (d._anim ? from : 0) + "px" }, { height: body.scrollHeight + "px" }], { duration: 520, easing: "cubic-bezier(0.16, 1, 0.3, 1)" });
+					d._anim.onfinish = function () { d._anim = null; };
+				} else {
+					d._anim = body.animate([{ height: from + "px" }, { height: "0px" }], { duration: 380, easing: "cubic-bezier(0.4, 0, 0.2, 1)" });
+					d._anim.onfinish = function () { d.open = false; d._anim = null; d._closing = false; syncFaq(); };
+				}
+				syncFaq();
+			}
+			function syncFaq() {
+				faq.classList.toggle("has-open", Array.prototype.some.call(faq.querySelectorAll(".c_q[open]"), function (d) { return !d._closing; }));
+			}
+			faq.querySelectorAll(".c_q summary").forEach(function (sum) {
+				sum.addEventListener("click", function (e) {
+					e.preventDefault();
+					var d = sum.parentElement;
+					var willOpen = !d.open || d._closing;
+					if (willOpen) faq.querySelectorAll(".c_q[open]").forEach(function (o) { if (o !== d && !o._closing) setOpen(o, false); });
+					setOpen(d, willOpen);
+				});
+			});
+
+			// gentle reveal as sections come into view
+			var items = document.querySelectorAll(".c_reveal");
+			if (!("IntersectionObserver" in window)) { items.forEach(function (el) { el.classList.add("is-in"); }); return; }
+			var io = new IntersectionObserver(function (entries) {
+				entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add("is-in"); io.unobserve(en.target); } });
+			}, { rootMargin: "0px 0px -10% 0px" });
+			items.forEach(function (el) { io.observe(el); });
+		})();
+	</script>
+</body>
+
+</html>

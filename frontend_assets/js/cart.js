@@ -162,7 +162,21 @@
       if (accountBtn.parentNode !== document.body) document.body.appendChild(accountBtn);
       if (trigger.parentNode !== document.body) document.body.appendChild(trigger);
     }
+    alignFloating();
     updateTrigger();
+  }
+
+  // phones: line the floating pair up with the page's menu button (same row, same margin)
+  function alignFloating() {
+    var burger = Array.prototype.find.call(document.querySelectorAll(".nav_wrapper .nav_hamburger"), function (b) { return b.offsetParent; });
+    var mobile = window.matchMedia("(max-width: 767px)").matches;
+    [accountBtn, trigger].forEach(function (b) {
+      if (!b.classList.contains("is-floating") || !mobile || !burger) { b.style.removeProperty("--cm-float-top"); b.style.removeProperty("--cm-float-edge"); return; }
+      var r = burger.getBoundingClientRect();
+      if (r.top < 0 || r.top > 120) return; // menu not in its resting place (scrolled or animating)
+      b.style.setProperty("--cm-float-top", Math.round(r.top + (r.height - 40) / 2) + "px");
+      b.style.setProperty("--cm-float-edge", Math.round(r.left) + "px");
+    });
   }
 
   function triggerMisplaced() {
@@ -208,12 +222,10 @@
       "</div>" +
     "</div>";
 
+  // a plain postcard: cream card, brown ink (all drawn in CSS, no paper images)
   function paper(kind, step) {
-    var src = asset("Images/Cart/paper-" + kind + ".webp");
     return (
-      '<section class="cm-receipt is-' + kind + '" data-step="' + step + '" role="dialog" aria-modal="true" aria-labelledby="cm-r-title-' + step + '" style="--paper:url(\'' + src + "')\">" +
-        '<img class="cm-receipt_paper" alt="" src="' + src + '">' +
-        '<div class="cm-receipt_light"></div>' +
+      '<section class="cm-receipt is-' + kind + '" data-step="' + step + '" role="dialog" aria-modal="true" aria-labelledby="cm-r-title-' + step + '">' +
         '<div class="cm-receipt_body"></div>' +
       "</section>"
     );
@@ -260,7 +272,9 @@
     root.classList.toggle("is-auth", isAuth);
     if (!isAuth) root.querySelector(".cm-auth").classList.remove("is-active");
     target.classList.add("is-active");
+    if (step !== currentStep) root.scrollTop = 0; // phones scroll the whole sheet: start each step at its top
     currentStep = step;
+    updateFades();
     setTimeout(function () {
       var first = target.querySelector("[data-autofocus]") || target.querySelector("button, input, a[href]");
       if (first) first.focus({ preventScroll: true });
@@ -276,10 +290,16 @@
     var today = new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }).toUpperCase();
     return (
       '<header class="cm-r_head">' +
-        '<img class="cm-r_logo" alt="" src="' + asset("downloaded_images/logo.png") + '">' +
-        '<h2 class="cm-r_brand" id="cm-r-title-' + (step === 3 ? 2 : step) + '">Cintamani <em>Linens</em></h2>' +
-        '<p class="cm-r_eyebrow">' + eyebrow + "</p>" +
-        '<div class="cm-r_meta"><span>' + today + "</span><span>" + metaRight + "</span></div>" +
+        '<div class="cm-r_head_text">' +
+          '<p class="cm-r_eyebrow">' + eyebrow + "</p>" +
+          '<h2 class="cm-r_brand" id="cm-r-title-' + (step === 3 ? 2 : step) + '">Cintamani <em>Linens</em></h2>' +
+          '<p class="cm-r_meta">' + metaRight + "</p>" +
+        "</div>" +
+        // postcard corner: a stamp with the Cintamani mark, and a postmark with today's date
+        '<div class="cm-r_post" aria-hidden="true">' +
+          '<span class="cm-r_postage"><img alt="" src="' + asset("downloaded_images/logo.png") + '"></span>' +
+          '<span class="cm-r_postmark"><span>Colombo</span><span>' + today + "</span></span>" +
+        "</div>" +
       "</header>"
     );
   }
@@ -401,7 +421,9 @@
   function renderSelection() {
     applyProfile(false);
     var n = pieces();
-    var html = '<div class="cm-receipt_scroll" data-lenis-prevent>' + head(1, "Your selection", n + (n === 1 ? " piece" : " pieces")) + '<hr class="cm-r_rule">';
+    // two columns on the landscape card (selection | delivery); they stack on phones
+    var html = '<div class="cm-receipt_scroll" data-lenis-prevent>' + (cart.length ? '<div class="cm-r_col">' : "") +
+      head(1, "Your selection", n + (n === 1 ? " piece" : " pieces")) + '<hr class="cm-r_rule">';
 
     if (!cart.length) {
       return html +
@@ -449,8 +471,9 @@
         "<dt>Island-wide delivery</dt><dd>" + lkr(SHOP.deliveryFee) + "</dd>" +
         '<dt class="is-total">Total</dt><dd class="is-total">' + lkr(sub + SHOP.deliveryFee) + "</dd>" +
       "</dl>" +
-      '<hr class="cm-r_rule">' +
-      '<span class="cm-r_label">Deliver to</span>' +
+      "</div>" + // end of the order summary
+      '<div class="cm-r_col cm-r_col--form">' +
+      '<h3 class="cm-r_title">Where shall we <em>send it?</em></h3>' +
       (account ? "" : '<p class="cm-r_note">Have an account? <button type="button" class="cm-r_inline" data-act="acc-open">Sign in</button> to fill these in.</p>') +
       '<div class="cm-r_fields">' +
         field("name", "Full name", { auto: "name", max: 80, fixed: true, labelText: "full name" }) +
@@ -463,7 +486,7 @@
       '<div class="cm-r_actions">' +
         '<button type="button" class="cm-r_btn" data-act="to-pay">Proceed to payment</button>' +
         '<button type="button" class="cm-r_link" data-act="close">Continue browsing</button>' +
-      "</div></div>";
+      "</div></div></div>";
     return html;
   }
 
@@ -472,6 +495,7 @@
     var b = SHOP.bank;
     return (
       '<div class="cm-receipt_scroll" data-lenis-prevent>' +
+        '<div class="cm-r_col">' +
         head(2, "Settle by bank transfer", pieces() + (pieces() === 1 ? " piece" : " pieces")) +
         '<hr class="cm-r_rule">' +
         '<p class="cm-r_due"><span class="cm-r_label">Amount due</span><strong>' + lkr(total) + "</strong></p>" +
@@ -484,12 +508,13 @@
           "<dt>Branch</dt><dd>" + esc(b.branch) + "</dd>" +
           "<dt>Reference</dt><dd>Your name</dd>" +
         "</dl>" +
-        '<hr class="cm-r_rule">' +
-        '<span class="cm-r_label">Your transfer slip</span>' +
+        "</div>" +
+        '<div class="cm-r_col cm-r_col--form">' +
+        '<h3 class="cm-r_title">Attach your <em>transfer slip</em></h3>' +
         '<label class="cm-r_slip" data-slip>' + slipInner() +
           '<input type="file" name="slip" accept="image/*,application/pdf" aria-label="Upload bank transfer slip" data-autofocus>' +
         "</label>" +
-        '<div class="cm-r_fields" style="margin-top:2cqw">' +
+        '<div class="cm-r_fields" style="margin-top:calc(2 * var(--u))">' +
           field("payerBank", "Bank you paid from (optional)", { max: 80 }) +
           field("reference", "Transfer reference (optional)", { max: 60 }) +
         "</div>" +
@@ -497,6 +522,7 @@
         '<div class="cm-r_actions">' +
           '<button type="button" class="cm-r_btn" data-act="place">Place order</button>' +
           '<button type="button" class="cm-r_link" data-act="back">Back to selection</button>' +
+        "</div>" +
         "</div>" +
       "</div>"
     );
@@ -595,6 +621,13 @@
         aField("acc_email", "Email", { type: "email", auto: isRegister ? "email" : "username", max: 160 }) +
         aField("acc_password", isRegister ? "Password · 8+ characters" : "Password", { type: "password", auto: isRegister ? "new-password" : "current-password", max: 128 }) +
       "</div>" +
+      (isRegister
+        ? '<div class="cm-r_field cm-a_agree" data-field="acc_terms">' +
+            '<label class="cm-a_check"><input type="checkbox" name="acc_terms"><span class="cm-a_box" aria-hidden="true"></span>' +
+            '<span>I have read and agree to the <a href="' + asset("terms.html") + '" target="_blank" rel="noopener">Terms &amp; Conditions</a></span></label>' +
+            '<p class="cm-r_fielderr" aria-live="polite"></p>' +
+          "</div>"
+        : "") +
       '<p class="cm-r_error" role="alert"></p>' +
       '<button type="button" class="cm-a_btn" data-act="' + (isRegister ? "acc-register" : "acc-signin") + '">' + (isRegister ? "Create account" : "Sign in") + "</button>" +
       '<p class="cm-a_note">' + (isRegister
@@ -708,7 +741,7 @@
 
     var request;
     if (act === "acc-signin") request = apiFetch("/account/login", { method: "POST", json: { email: val("acc_email"), password: scope.querySelector('[name="acc_password"]').value } });
-    if (act === "acc-register") request = apiFetch("/account/register", { method: "POST", json: { name: val("acc_name"), email: val("acc_email"), password: scope.querySelector('[name="acc_password"]').value } });
+    if (act === "acc-register") request = apiFetch("/account/register", { method: "POST", json: { name: val("acc_name"), email: val("acc_email"), password: scope.querySelector('[name="acc_password"]').value, acceptTerms: scope.querySelector('[name="acc_terms"]').checked } });
     if (act === "acc-save") request = apiFetch("/account/me", { method: "PUT", json: { name: val("acc_name"), phone: val("acc_phone"), address: val("acc_address") } });
 
     request.then(function (data) {
@@ -741,7 +774,7 @@
       '<div class="cm-receipt_scroll cm-r_done" data-lenis-prevent>' +
         '<h2 id="cm-r-title-2">Thank <em>you</em></h2>' +
         '<span class="cm-r_label">Order received</span>' +
-        '<p class="cm-r_name" style="font-size:5cqw">' + esc(order.orderId) + "</p>" +
+        '<p class="cm-r_name" style="font-size:calc(5 * var(--u))">' + esc(order.orderId) + "</p>" +
         '<span class="cm-r_stamp">Payment under review</span>' +
         '<p class="cm-r_hint">We will verify your slip and confirm your order on WhatsApp or by phone. Your pieces will then be tailored and dispatched.</p>' +
         '<div class="cm-r_actions"><button type="button" class="cm-r_btn" data-act="close" data-autofocus>Continue browsing</button></div>' +
@@ -776,6 +809,7 @@
   RULES.acc_name = RULES.name;
   RULES.acc_phone = function (v) { return v ? RULES.phone(v) : ""; }; // optional in the profile
   RULES.acc_address = function () { return ""; };
+  RULES.acc_terms = function (v, el) { return el && el.checked ? "" : "Please agree to the Terms & Conditions to create your account."; };
   RULES.acc_email = function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? "" : "Please enter your email address."; };
   RULES.acc_password = function (v) {
     if (accountView === "register") return v.length >= 8 ? "" : "Please use at least 8 characters.";
@@ -784,8 +818,36 @@
 
   // scroll only the receipt's own list (scrolling the element into view would also move
   // the page and the fixed overlay, knocking the paper out of place)
+  function scrollParent(el) {
+    for (var n = el.parentElement; n; n = n.parentElement) {
+      if (n.matches(".cm-r_col, .cm-receipt_scroll, .cm-auth_panel") && n.scrollHeight > n.clientHeight + 1) return n;
+      if (n.matches(".cm-auth_panel")) return n;
+    }
+    return root.scrollHeight > root.clientHeight + 1 ? root : null; // phones: the overlay scrolls the whole sheet
+  }
+
+  function scrollState(scope) {
+    return Array.prototype.map.call(scope.querySelectorAll(".cm-receipt_scroll, .cm-r_col"), function (n) { return n.scrollTop; });
+  }
+  function restoreScroll(scope, state) {
+    Array.prototype.forEach.call(scope.querySelectorAll(".cm-receipt_scroll, .cm-r_col"), function (n, k) { if (state[k]) n.scrollTop = state[k]; });
+    updateFades();
+  }
+
+  // landscape card: fade a column's text into the paper on whichever side has more to scroll
+  function fadeColumn(col) {
+    col.classList.toggle("has-more-above", col.scrollTop > 2);
+    col.classList.toggle("has-more-below", col.scrollTop + col.clientHeight < col.scrollHeight - 2);
+  }
+  function updateFades() {
+    // once right away and again after the card's entrance animation has settled
+    [30, 950].forEach(function (ms) {
+      setTimeout(function () { root.querySelectorAll(".cm-receipt.is-active .cm-r_col").forEach(fadeColumn); }, ms);
+    });
+  }
+
   function revealInReceipt(el) {
-    var scroller = el.closest(".cm-receipt_scroll, .cm-auth_panel");
+    var scroller = scrollParent(el);
     if (!scroller) return;
     var top = el.getBoundingClientRect().top - scroller.getBoundingClientRect().top + scroller.scrollTop;
     scroller.scrollTo({ top: Math.max(0, top - scroller.clientHeight / 3), behavior: "smooth" });
@@ -796,7 +858,7 @@
     var name = fieldEl.getAttribute("data-field");
     if (!RULES[name]) return true;
     var control = fieldEl.querySelector("input, textarea");
-    var message = RULES[name](control.value.trim());
+    var message = RULES[name](control.value.trim(), control);
     fieldEl.classList.toggle("is-invalid", Boolean(message));
     control.setAttribute("aria-invalid", message ? "true" : "false");
     fieldEl.querySelector(".cm-r_fielderr").textContent = message;
@@ -955,18 +1017,16 @@
       delete editedFields()[nm];
       details[nm] = (account && account.profile && account.profile[nm]) || "";
       write(DETAILS_KEY, details);
-      var sc0 = scope.querySelector(".cm-receipt_scroll");
-      var keep0 = sc0 ? sc0.scrollTop : 0;
+      var keep0 = scrollState(scope);
       render(1, {});
-      scope.querySelector(".cm-receipt_scroll").scrollTop = keep0;
+      restoreScroll(scope, keep0);
       return;
     }
     if (act === "use-saved") {
       applyProfile(true);
-      var sc = scope.querySelector(".cm-receipt_scroll");
-      var keep = sc ? sc.scrollTop : 0;
+      var keep = scrollState(scope);
       render(1, {});
-      scope.querySelector(".cm-receipt_scroll").scrollTop = keep;
+      restoreScroll(scope, keep);
       return;
     }
     if (act === "back") { readDetails(scope); return go(1); }
@@ -993,11 +1053,9 @@
     save();
 
     // re-render step 1 in place, keeping the scroll position and focus
-    var scroller = scope.querySelector(".cm-receipt_scroll");
-    var top = scroller ? scroller.scrollTop : 0;
+    var top = scrollState(scope);
     render(1, {});
-    var nextScroller = scope.querySelector(".cm-receipt_scroll");
-    if (nextScroller) nextScroller.scrollTop = top;
+    restoreScroll(scope, top);
     var again = scope.querySelector('[data-act="' + act + '"][data-i="' + Math.min(i, cart.length - 1) + '"]' + (act === "size" ? '[data-size="' + el.getAttribute("data-size") + '"]' : ""));
     if (again) again.focus({ preventScroll: true });
   });
@@ -1025,7 +1083,7 @@
       var cleaned = cleanPhone(e.target.value);
       if (cleaned !== e.target.value) e.target.value = cleaned;
     }
-    if (e.target.matches(".cm-r_field input, .cm-r_field textarea")) {
+    if (e.target.matches(".cm-r_field input, .cm-r_field textarea") && e.target.type !== "checkbox") {
       if (e.target.name.indexOf("acc_") !== 0) {
         details[e.target.name] = e.target.value.trim();
         if (account && PROFILE_FIELDS.indexOf(e.target.name) >= 0) editedFields()[e.target.name] = true;
@@ -1038,13 +1096,14 @@
   });
 
   root.addEventListener("focusout", function (e) {
-    if (!e.target.matches(".cm-r_field input, .cm-r_field textarea")) return;
+    if (!e.target.matches(".cm-r_field input, .cm-r_field textarea") || e.target.type === "checkbox") return;
     var f = e.target.closest(".cm-r_field");
     if (e.target.value.trim() || f.hasAttribute("data-touched")) checkField(f);
   });
 
   root.addEventListener("change", function (e) {
     if (e.target.matches('input[type="file"]')) takeSlip(e.target.files[0], e.target.closest(".cm-receipt"));
+    if (e.target.name === "acc_terms" && e.target.checked) checkField(e.target.closest(".cm-r_field"));
   });
 
   ["dragenter", "dragover"].forEach(function (type) {
@@ -1138,8 +1197,17 @@
     });
   }
 
+  // the page we're on (path only, no #section) — Barba swaps update it below
+  var pagePath = location.pathname + location.search;
+
   function init() {
     document.body.appendChild(root);
+    root.addEventListener("scroll", function (e) {
+      if (e.target.classList && e.target.classList.contains("cm-r_col")) fadeColumn(e.target);
+    }, true);
+    window.addEventListener("resize", updateFades);
+    window.addEventListener("resize", alignFloating);
+    setTimeout(alignFloating, 600); // after the page's own nav has settled
     // the home page's loading screen is for the first visit only (see the inline check in index.html)
     try { sessionStorage.setItem("cintamani_intro_seen", "1"); } catch (e) { /* storage blocked */ }
     placeTrigger();
@@ -1155,13 +1223,16 @@
         if (!document.body.contains(root)) document.body.appendChild(root);
         if (triggerMisplaced()) placeTrigger();
         markHomeLinks();
+        pagePath = location.pathname + location.search;
       }, 30);
     }).observe(document.body, { childList: true, subtree: true });
 
     // Back/forward through Barba's in-page history leaves the home page half-initialised
     // (its hero, marquee and scroll animations only start on a real load), so reload instead.
     // Registered before Barba's own listener, so it wins.
+    // Jumping to a section on the same page (#faq, #message…) also fires popstate: leave those alone.
     window.addEventListener("popstate", function () {
+      if (location.pathname + location.search === pagePath) return;
       close(true);
       location.reload();
     });

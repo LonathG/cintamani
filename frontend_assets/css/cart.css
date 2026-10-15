@@ -179,11 +179,10 @@
 /* ---------- receipt paper ---------- */
 .cm-cart_stage {
   position: relative;
-  /* paper images are 1086×1448; fit by height on desktop, let the transparent margins
-     run off-screen on phones so the paper itself fills the width */
   flex: none; /* don't let the flex overlay shrink it back to the screen width */
-  width: min(73svh, 145vw);
-  aspect-ratio: 1086 / 1448;
+  /* landscape vintage card (1415×953): as large as fits, never wider than 1180px */
+  width: min(92vw, 1180px, calc(84svh * 1415 / 953));
+  aspect-ratio: 1415 / 953;
 }
 
 .cm-receipt {
@@ -209,46 +208,19 @@
   transform: translateY(-12%) rotate(-4deg);
 }
 
-.cm-receipt_paper,
-.cm-receipt_light {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  user-select: none;
-}
-
-.cm-receipt[data-step="2"] { --tilt: 0.8deg; }
-
-.cm-receipt_paper {
-  /* toned down a little so the sheet sits more quietly on the dark site */
-  filter: brightness(0.86) saturate(1.06) sepia(0.06) drop-shadow(0 30px 40px rgba(0, 0, 0, 0.55)) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.35));
-}
-
-/* soft window light falling across the paper (clipped to the paper's shape) */
-.cm-receipt_light {
-  z-index: 2;
-  background:
-    linear-gradient(118deg, transparent 18%, rgba(255, 248, 230, 0.32) 26%, transparent 38%),
-    linear-gradient(118deg, transparent 52%, rgba(255, 248, 230, 0.22) 58%, transparent 66%),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0) 60%, rgba(60, 35, 10, 0.08));
-  mix-blend-mode: soft-light;
-  -webkit-mask: var(--paper) center / 100% 100% no-repeat;
-  mask: var(--paper) center / 100% 100% no-repeat;
-}
-
 /* writable area inside the paper (measured from the paper images) */
 .cm-receipt_body {
+  /* one size unit for everything printed on the card (≈ the old receipt column's 1cqw) */
+  --u: 0.66cqw;
   position: absolute;
   z-index: 3;
-  top: 8.5%;
-  bottom: 12.5%;
-  left: 26%;
-  right: 23.5%;
+  top: 8%;
+  bottom: 8.5%;
+  left: 6.5%;
+  right: 6%;
   display: flex;
   flex-direction: column;
-  font-size: 2.41cqw;
+  font-size: calc(2.41 * var(--u));
   line-height: 1.45;
 }
 
@@ -291,8 +263,8 @@
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding-right: 1.6cqw;
-  margin-right: -1.6cqw;
+  padding-right: calc(1.6 * var(--u));
+  margin-right: calc(-1.6 * var(--u));
   scrollbar-width: thin;
   scrollbar-color: rgba(58, 40, 23, 0.45) transparent;
 }
@@ -304,21 +276,21 @@
 /* ---------- receipt typography ---------- */
 .cm-r_head {
   text-align: center;
-  padding-bottom: 2.2cqw;
+  padding-bottom: calc(2.2 * var(--u));
 }
 
 .cm-r_logo {
   display: block;
-  width: 7.5cqw;
+  width: calc(7.5 * var(--u));
   height: auto;
-  margin: 0 auto 1.4cqw;
+  margin: 0 auto calc(1.4 * var(--u));
   filter: invert(1) sepia(1) saturate(2) hue-rotate(345deg) brightness(0.45);
   opacity: 0.85;
 }
 
 .cm-r_brand {
   font-family: var(--font--primary-family, serif);
-  font-size: 5.6cqw;
+  font-size: calc(5.6 * var(--u));
   font-weight: 400;
   letter-spacing: 0.04em;
   line-height: 1;
@@ -330,8 +302,8 @@
 }
 
 .cm-r_eyebrow {
-  margin: 1.4cqw 0 0;
-  font-size: 1.96cqw;
+  margin: calc(1.4 * var(--u)) 0 0;
+  font-size: calc(1.96 * var(--u));
   letter-spacing: 0.32em;
   text-transform: uppercase;
   color: var(--ink-soft);
@@ -340,22 +312,22 @@
 .cm-r_meta {
   display: flex;
   justify-content: space-between;
-  margin-top: 2cqw;
-  font-size: 2.02cqw;
+  margin-top: calc(2 * var(--u));
+  font-size: calc(2.02 * var(--u));
   color: var(--ink-soft);
 }
 
 .cm-r_rule {
   border: 0;
   border-top: 1px dashed var(--ink-rule);
-  margin: 2cqw 0;
+  margin: calc(2 * var(--u)) 0;
 }
 
 .cm-r_label {
   display: block;
   font-weight: 700;
-  margin: 0 0 1cqw;
-  font-size: 1.9cqw;
+  margin: 0 0 calc(1 * var(--u));
+  font-size: calc(1.9 * var(--u));
   letter-spacing: 0.26em;
   text-transform: uppercase;
   color: var(--ink-soft);
@@ -370,9 +342,9 @@
 
 .cm-r_item {
   display: grid;
-  grid-template-columns: 11cqw 1fr;
-  gap: 0 2.2cqw;
-  padding: 2cqw 0;
+  grid-template-columns: calc(11 * var(--u)) 1fr;
+  gap: 0 calc(2.2 * var(--u));
+  padding: calc(2 * var(--u)) 0;
   border-bottom: 1px dotted var(--ink-rule);
   transition: background-color 1.2s var(--ease);
 }
@@ -384,7 +356,7 @@
 }
 
 .cm-r_thumb {
-  width: 11cqw;
+  width: calc(11 * var(--u));
   aspect-ratio: 1;
   object-fit: cover;
   object-position: 50% 25%;
@@ -394,13 +366,13 @@
 
 .cm-r_name {
   font-family: var(--font--primary-family, serif);
-  font-size: 3.47cqw;
+  font-size: calc(3.47 * var(--u));
   line-height: 1.1;
-  margin: 0 0 0.4cqw;
+  margin: 0 0 calc(0.4 * var(--u));
 }
 
 .cm-r_sub {
-  font-size: 1.85cqw;
+  font-size: calc(1.85 * var(--u));
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ink-soft);
@@ -410,13 +382,13 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 1.2cqw 2.4cqw;
-  margin-top: 1.4cqw;
+  gap: calc(1.2 * var(--u)) calc(2.4 * var(--u));
+  margin-top: calc(1.4 * var(--u));
 }
 
 .cm-r_sizes {
   display: flex;
-  gap: 0.7cqw;
+  gap: calc(0.7 * var(--u));
   border: 0;
   margin: 0;
   padding: 0;
@@ -431,13 +403,13 @@
 }
 
 .cm-r_size {
-  min-width: 4.4cqw;
-  padding: 0.5cqw 0.7cqw;
+  min-width: calc(4.4 * var(--u));
+  padding: calc(0.5 * var(--u)) calc(0.7 * var(--u));
   border: 1px solid var(--ink-rule);
   background: transparent;
   color: var(--ink);
   font: inherit;
-  font-size: 1.96cqw;
+  font-size: calc(1.96 * var(--u));
   cursor: pointer;
   transition: background-color 0.4s var(--ease), color 0.4s, border-color 0.4s;
 }
@@ -466,14 +438,14 @@
 }
 
 .cm-r_qty button {
-  width: 4.2cqw;
-  height: 4.2cqw;
+  width: calc(4.2 * var(--u));
+  height: calc(4.2 * var(--u));
   padding: 0;
   border: 0;
   background: transparent;
   color: var(--ink);
   font: inherit;
-  font-size: 2.69cqw;
+  font-size: calc(2.69 * var(--u));
   line-height: 1;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -483,31 +455,31 @@
 .cm-r_qty button:disabled { opacity: 0.35; cursor: default; }
 
 .cm-r_qty output {
-  min-width: 3.6cqw;
+  min-width: calc(3.6 * var(--u));
   text-align: center;
-  font-size: 2.24cqw;
+  font-size: calc(2.24 * var(--u));
 }
 
 .cm-r_item_top {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 2cqw;
+  gap: calc(2 * var(--u));
 }
 
 .cm-r_price {
   flex: none;
   text-align: right;
   white-space: nowrap;
-  font-size: 2.35cqw;
+  font-size: calc(2.35 * var(--u));
 }
 
 .cm-r_remove {
   display: grid;
   place-items: center;
-  width: 4.4cqw;
-  height: 4.4cqw;
-  margin: 1cqw 0 0 auto;
+  width: calc(4.4 * var(--u));
+  height: calc(4.4 * var(--u));
+  margin: calc(1 * var(--u)) 0 0 auto;
   padding: 0;
   border: 1px solid transparent;
   background: none;
@@ -517,8 +489,8 @@
 }
 
 .cm-r_remove svg {
-  width: 2.7cqw;
-  height: 2.7cqw;
+  width: calc(2.7 * var(--u));
+  height: calc(2.7 * var(--u));
 }
 
 .cm-r_remove:hover {
@@ -531,35 +503,35 @@
 .cm-r_totals {
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 0.6cqw 2cqw;
+  gap: calc(0.6 * var(--u)) calc(2 * var(--u));
   margin: 0;
-  font-size: 2.24cqw;
+  font-size: calc(2.24 * var(--u));
 }
 
-.cm-r_totals dt { color: var(--ink-soft); letter-spacing: 0.14em; text-transform: uppercase; font-size: 1.9cqw; align-self: center; }
+.cm-r_totals dt { color: var(--ink-soft); letter-spacing: 0.14em; text-transform: uppercase; font-size: calc(1.9 * var(--u)); align-self: center; }
 .cm-r_totals dd { margin: 0; text-align: right; }
 
 .cm-r_totals .is-total {
-  margin-top: 1.2cqw;
-  padding-top: 1.4cqw;
+  margin-top: calc(1.2 * var(--u));
+  padding-top: calc(1.4 * var(--u));
   border-top: 1px solid var(--ink-rule);
 }
 
 .cm-r_totals dd.is-total {
   font-family: var(--font--primary-family, serif);
-  font-size: 3.6cqw;
+  font-size: calc(3.6 * var(--u));
   line-height: 1;
 }
 
 /* form fields written on the paper */
 .cm-r_fields {
   display: grid;
-  gap: 1.6cqw;
+  gap: calc(1.6 * var(--u));
 }
 
 .cm-r_field label {
   display: block;
-  font-size: 1.79cqw;
+  font-size: calc(1.79 * var(--u));
   letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--ink-soft);
@@ -568,14 +540,14 @@
 .cm-r_field input,
 .cm-r_field textarea {
   width: 100%;
-  padding: 0.6cqw 0;
+  padding: calc(0.6 * var(--u)) 0;
   border: 0;
   border-bottom: 1px dashed var(--ink-rule);
   border-radius: 0;
   background: transparent;
   color: var(--ink);
   font: inherit;
-  font-size: 2.46cqw;
+  font-size: calc(2.46 * var(--u));
   resize: none;
   transition: border-color 0.4s;
 }
@@ -593,35 +565,35 @@
 .cm-r_field.is-invalid textarea { border-bottom-color: #8c2938; }
 
 .cm-r_hint {
-  margin: 1.4cqw 0 0;
-  font-size: 1.9cqw;
+  margin: calc(1.4 * var(--u)) 0 0;
+  font-size: calc(1.9 * var(--u));
   color: var(--ink-soft);
 }
 
 .cm-r_error {
   min-height: 1.45em;
-  margin: 1.2cqw 0 0;
+  margin: calc(1.2 * var(--u)) 0 0;
   color: #8c2938;
-  font-size: 2.02cqw;
+  font-size: calc(2.02 * var(--u));
 }
 
 /* buttons: ink outline that fills on hover, like the site's cream fill */
 .cm-r_actions {
   display: grid;
-  gap: 1.4cqw;
-  padding-top: 2cqw;
+  gap: calc(1.4 * var(--u));
+  padding-top: calc(2 * var(--u));
 }
 
 .cm-r_btn {
   position: relative;
   display: block;
   width: 100%;
-  padding: 2cqw 1.5cqw;
+  padding: calc(2 * var(--u)) calc(1.5 * var(--u));
   border: 1px solid var(--ink);
-  background: transparent;
-  color: var(--ink);
+  background: var(--ink); /* dark by default */
+  color: #f3e6cf;
   font: inherit;
-  font-size: 2.02cqw;
+  font-size: calc(2.02 * var(--u));
   letter-spacing: 0.3em;
   text-transform: uppercase;
   text-align: center;
@@ -629,22 +601,29 @@
   cursor: pointer;
   overflow: hidden;
   isolation: isolate;
-  transition: color 0.55s var(--ease);
+  box-shadow: 0 2px 6px rgba(36, 22, 10, 0.25);
+  transition: color 0.55s var(--ease), letter-spacing 0.55s var(--ease), box-shadow 0.55s var(--ease), border-color 0.55s var(--ease);
 }
 
+/* hover: a warmer, slightly lighter brown rises from the bottom */
 .cm-r_btn::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: var(--ink);
+  background: linear-gradient(to top, #5a3a1c, #46291a);
   transform: scaleY(0);
   transform-origin: bottom;
   transition: transform 0.55s var(--ease);
 }
 
 .cm-r_btn:hover:not(:disabled),
-.cm-r_btn:focus-visible { color: #f3e6cf; }
+.cm-r_btn:focus-visible {
+  color: #fff6e6;
+  letter-spacing: 0.34em;
+  border-color: #5a3a1c;
+  box-shadow: 0 6px 14px rgba(36, 22, 10, 0.35);
+}
 .cm-r_btn:hover:not(:disabled)::before,
 .cm-r_btn:focus-visible::before { transform: scaleY(1); }
 .cm-r_btn:disabled { opacity: 0.55; cursor: progress; }
@@ -656,7 +635,7 @@
   background: none;
   color: var(--ink-soft);
   font: inherit;
-  font-size: 1.9cqw;
+  font-size: calc(1.9 * var(--u));
   letter-spacing: 0.24em;
   text-transform: uppercase;
   text-decoration: underline;
@@ -680,16 +659,16 @@
 
 /* empty selection */
 .cm-r_empty {
-  padding: 6cqw 0;
+  padding: calc(6 * var(--u)) 0;
   text-align: center;
 }
 
 .cm-r_empty p {
   font-family: var(--font--primary-family, serif);
-  font-size: 4cqw;
+  font-size: calc(4 * var(--u));
   font-style: italic;
   line-height: 1.2;
-  margin: 0 0 4cqw;
+  margin: 0 0 calc(4 * var(--u));
 }
 
 /* ---------- payment receipt ---------- */
@@ -702,7 +681,7 @@
   display: block;
   font-family: var(--font--primary-family, serif);
   font-weight: 400;
-  font-size: 7cqw;
+  font-size: calc(7 * var(--u));
   line-height: 1.05;
   letter-spacing: -0.01em;
 }
@@ -710,21 +689,21 @@
 .cm-r_bank {
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 0.4cqw 2cqw;
+  gap: calc(0.4 * var(--u)) calc(2 * var(--u));
   margin: 0;
-  font-size: 2.24cqw;
+  font-size: calc(2.24 * var(--u));
 }
 
-.cm-r_bank dt { color: var(--ink-soft); font-size: 1.85cqw; letter-spacing: 0.16em; text-transform: uppercase; align-self: center; }
+.cm-r_bank dt { color: var(--ink-soft); font-size: calc(1.85 * var(--u)); letter-spacing: 0.16em; text-transform: uppercase; align-self: center; }
 .cm-r_bank dd { margin: 0; text-align: right; }
 
 .cm-r_slip {
   position: relative;
   display: grid;
   place-items: center;
-  gap: 0.8cqw;
-  min-height: 15cqw;
-  padding: 2.4cqw;
+  gap: calc(0.8 * var(--u));
+  min-height: calc(15 * var(--u));
+  padding: calc(2.4 * var(--u));
   border: 1px dashed var(--ink);
   text-align: center;
   cursor: pointer;
@@ -742,59 +721,59 @@
 }
 
 .cm-r_slip_title {
-  font-size: 2.13cqw;
+  font-size: calc(2.13 * var(--u));
   letter-spacing: 0.26em;
   text-transform: uppercase;
 }
 
 .cm-r_slip_note {
-  font-size: 1.79cqw;
+  font-size: calc(1.79 * var(--u));
   color: var(--ink-soft);
 }
 
 .cm-r_slip_preview {
   display: flex;
   align-items: center;
-  gap: 2cqw;
+  gap: calc(2 * var(--u));
   max-width: 100%;
   text-align: left;
 }
 
 .cm-r_slip_preview img {
-  width: 9cqw;
-  height: 11cqw;
+  width: calc(9 * var(--u));
+  height: calc(11 * var(--u));
   object-fit: cover;
   mix-blend-mode: multiply;
   border: 1px solid var(--ink-rule);
 }
 
 .cm-r_slip_preview span {
-  font-size: 2.02cqw;
+  font-size: calc(2.02 * var(--u));
   word-break: break-all;
 }
 
 .cm-r_done {
   text-align: center;
-  padding-top: 4cqw;
+  padding-top: calc(4 * var(--u));
 }
 
 .cm-r_done h2 {
   font-family: var(--font--primary-family, serif);
   font-weight: 400;
-  font-size: 7.5cqw;
+  font-size: calc(7.5 * var(--u));
   line-height: 1;
-  margin: 0 0 3cqw;
+  margin: 0 0 calc(3 * var(--u));
 }
 
 .cm-r_done h2 em { font-style: italic; }
 
 .cm-r_stamp {
   display: inline-block;
-  margin: 2cqw 0 3cqw;
-  padding: 1.2cqw 2.4cqw;
+  margin: calc(2 * var(--u)) 0 calc(3 * var(--u));
+  padding: calc(1.2 * var(--u)) calc(2.4 * var(--u));
   border: 2px solid rgba(140, 41, 56, 0.7);
   color: rgba(140, 41, 56, 0.85);
-  font-size: 2.13cqw;
+  font-size: calc(2.13 * var(--u));
   letter-spacing: 0.24em;
   text-transform: uppercase;
   transform: rotate(-4deg);
@@ -821,8 +800,8 @@
 /* ---------- fields: paper-toned focus / filled / autofill ---------- */
 .cm-r_field input,
 .cm-r_field textarea {
-  padding-left: 1cqw;
-  padding-right: 1cqw;
+  padding-left: calc(1 * var(--u));
+  padding-right: calc(1 * var(--u));
   transition: border-color 0.4s, background-color 0.4s var(--ease, ease);
 }
 
@@ -861,9 +840,9 @@
 }
 
 .cm-r_fielderr {
-  margin: 0.6cqw 0 0;
+  margin: calc(0.6 * var(--u)) 0 0;
   color: var(--warn);
-  font-size: 1.95cqw;
+  font-size: calc(1.95 * var(--u));
   font-weight: 700;
   line-height: 1.3;
 }
@@ -882,7 +861,7 @@
 
 .cm-r_sizehint {
   flex-basis: 100%;
-  font-size: 1.9cqw;
+  font-size: calc(1.9 * var(--u));
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--ink-title);
@@ -891,7 +870,7 @@
 .cm-r_item.needs-size {
   background: rgba(140, 41, 56, 0.07);
   box-shadow: inset 2px 0 0 var(--warn);
-  padding-left: 1.2cqw;
+  padding-left: calc(1.2 * var(--u));
 }
 
 .cm-r_item.needs-size .cm-r_sizehint {
@@ -909,9 +888,9 @@
 /* ---------- slip: layers stacked in one spot so the swap cross-fades ---------- */
 .cm-r_slip {
   display: grid;
-  height: 17cqw;
+  height: calc(17 * var(--u));
   min-height: 0;
-  padding: 1.6cqw 2.4cqw;
+  padding: calc(1.6 * var(--u)) calc(2.4 * var(--u));
 }
 
 .cm-r_slip_layer {
@@ -919,7 +898,7 @@
   display: grid;
   place-items: center;
   align-content: center;
-  gap: 0.8cqw;
+  gap: calc(0.8 * var(--u));
   opacity: 0;
   transition: opacity 0.6s var(--ease, ease);
 }
@@ -928,15 +907,15 @@
 
 .cm-r_slip_preview img,
 .cm-r_slip_pdf {
-  width: 10cqw;
-  height: 12.5cqw;
+  width: calc(10 * var(--u));
+  height: calc(12.5 * var(--u));
 }
 
 .cm-r_slip_pdf {
   display: grid;
   place-items: center;
   border: 1px solid var(--ink-rule);
-  font-size: 2cqw;
+  font-size: calc(2 * var(--u));
   font-weight: 700;
   letter-spacing: 0.2em;
 }
@@ -962,8 +941,8 @@
 .cm-receipt[data-step="4"] { --tilt: -0.6deg; }
 
 .cm-r_note {
-  margin: 0 0 1.6cqw;
-  font-size: 1.95cqw;
+  margin: 0 0 calc(1.6 * var(--u));
+  font-size: calc(1.95 * var(--u));
   line-height: 1.45;
   color: var(--ink-title, #0e0905);
 }
@@ -992,7 +971,7 @@
 }
 
 .cm-r_orderlist li {
-  padding: 1.6cqw 0;
+  padding: calc(1.6 * var(--u)) 0;
   border-bottom: 1px dotted var(--ink-rule);
 }
 
@@ -1002,17 +981,17 @@
 .cm-r_order_meta {
   display: flex;
   justify-content: space-between;
-  gap: 2cqw;
+  gap: calc(2 * var(--u));
 }
 
-.cm-r_order_top { font-size: 2.3cqw; font-weight: 700; }
-.cm-r_order_meta { margin: 0.4cqw 0 0.8cqw; font-size: 1.85cqw; }
+.cm-r_order_top { font-size: calc(2.3 * var(--u)); font-weight: 700; }
+.cm-r_order_meta { margin: calc(0.4 * var(--u)) 0 calc(0.8 * var(--u)); font-size: calc(1.85 * var(--u)); }
 
 .cm-r_order_status {
-  padding: 0.2cqw 1cqw;
+  padding: calc(0.2 * var(--u)) calc(1 * var(--u));
   border: 1px solid rgba(140, 41, 56, 0.6);
   color: #8c2938;
-  font-size: 1.7cqw;
+  font-size: calc(1.7 * var(--u));
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -1021,7 +1000,7 @@
 .cm-r_field.has-tool { position: relative; }
 
 .cm-r_field.has-tool input,
-.cm-r_field.has-tool textarea { padding-right: 10.5cqw; }
+.cm-r_field.has-tool textarea { padding-right: calc(10.5 * var(--u)); }
 
 /* editing a delivery field for this order: clearly open, with a ✓ to confirm */
 .cm-r_field.is-editing input,
@@ -1065,16 +1044,16 @@
 .cm-r_tools {
   position: absolute;
   right: 0;
-  top: 2.3cqw;
+  top: calc(2.3 * var(--u));
   display: flex;
-  gap: 0.4cqw;
+  gap: calc(0.4 * var(--u));
 }
 
 .cm-r_pen {
   display: grid;
   place-items: center;
-  width: 4.6cqw;
-  height: 4.6cqw;
+  width: calc(4.6 * var(--u));
+  height: calc(4.6 * var(--u));
   padding: 0;
   border: 1px solid transparent;
   border-radius: 50%;
@@ -1084,7 +1063,7 @@
   transition: background-color 0.4s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.4s, color 0.4s, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.cm-r_pen svg { width: 2.8cqw; height: 2.8cqw; }
+.cm-r_pen svg { width: calc(2.8 * var(--u)); height: calc(2.8 * var(--u)); }
 
 .cm-r_pen:hover {
   border-color: rgba(36, 22, 10, 0.4);
@@ -1105,14 +1084,22 @@
     height: 2.6rem;
   }
 
+  /* floating pair: same size and row as the menu button (cart.js measures it) */
   .cm-cart-trigger.is-floating {
-    top: 1rem;
-    right: 1rem;
+    top: var(--cm-float-top, 1rem);
+    right: var(--cm-float-edge, 1rem);
+    width: 2.5rem;
+    height: 2.5rem;
   }
 
-  .cm-account-trigger.is-floating { right: 4.25rem; }
+  .cm-account-trigger.is-floating { right: calc(var(--cm-float-edge, 1rem) + 3rem); }
 
-  .cm-receipt_body { font-size: 2.69cqw; }
+  /* phones: CONTACT lives in the menu */
+  .nav_wrapper .btn-group > .btn-bubble-arrow { display: none; }
+  .nav_wrapper .btn-group .cm-cart-trigger { width: 2.5rem; height: 2.5rem; margin-right: 0; }
+  .nav_wrapper .btn-group { gap: 0.5rem; }
+
+  .cm-receipt_body { font-size: calc(2.69 * var(--u)); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1165,4 +1152,304 @@
 .cm-toast_btn:hover { background: #f4ece1; color: #140d08; }
 @media (max-width: 767px) {
   .cm-toast { top: auto; bottom: 1.25rem; right: 1rem; left: 1rem; justify-content: space-between; }
+}
+
+
+/* ---------- home nav: logo truly centred at every width ---------- */
+.nav_wrapper .nav_container:has(.btn-group) {
+  grid-template-columns: minmax(max-content, 1fr) auto minmax(max-content, 1fr);
+}
+.nav_wrapper .nav_container:has(.btn-group) > :last-child { justify-self: end; }
+
+/* laptops/tablets: the nav links already include Contact, so drop the extra pill to make room */
+@media (max-width: 1199px) {
+  .nav_wrapper .btn-group > .btn-bubble-arrow { display: none; }
+}
+
+
+/* =====================================================================
+   Postcard checkout: plain cream card, no paper texture.
+   Palette from the client reference: dark brown, olive, sage, cream.
+   ===================================================================== */
+.cm-cart {
+  --ink: #2b1d14;
+  --ink-title: #2b1d14;
+  --ink-soft: rgba(43, 29, 20, 0.72);
+  --ink-rule: rgba(43, 29, 20, 0.26);
+  --olive: #5f6332;
+  --sage: #b9bd9f;
+  --cream: #ece4d0;
+}
+
+.cm-cart_stage {
+  /* postcard proportions (3 : 2) */
+  width: min(92vw, 1120px, calc(84svh * 1.5));
+  aspect-ratio: 3 / 2;
+}
+
+.cm-receipt {
+  background: var(--cream);
+  border-radius: 4px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+/* sits perfectly straight once shown: any tilt makes the browser resample the text,
+   and the masked (fading) summary column turned visibly soft */
+.cm-receipt.is-active { transform: none; }
+
+/* the thin printed frame a postcard has just inside its edge */
+.cm-receipt::before {
+  content: "";
+  position: absolute;
+  inset: 1.4cqw;
+  border: 1px solid rgba(43, 29, 20, 0.3);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.cm-receipt_body {
+  top: 4.6cqw;
+  bottom: 4.6cqw;
+  left: 4.4cqw;
+  right: 4.4cqw;
+}
+
+/* ---------- two columns: form (left) | order summary (right), like a checkout ---------- */
+.cm-receipt_scroll:has(> .cm-r_col) {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  column-gap: 0;
+  overflow: hidden;
+  padding-right: 0;
+  margin-right: 0;
+}
+
+.cm-r_col {
+  min-width: 0;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(43, 29, 20, 0.22) transparent;
+}
+.cm-r_col::-webkit-scrollbar { width: 3px; }
+.cm-r_col::-webkit-scrollbar-thumb { background: rgba(43, 29, 20, 0.22); border-radius: 3px; }
+
+.cm-r_col--form { order: 1; padding: calc(1 * var(--u)) calc(5 * var(--u)) calc(1 * var(--u)) calc(1 * var(--u)); }
+
+/* summary: the address side of the postcard, on a soft sage panel */
+.cm-r_col:not(.cm-r_col--form) {
+  order: 2;
+  padding: calc(3 * var(--u)) calc(3.4 * var(--u));
+  background: rgba(185, 189, 159, 0.38);
+  border-left: 1px solid rgba(43, 29, 20, 0.22);
+}
+
+/* single-column states (empty selection, thank-you) sit centred on the card */
+.cm-receipt_scroll:not(:has(> .cm-r_col)) {
+  width: min(100%, calc(60 * var(--u)));
+  margin-left: auto;
+  margin-right: auto;
+  padding-right: 0;
+}
+
+@media (min-width: 768px) {
+  .cm-receipt_scroll:not(:has(> .cm-r_col)) {
+    --u: 0.82cqw;
+    display: flex;
+    flex-direction: column;
+    justify-content: safe center;
+    font-size: calc(2.41 * var(--u));
+  }
+}
+
+/* ---------- header: brand on the left, stamp + postmark in the corner ---------- */
+.cm-r_head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: calc(2 * var(--u));
+  text-align: left;
+  padding-bottom: calc(1 * var(--u));
+}
+
+.cm-r_eyebrow {
+  margin: 0 0 calc(1 * var(--u));
+  color: var(--olive);
+  font-weight: 700;
+}
+
+.cm-r_brand { font-size: calc(5.4 * var(--u)); color: var(--ink); }
+
+.cm-r_meta {
+  display: block;
+  margin: calc(1.4 * var(--u)) 0 0;
+  font-size: calc(1.9 * var(--u));
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.cm-r_post {
+  position: relative;
+  flex: none;
+  width: calc(14 * var(--u));
+  height: calc(13 * var(--u));
+}
+
+/* stamp: olive square with a perforated (dotted) edge */
+.cm-r_postage {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: grid;
+  place-items: center;
+  width: calc(9.5 * var(--u));
+  height: calc(11 * var(--u));
+  background: var(--olive);
+  outline: calc(0.5 * var(--u)) dotted var(--cream);
+  outline-offset: calc(-0.25 * var(--u));
+  box-shadow: 0 0 0 calc(0.5 * var(--u)) var(--olive);
+  transform: rotate(3deg);
+}
+.cm-r_postage img {
+  width: 72%;
+  height: auto;
+  opacity: 0.92;
+}
+
+/* round postmark overlapping the stamp */
+.cm-r_postmark {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  display: grid;
+  place-content: center;
+  width: calc(10 * var(--u));
+  height: calc(10 * var(--u));
+  border: 1px solid rgba(43, 29, 20, 0.55);
+  border-radius: 50%;
+  font-size: calc(1.25 * var(--u));
+  line-height: 1.5;
+  letter-spacing: 0.14em;
+  text-align: center;
+  text-transform: uppercase;
+  color: rgba(43, 29, 20, 0.7);
+  transform: rotate(-12deg);
+  background: rgba(236, 228, 208, 0.55);
+}
+
+/* ---------- section titles in the form column ---------- */
+.cm-r_title {
+  margin: 0 0 calc(2.6 * var(--u));
+  font-family: var(--font--primary-family, serif);
+  font-size: calc(4.6 * var(--u));
+  font-weight: 400;
+  line-height: 1.05;
+  color: var(--ink);
+}
+.cm-r_title em { font-style: italic; color: var(--olive); }
+
+/* ---------- details ---------- */
+.cm-r_rule { border-top: 1px solid var(--ink-rule); }
+
+.cm-r_label,
+.cm-r_field label { color: var(--olive); }
+
+.cm-r_item { border-bottom: 1px solid var(--ink-rule); }
+.cm-r_item.is-new { background-color: rgba(95, 99, 50, 0.12); }
+
+.cm-r_thumb {
+  mix-blend-mode: normal;
+  filter: none;
+  border: 1px solid rgba(43, 29, 20, 0.2);
+  border-radius: 2px;
+}
+
+/* fields: clean underline, faint sage tint while editing */
+.cm-r_field input,
+.cm-r_field textarea { border-bottom: 1px solid rgba(43, 29, 20, 0.4); }
+.cm-r_field.is-filled input,
+.cm-r_field.is-filled textarea { background: transparent; border-bottom-color: rgba(43, 29, 20, 0.45); }
+.cm-r_field input:focus,
+.cm-r_field textarea:focus,
+.cm-r_field.is-editing input,
+.cm-r_field.is-editing textarea { background: rgba(185, 189, 159, 0.28); border-bottom-color: var(--olive); }
+.cm-r_field input:-webkit-autofill,
+.cm-r_field input:-webkit-autofill:hover,
+.cm-r_field input:-webkit-autofill:focus,
+.cm-r_field textarea:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 100px var(--cream) inset;
+  box-shadow: 0 0 0 100px var(--cream) inset;
+}
+
+/* main button: dark brown, olive rises on hover */
+.cm-r_btn {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--cream);
+  border-radius: 2px;
+}
+.cm-r_btn::before { background: var(--olive); }
+.cm-r_btn:hover:not(:disabled),
+.cm-r_btn:focus-visible { color: #f6f0e1; border-color: var(--olive); }
+
+.cm-r_slip { border-color: rgba(43, 29, 20, 0.4); }
+
+/* landscape card: a column's text fades out where it scrolls */
+.cm-r_col {
+  --fade-top: 0px;
+  --fade-bottom: 0px;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 var(--fade-top), #000 calc(100% - var(--fade-bottom)), transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 var(--fade-top), #000 calc(100% - var(--fade-bottom)), transparent 100%);
+}
+.cm-r_col.has-more-above { --fade-top: calc(6 * var(--u)); }
+.cm-r_col.has-more-below { --fade-bottom: calc(8 * var(--u)); }
+
+/* ---------- phones: one column, the card grows and the page scrolls it ---------- */
+@media (max-width: 767px) {
+  .cm-cart {
+    align-items: flex-start;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .cm-cart_close { position: fixed; }
+
+  .cm-cart_stage {
+    width: min(94vw, 30rem);
+    aspect-ratio: auto;
+    margin: 4.75rem auto 2.5rem;
+  }
+
+  .cm-receipt { inset: 0 0 auto 0; }
+  .cm-receipt.is-active { position: relative; }
+  .cm-receipt::before { inset: 2.4cqw; }
+
+  .cm-receipt_body {
+    --u: 1.6cqw;
+    position: relative;
+    inset: auto;
+    padding: 8cqw 7.5cqw 9cqw;
+  }
+
+  .cm-receipt_scroll,
+  .cm-receipt_scroll:has(> .cm-r_col) {
+    display: block;
+    flex: none;
+    overflow: visible;
+    padding-right: 0;
+    margin-right: 0;
+  }
+
+  .cm-r_col { overflow: visible; -webkit-mask-image: none; mask-image: none; }
+  .cm-r_col:not(.cm-r_col--form) {
+    margin: 0 calc(-2.8 * var(--u));
+    padding: calc(3 * var(--u)) calc(2.8 * var(--u));
+    border-left: 0;
+  }
+  .cm-r_col--form { padding: calc(5 * var(--u)) 0 0; }
+  .cm-receipt_scroll:not(:has(> .cm-r_col)) { width: auto; }
 }

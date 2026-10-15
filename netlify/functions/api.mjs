@@ -6,7 +6,7 @@
 //   PATCH /api/admin/orders/:id          { status?, deliveryBarcode? }     (admin)
 //   GET   /api/admin/orders/:id/slip     the uploaded bank slip file       (admin)
 //
-//   POST  /api/account/register          { name, email, password } -> { token, profile }
+//   POST  /api/account/register          { name, email, password, acceptTerms } -> { token, profile }
 //   POST  /api/account/login             { email, password } -> { token, profile }
 //   GET   /api/account/me                saved profile                      (customer)
 //   PUT   /api/account/me                { name, phone, address }           (customer)
@@ -177,6 +177,7 @@ async function accountRoute(route, method, req) {
     if (name.length < 2) return fail("Please enter your name.");
     if (!EMAIL_RE.test(email)) return fail("Please enter a valid email address.");
     if (password.length < 8 || password.length > 128) return fail("Please choose a password of at least 8 characters.");
+    if (body.acceptTerms !== true) return fail("Please agree to the Terms & Conditions to create your account.");
     const result = await registerCustomer({ email, password, name });
     if (result.error) return fail(result.error, 409);
     return json({ token: issueToken(email), profile: publicProfile(result.customer) }, 201);

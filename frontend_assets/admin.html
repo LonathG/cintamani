@@ -3,151 +3,69 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cintamani — Atelier Order & Production Management System</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Cintamani — Admin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
-  
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,300..500,0..1,0" rel="stylesheet" />
+
   <!-- React 18 & Babel CDN -->
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js"></script>
 
   <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
   <script>
+    // Cintamani palette: dark brown, olive, gold, cream (same as the site and the checkout card)
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         extend: {
           colors: {
-            maroon: {
-              50: '#fdf5f5',
-              100: '#f8e9ea',
-              200: '#f1d2d5',
-              300: '#e4abb1',
-              400: '#cf7580',
-              500: '#b84956',
-              600: '#9e2d3b',
-              700: '#80182a',
-              800: '#800000',
-              900: '#58151f',
-              950: '#38090f',
-            },
-            ivory: {
-              50: '#fffff8',
-              100: '#fffff0',
-              200: '#faf8ea',
-              300: '#f5f1dc',
-              DEFAULT: '#FFFFF0',
-            }
+            ink: { DEFAULT: "#2b1d14", soft: "#5b4a3d", faint: "#8b7b6c" },
+            olive: { DEFAULT: "#5f6332", light: "#eef0dc", dark: "#474a24" },
+            gold: { DEFAULT: "#c9b46d", light: "#e2d3a8", pale: "#f6efd9" },
+            cream: { DEFAULT: "#f4efe3", card: "#fffdf8", line: "#e6dccb" },
+            night: { DEFAULT: "#16110c", 2: "#211912", line: "#3a2e22" }
           },
           fontFamily: {
-            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
-            mono: ['"Space Mono"', 'monospace'],
+            sans: ["Inter", "system-ui", "-apple-system", "sans-serif"],
+            serif: ['"Cormorant Garamond"', "Georgia", "serif"]
           }
         }
       }
     };
   </script>
 
+  <script src="js/shop-data.js"></script>
+
   <style>
-    /* Universal Clean Inter Typography */
-    *, html, body, button, input, select, textarea {
-      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    }
+    body { font-family: "Inter", system-ui, sans-serif; }
+    .ms { font-family: "Material Symbols Outlined"; font-weight: normal; font-style: normal; line-height: 1; display: inline-block; white-space: nowrap; font-size: 20px; -webkit-font-smoothing: antialiased; font-variation-settings: "wght" 350; }
+    .ms-fill { font-variation-settings: "FILL" 1, "wght" 400; }
 
-    .font-serif-cintamani {
-      font-family: 'Cormorant Garamond', Georgia, serif !important;
-    }
+    /* status pills */
+    .pill { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 3px 10px; font-size: 11.5px; font-weight: 600; white-space: nowrap; }
+    .pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.8; }
+    .st-pending { background: #fbecc8; color: #7a4f00; }
+    .st-accepted { background: #eef0dc; color: #474a24; }
+    .st-production { background: #f5e4d8; color: #7a3e1d; }
+    .st-packed { background: #dfecee; color: #1f4f58; }
+    .st-dispatched { background: #ebe8e3; color: #4a433b; }
 
-    .font-mono-code {
-      font-family: 'Space Mono', monospace !important;
-    }
-
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      20%, 60% { transform: translateX(-5px); }
-      40%, 80% { transform: translateX(5px); }
-    }
-    .animate-shake {
-      animation: shake 0.4s ease-in-out;
-    }
-
-    /* Clean Flat Pill Status Badges — EXACT MATCH TO SPEC REFERENCE */
-    .badge-clean-pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 9999px !important;
-      font-family: 'Inter', system-ui, sans-serif !important;
-      font-weight: 700 !important;
-      font-size: 11px !important;
-      line-height: 14px !important;
-      padding: 4px 14px !important;
-      text-transform: uppercase !important;
-      letter-spacing: 0.06em !important;
-      box-shadow: none !important;
-      border: none !important;
-      text-shadow: none !important;
-      white-space: nowrap;
-    }
-
-    /* Soft blush pastel tint with dark maroon text - exactly matching the attached image */
-    .badge-in-production {
-      background-color: #f6ecee !important;
-      color: #5e1924 !important;
-    }
-
-    .badge-payment-pending {
-      background-color: #fce8ea !important;
-      color: #800000 !important;
-    }
-
-    .badge-accepted {
-      background-color: #fef3c7 !important;
-      color: #92400e !important;
-    }
-
-    .badge-packed-ready {
-      background-color: #ecfdf5 !important;
-      color: #065f46 !important;
-    }
-
-    .badge-dispatched {
-      background-color: #f3f4f6 !important;
-      color: #374151 !important;
-    }
-
-    .badge-neutral-soft {
-      background-color: #f4f4f5 !important;
-      color: #52525b !important;
-    }
-
-    /* Custom subtle scrollbar */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #fdf5f5;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #cf7580;
-      border-radius: 9999px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #800000;
-    }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-thumb { background: #d6c9b3; border-radius: 99px; }
+    ::-webkit-scrollbar-track { background: transparent; }
   </style>
 </head>
-<body class="bg-white font-sans text-neutral-900 antialiased selection:bg-rose-100 selection:text-rose-950">
+<body class="bg-cream text-ink antialiased">
   <div id="root"></div>
 
   <script type="text/babel">
-    const { useState, useMemo, useEffect } = React;
+    const { useState, useMemo, useEffect, useCallback } = React;
+    const SHOP = window.CINTAMANI_SHOP || { products: [] };
+    const PRODUCT = Object.fromEntries((SHOP.products || []).map((p) => [p.id, p]));
 
     // --- Order API (netlify/functions/api.mjs) ---
     const TOKEN_KEY = "cintamani_admin_token";
@@ -169,45 +87,80 @@
       return res;
     }
 
-    const STATUS_ENUM = [
-      "Payment Pending",
-      "Accepted",
-      "In Production",
-      "Packed & Ready",
-      "Dispatched"
+    // Order stages, in order. Server values stay the same; the labels match what customers see.
+    const STAGES = [
+      { value: "Payment Pending", label: "To verify", short: "To verify", cls: "st-pending", icon: "receipt_long", slug: "verify" },
+      { value: "Accepted", label: "Accepted", short: "Accepted", cls: "st-accepted", icon: "task_alt", slug: "accepted" },
+      { value: "In Production", label: "Tailoring", short: "Tailoring", cls: "st-production", icon: "content_cut", slug: "tailoring" },
+      { value: "Packed & Ready", label: "Packed", short: "Packed", cls: "st-packed", icon: "inventory_2", slug: "packed" },
+      { value: "Dispatched", label: "Dispatched", short: "Dispatched", cls: "st-dispatched", icon: "local_shipping", slug: "dispatched" }
     ];
+    const stageOf = (status) => STAGES.find((s) => s.value === status) || STAGES[0];
+    const stageBySlug = (slug) => STAGES.find((s) => s.slug === slug);
 
-    // Helper: Clean, flat pill badges with Inter font — NO 3D effects, NO drop-shadows
-    function getStatusBadgeClass(status) {
-      switch (status) {
-        case "Payment Pending":
-          return "badge-clean-pill badge-payment-pending";
-        case "Accepted":
-          return "badge-clean-pill badge-accepted";
-        case "In Production":
-          return "badge-clean-pill badge-in-production";
-        case "Packed & Ready":
-          return "badge-clean-pill badge-packed-ready";
-        case "Dispatched":
-          return "badge-clean-pill badge-dispatched";
-        default:
-          return "badge-clean-pill badge-in-production";
-      }
+    // The one obvious next step for each stage
+    const NEXT_STEP = {
+      "Payment Pending": { to: "Accepted", label: "Payment checked — accept order", icon: "check_circle" },
+      "Accepted": { to: "In Production", label: "Start tailoring", icon: "content_cut" },
+      "In Production": { to: "Packed & Ready", label: "Mark as packed", icon: "inventory_2" },
+      "Packed & Ready": { to: "Dispatched", label: "Mark as dispatched", icon: "local_shipping" }
+    };
+
+    const lkr = (n) => "LKR " + Number(n || 0).toLocaleString("en-LK", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const digits = (v) => String(v || "").replace(/\D/g, "");
+    const waNumber = (phone) => { const d = digits(phone); return d.startsWith("0") ? "94" + d.slice(1) : d; };
+    const fmtDate = (iso) => iso ? new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "—";
+    const fmtTime = (iso) => iso ? new Date(iso).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }) : "";
+    const ago = (iso) => {
+      if (!iso) return "";
+      const m = Math.round((Date.now() - new Date(iso)) / 60000);
+      if (m < 1) return "just now";
+      if (m < 60) return `${m} min ago`;
+      const h = Math.round(m / 60);
+      if (h < 24) return `${h} h ago`;
+      const d = Math.round(h / 24);
+      return `${d} day${d === 1 ? "" : "s"} ago`;
+    };
+    const itemsLabel = (o) => (o.items || []).map((i) => `${i.name}${i.qty > 1 ? ` ×${i.qty}` : ""}`).join(", ");
+    const pieces = (o) => (o.items || []).reduce((n, i) => n + i.qty, 0);
+
+    // --- tiny hash router: #/overview, #/orders, #/orders/verify, #/order/CM-123, #/customers ---
+    function useRoute() {
+      const read = () => (location.hash.replace(/^#\/?/, "") || "overview").split("/");
+      const [route, setRoute] = useState(read);
+      useEffect(() => {
+        const on = () => setRoute(read());
+        window.addEventListener("hashchange", on);
+        return () => window.removeEventListener("hashchange", on);
+      }, []);
+      const go = useCallback((path) => { location.hash = "#/" + path; }, []);
+      return [route, go];
     }
 
-    function OverseerLogin({ onLoginSuccess }) {
+    function StatusPill({ status }) {
+      const s = stageOf(status);
+      return <span className={`pill ${s.cls}`}>{s.label}</span>;
+    }
+
+    function Icon({ name, className = "", fill = false }) {
+      return <span className={`ms ${fill ? "ms-fill" : ""} ${className}`} aria-hidden="true">{name}</span>;
+    }
+
+    // ===================================================================
+    // Sign in
+    // ===================================================================
+    function Login({ onLoginSuccess }) {
       const [email, setEmail] = useState("");
       const [password, setPassword] = useState("");
       const [rememberMe, setRememberMe] = useState(true);
       const [isLoading, setIsLoading] = useState(false);
       const [errorMsg, setErrorMsg] = useState(null);
-      const [forgotMsg, setForgotMsg] = useState(false);
+      const [showHelp, setShowHelp] = useState(false);
 
       const handleSubmit = (e) => {
-        if (e) e.preventDefault();
+        e.preventDefault();
         setErrorMsg(null);
         setIsLoading(true);
-
         fetch("/api/admin/login", {
           method: "POST",
           headers: { "content-type": "application/json" },
@@ -215,172 +168,795 @@
         })
           .then(async (res) => {
             const body = await res.json().catch(() => ({}));
-            if (!res.ok || !body.token) throw new Error(body.error || "Invalid credentials. Please verify your email and password.");
+            if (!res.ok || !body.token) throw new Error(body.error || "Those details don't match. Please try again.");
             (rememberMe ? localStorage : sessionStorage).setItem(TOKEN_KEY, body.token);
             onLoginSuccess();
           })
           .catch((err) => {
             setIsLoading(false);
-            setErrorMsg(err.message === "Failed to fetch" ? "Cannot reach the order server." : err.message);
+            setErrorMsg(err.message === "Failed to fetch" ? "Can't reach the order server." : err.message);
           });
       };
 
+      const field = "w-full rounded-lg border border-cream-line bg-white px-3.5 py-2.5 text-sm text-ink placeholder-ink-faint focus:border-olive focus:ring-1 focus:ring-olive";
+
       return (
-        <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4 sm:p-6 font-sans selection:bg-rose-100 selection:text-rose-950">
-          
-          {/* Main Clean Card */}
-          <div className="w-full max-w-[430px] bg-white border border-neutral-200/90 rounded-2xl p-8 sm:p-10 shadow-[0_4px_24px_rgba(0,0,0,0.03)] flex flex-col items-center">
-            
-            {/* Lock Icon */}
-            <div className="w-10 h-10 rounded-xl bg-[#fceded] flex items-center justify-center text-[#8c2938] mb-4">
-              <span className="material-symbols-outlined text-lg">lock</span>
+        <div className="min-h-screen grid lg:grid-cols-2">
+          <div className="hidden lg:block relative bg-night">
+            <img src="Images/walawwa compressed/CWS (8).jpg" alt="" className="absolute inset-0 w-full h-full object-cover opacity-70" />
+            <div className="absolute inset-0 bg-gradient-to-t from-night via-night/30 to-transparent" />
+            <div className="absolute bottom-10 left-10 right-10 text-cream">
+              <p className="text-[11px] uppercase tracking-[0.3em] text-gold">Cintamani Linens</p>
+              <p className="font-serif text-5xl leading-none mt-3">Artistry <em>in Linen</em></p>
             </div>
+          </div>
 
-            {/* Title */}
-            <h2 className="font-serif-cintamani text-[32px] sm:text-[34px] font-normal text-neutral-900 tracking-tight text-center">
-              Sign In
-            </h2>
+          <div className="flex items-center justify-center p-6">
+            <div className="w-full max-w-sm">
+              <img src="downloaded_images/logo.png" alt="" className="w-14 h-14 mb-6 invert opacity-80" />
+              <h1 className="font-serif text-4xl text-ink">Welcome back</h1>
+              <p className="text-sm text-ink-soft mt-1 mb-8">Sign in to manage orders.</p>
 
-            {/* Subtitle */}
-            <p className="text-xs sm:text-[13px] text-neutral-500 text-center mt-1.5 mb-7">
-              Enter your credentials to access the console.
-            </p>
-
-            {/* Form */}
-            <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
-              
-              {/* Field: EMAIL / USERNAME */}
-              <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5 text-left">
-                  EMAIL / USERNAME
+              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                <label className="block">
+                  <span className="block text-xs font-semibold text-ink-soft mb-1.5">Email</span>
+                  <input type="text" autoComplete="username" required value={email} onChange={(e) => setEmail(e.target.value)} className={field} />
                 </label>
-                <input
-                  type="text"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@cintamani.lk"
-                  className="w-full bg-[#fbf0e8] border border-transparent rounded-xl px-4 py-3 text-sm text-neutral-900 placeholder-neutral-400 focus:outline-none focus:border-rose-900/30 focus:bg-[#f8ede4] transition-colors"
-                />
-              </div>
-
-              {/* Field: PASSWORD */}
-              <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">
-                    PASSWORD
-                  </label>
-                  <button
-                    type="button"
-                    onClick={() => setForgotMsg(!forgotMsg)}
-                    className="text-xs text-[#8c2938] hover:text-[#701e2a] font-medium hover:underline cursor-pointer"
-                  >
-                    Forgot password?
-                  </button>
-                </div>
-                <input
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="•••••••••••••••••"
-                  className="w-full bg-[#fbf0e8] border border-transparent rounded-xl px-4 py-3 text-sm text-neutral-900 placeholder-neutral-400 focus:outline-none focus:border-rose-900/30 focus:bg-[#f8ede4] transition-colors font-mono font-mono-code tracking-widest"
-                />
-              </div>
-
-              {/* Forgot password hint */}
-              {forgotMsg && (
-                <div className="p-3 rounded-xl bg-[#fdf5f0] border border-[#f5ded0] text-xs text-neutral-700 leading-relaxed">
-                  Admin sign-in is set in Netlify (environment variables <code className="font-mono">ADMIN_EMAIL</code> and <code className="font-mono">ADMIN_PASSWORD</code>). Ask the site owner to reset them there.
-                </div>
-              )}
-
-              {/* Remember Me Checkbox */}
-              <div className="pt-0.5">
-                <label className="flex items-center gap-2.5 cursor-pointer text-xs text-neutral-600 font-medium select-none">
-                  <input
-                    type="checkbox"
-                    checked={rememberMe}
-                    onChange={(e) => setRememberMe(e.target.checked)}
-                    className="w-4 h-4 rounded text-[#8c2938] focus:ring-rose-900 border-neutral-300 accent-[#8c2938] cursor-pointer"
-                  />
-                  <span>Remember me</span>
+                <label className="block">
+                  <span className="flex items-center justify-between text-xs font-semibold text-ink-soft mb-1.5">
+                    Password
+                    <button type="button" onClick={() => setShowHelp(!showHelp)} className="font-medium text-olive hover:underline">Forgot?</button>
+                  </span>
+                  <input type="password" autoComplete="current-password" required value={password} onChange={(e) => setPassword(e.target.value)} className={field} />
                 </label>
-              </div>
 
-              {/* Error Message */}
-              {errorMsg && (
-                <div className="p-2.5 rounded-xl bg-red-50 border border-red-200 text-red-900 text-xs flex items-center gap-2 animate-shake">
-                  <span className="material-symbols-outlined text-sm text-red-700">error</span>
-                  <span>{errorMsg}</span>
-                </div>
-              )}
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full bg-[#8c2938] hover:bg-[#781f2d] active:scale-[0.99] text-white py-3.5 rounded-xl font-bold text-sm tracking-wide transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75 mt-2"
-              >
-                {isLoading ? (
-                  <>
-                    <span className="material-symbols-outlined text-base animate-spin">progress_activity</span>
-                    <span>Signing In...</span>
-                  </>
-                ) : (
-                  <>
-                    <span>Sign In</span>
-                    <span className="material-symbols-outlined text-base">arrow_forward</span>
-                  </>
+                {showHelp && (
+                  <p className="text-xs leading-relaxed text-ink-soft bg-gold-pale border border-gold-light rounded-lg p-3">
+                    The admin sign-in is set by whoever manages the website hosting (<code>ADMIN_EMAIL</code> and <code>ADMIN_PASSWORD</code>). Ask them to reset it.
+                  </p>
                 )}
-              </button>
-            </form>
 
+                <label className="flex items-center gap-2 text-sm text-ink-soft select-none cursor-pointer">
+                  <input type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} className="rounded border-cream-line text-olive focus:ring-olive" />
+                  Keep me signed in on this computer
+                </label>
+
+                {errorMsg && (
+                  <p className="flex items-center gap-2 text-sm text-red-800 bg-red-50 border border-red-200 rounded-lg px-3 py-2.5">
+                    <Icon name="error" className="text-base" /> {errorMsg}
+                  </p>
+                )}
+
+                <button type="submit" disabled={isLoading} className="mt-2 w-full rounded-lg bg-ink hover:bg-olive text-cream py-3 text-sm font-semibold transition-colors disabled:opacity-70 flex items-center justify-center gap-2">
+                  {isLoading ? <><Icon name="progress_activity" className="text-base animate-spin" /> Signing in…</> : <>Sign in <Icon name="arrow_forward" className="text-base" /></>}
+                </button>
+              </form>
+            </div>
           </div>
-
-          {/* Minimal Footer */}
-          <div className="mt-8 text-xs text-neutral-400 text-center font-normal">
-            © Cintamani Heirloom Linen
-          </div>
-
         </div>
       );
     }
 
-    function App() {
-      // Authentication State (signed token from /api/admin/login)
-      const [isAuthenticated, setIsAuthenticated] = useState(() => {
-        const params = new URLSearchParams(window.location.search);
-        if (params.get("logout") === "true") { clearToken(); return false; }
-        return Boolean(getToken());
-      });
+    // ===================================================================
+    // Layout pieces
+    // ===================================================================
+    function Sidebar({ route, go, counts, open, onClose, onLogout }) {
+      const [view, sub] = route;
+      const Item = ({ to, icon, label, count, active, alert }) => (
+        <a
+          href={"#/" + to}
+          onClick={onClose}
+          className={`group flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
+            active ? "bg-night-2 text-cream" : "text-cream/65 hover:text-cream hover:bg-night-2/60"
+          }`}
+        >
+          <span className={`w-0.5 h-5 -ml-3 mr-0.5 rounded-full ${active ? "bg-gold" : "bg-transparent"}`} />
+          <Icon name={icon} className={`text-[19px] ${active ? "text-gold" : "text-cream/50 group-hover:text-cream/80"}`} />
+          <span className="flex-1">{label}</span>
+          {count !== undefined && count > 0 && (
+            <span className={`min-w-[22px] text-center rounded-full px-1.5 py-0.5 text-[11px] font-semibold ${alert ? "bg-gold text-night" : "bg-night-line text-cream/70"}`}>{count}</span>
+          )}
+        </a>
+      );
 
-      const handleLogout = () => {
-        clearToken();
-        setIsAuthenticated(false);
+      return (
+        <>
+          {open && <div className="fixed inset-0 bg-black/40 z-30 lg:hidden" onClick={onClose} />}
+          <aside className={`fixed inset-y-0 left-0 z-40 w-64 bg-night border-r border-night-line flex flex-col transition-transform lg:translate-x-0 ${open ? "translate-x-0" : "-translate-x-full"}`}>
+            <div className="flex items-center gap-3 px-5 h-16 border-b border-night-line">
+              <img src="downloaded_images/logo.png" alt="" className="w-8 h-8" />
+              <div className="leading-tight">
+                <p className="font-serif text-lg text-cream">Cintamani <em>Linens</em></p>
+                <p className="text-[10px] uppercase tracking-[0.22em] text-gold/80">Admin</p>
+              </div>
+            </div>
+
+            <nav className="flex-1 overflow-y-auto px-3 py-5 flex flex-col gap-6">
+              <div className="flex flex-col gap-0.5">
+                <Item to="overview" icon="dashboard" label="Overview" active={view === "overview"} />
+                <Item to="orders" icon="receipt" label="All orders" count={counts.all} active={view === "orders" && !sub} />
+                <Item to="customers" icon="group" label="Customers" active={view === "customers"} />
+              </div>
+
+              <div>
+                <p className="px-3 mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-cream/35">Order stages</p>
+                <div className="flex flex-col gap-0.5">
+                  {STAGES.map((s) => (
+                    <Item key={s.slug} to={"orders/" + s.slug} icon={s.icon} label={s.label} count={counts[s.value]} alert={s.value === "Payment Pending"} active={view === "orders" && sub === s.slug} />
+                  ))}
+                </div>
+              </div>
+            </nav>
+
+            <div className="px-3 py-4 border-t border-night-line flex flex-col gap-0.5">
+              {/* the public website, in a new tab so the admin stays open */}
+              <a href="index.html" target="_blank" rel="noopener" title="Open the website in a new tab"
+                className="group flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-cream/65 hover:text-cream hover:bg-night-2/60">
+                <Icon name="home" className="text-[19px] text-cream/50 group-hover:text-gold" />
+                <span className="flex-1">Home</span>
+                <Icon name="open_in_new" className="text-[16px] text-cream/35 group-hover:text-cream/70" />
+              </a>
+              <button onClick={onLogout} className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-cream/65 hover:text-cream hover:bg-night-2/60 text-left">
+                <Icon name="logout" className="text-[19px] text-cream/50" /> Sign out
+              </button>
+            </div>
+          </aside>
+        </>
+      );
+    }
+
+    function TopBar({ title, subtitle, onMenu, onRefresh, syncedAt, refreshing, back }) {
+      return (
+        <header className="sticky top-0 z-20 bg-cream/95 backdrop-blur border-b border-cream-line">
+          <div className="flex items-center gap-3 px-4 sm:px-8 h-16">
+            <button onClick={onMenu} className="lg:hidden -ml-1 p-2 rounded-lg hover:bg-cream-line/60" aria-label="Open menu"><Icon name="menu" /></button>
+            {back && (
+              <a href={back} className="p-2 -ml-2 rounded-lg hover:bg-cream-line/60 text-ink-soft" aria-label="Back"><Icon name="arrow_back" /></a>
+            )}
+            <div className="flex-1 min-w-0">
+              <h1 className="font-serif text-2xl leading-none text-ink truncate">{title}</h1>
+              {subtitle && <p className="text-xs text-ink-faint mt-1 truncate">{subtitle}</p>}
+            </div>
+            <span className="hidden sm:block text-xs text-ink-faint">{syncedAt ? `Updated ${fmtTime(syncedAt)}` : ""}</span>
+            <button onClick={onRefresh} className="flex items-center gap-1.5 rounded-lg border border-cream-line bg-white px-3 py-1.5 text-xs font-medium text-ink-soft hover:border-olive hover:text-olive transition-colors">
+              <Icon name="refresh" className={`text-base ${refreshing ? "animate-spin" : ""}`} /> Refresh
+            </button>
+          </div>
+        </header>
+      );
+    }
+
+    const Card = ({ children, className = "" }) => (
+      <section className={`bg-cream-card border border-cream-line rounded-xl ${className}`}>{children}</section>
+    );
+    const CardHead = ({ icon, title, right }) => (
+      <div className="flex items-center gap-2 px-5 py-3.5 border-b border-cream-line">
+        {icon && <Icon name={icon} className="text-lg text-olive" />}
+        <h2 className="text-sm font-semibold text-ink flex-1">{title}</h2>
+        {right}
+      </div>
+    );
+
+    function Empty({ icon, text }) {
+      return (
+        <div className="flex flex-col items-center justify-center text-center py-14 px-6 text-ink-faint">
+          <Icon name={icon} className="text-4xl mb-2 text-cream-line" />
+          <p className="text-sm">{text}</p>
+        </div>
+      );
+    }
+
+    // ===================================================================
+    // Overview
+    // ===================================================================
+    function Overview({ orders, counts, go }) {
+      const now = new Date();
+      const month = orders.filter((o) => {
+        const d = new Date(o.createdAt);
+        return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear() && o.status !== "Payment Pending";
+      });
+      const revenue = month.reduce((s, o) => s + (o.total || 0), 0);
+
+      const toVerify = orders.filter((o) => o.status === "Payment Pending").sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+      const packedNoTracking = orders.filter((o) => o.status === "Packed & Ready" && !o.deliveryBarcode);
+      const attention = [
+        ...toVerify.map((o) => ({ o, why: "Check the payment slip", icon: "receipt_long" })),
+        ...packedNoTracking.map((o) => ({ o, why: "Add tracking number and dispatch", icon: "local_shipping" }))
+      ];
+
+      const Stat = ({ label, value, hint, icon, to, tone }) => (
+        <a href={"#/" + to} className="group bg-cream-card border border-cream-line rounded-xl p-5 hover:border-olive transition-colors">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-medium text-ink-soft">{label}</span>
+            <span className={`w-8 h-8 rounded-lg grid place-items-center ${tone}`}><Icon name={icon} className="text-lg" /></span>
+          </div>
+          <p className="font-serif text-4xl text-ink mt-2 leading-none">{value}</p>
+          <p className="text-xs text-ink-faint mt-2 group-hover:text-olive">{hint} →</p>
+        </a>
+      );
+
+      return (
+        <div className="flex flex-col gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+            <Stat label="Payments to verify" value={counts["Payment Pending"] || 0} hint="Review slips" icon="receipt_long" to="orders/verify" tone="bg-[#fbecc8] text-[#7a4f00]" />
+            <Stat label="Being tailored" value={(counts["Accepted"] || 0) + (counts["In Production"] || 0)} hint="See accepted & tailoring" icon="content_cut" to="orders/tailoring" tone="bg-[#f5e4d8] text-[#7a3e1d]" />
+            <Stat label="Ready to dispatch" value={counts["Packed & Ready"] || 0} hint="See packed orders" icon="inventory_2" to="orders/packed" tone="bg-[#dfecee] text-[#1f4f58]" />
+            <Stat label={`Confirmed sales · ${now.toLocaleDateString("en-GB", { month: "long" })}`} value={revenue ? Math.round(revenue).toLocaleString("en-LK") : "0"} hint={`LKR · ${month.length} order${month.length === 1 ? "" : "s"}`} icon="payments" to="orders" tone="bg-olive-light text-olive-dark" />
+          </div>
+
+          <div className="grid grid-cols-1 xl:grid-cols-5 gap-6 items-start">
+            <Card className="xl:col-span-3">
+              <CardHead icon="notifications" title="Needs your attention" right={<span className="text-xs text-ink-faint">{attention.length} item{attention.length === 1 ? "" : "s"}</span>} />
+              {attention.length === 0 ? (
+                <Empty icon="task_alt" text="You're all caught up. New orders will appear here." />
+              ) : (
+                <ul className="divide-y divide-cream-line">
+                  {attention.map(({ o, why, icon }) => (
+                    <li key={o.orderId + why}>
+                      <a href={"#/order/" + o.orderId} className="flex items-center gap-4 px-5 py-3.5 hover:bg-gold-pale/40">
+                        <span className="w-9 h-9 rounded-full bg-gold-pale text-[#7a4f00] grid place-items-center shrink-0"><Icon name={icon} className="text-lg" /></span>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-semibold text-ink truncate">{why}</p>
+                          <p className="text-xs text-ink-faint truncate">{o.orderId} · {o.customerName} · {o.amount}</p>
+                        </div>
+                        <span className="hidden sm:block text-xs text-ink-faint shrink-0">{ago(o.createdAt)}</span>
+                        <Icon name="chevron_right" className="text-ink-faint" />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </Card>
+
+            <Card className="xl:col-span-2">
+              <CardHead icon="schedule" title="Latest orders" right={<a href="#/orders" className="text-xs font-medium text-olive hover:underline">See all</a>} />
+              {orders.length === 0 ? <Empty icon="inbox" text="No orders yet." /> : (
+                <ul className="divide-y divide-cream-line">
+                  {orders.slice(0, 6).map((o) => (
+                    <li key={o.orderId}>
+                      <a href={"#/order/" + o.orderId} className="flex items-center gap-3 px-5 py-3 hover:bg-gold-pale/40">
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-ink truncate">{o.customerName}</p>
+                          <p className="text-xs text-ink-faint truncate">{o.orderId} · {ago(o.createdAt)}</p>
+                        </div>
+                        <StatusPill status={o.status} />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </Card>
+          </div>
+
+          <Card>
+            <CardHead icon="route" title="Orders by stage" />
+            <div className="grid grid-cols-2 sm:grid-cols-5">
+              {STAGES.map((s, i) => (
+                <a key={s.slug} href={"#/orders/" + s.slug} className={`px-5 py-4 hover:bg-gold-pale/40 ${i ? "sm:border-l" : ""} border-cream-line`}>
+                  <span className={`pill ${s.cls}`}>{s.label}</span>
+                  <p className="font-serif text-3xl text-ink mt-2 leading-none">{counts[s.value] || 0}</p>
+                </a>
+              ))}
+            </div>
+          </Card>
+        </div>
+      );
+    }
+
+    // ===================================================================
+    // Orders list
+    // ===================================================================
+    function OrdersList({ orders, stage, query, setQuery }) {
+      const list = useMemo(() => {
+        const q = query.trim().toLowerCase();
+        return orders.filter((o) => {
+          if (stage && o.status !== stage.value) return false;
+          if (!q) return true;
+          return [o.orderId, o.customerName, o.contactNumber, o.email, itemsLabel(o)].join(" ").toLowerCase().includes(q);
+        });
+      }, [orders, stage, query]);
+
+      const tabs = [{ slug: "", label: "All" }, ...STAGES];
+
+      return (
+        <Card>
+          <div className="flex flex-col gap-3 px-5 pt-4 pb-3 border-b border-cream-line">
+            <div className="flex gap-1 overflow-x-auto -mx-1 px-1">
+              {tabs.map((t) => {
+                const active = (stage ? stage.slug : "") === t.slug;
+                const n = t.slug ? orders.filter((o) => o.status === t.value).length : orders.length;
+                return (
+                  <a key={t.slug || "all"} href={"#/orders" + (t.slug ? "/" + t.slug : "")}
+                    className={`shrink-0 rounded-lg px-3 py-1.5 text-sm transition-colors ${active ? "bg-ink text-cream" : "text-ink-soft hover:bg-cream-line/60"}`}>
+                    {t.label} <span className={`ml-1 text-xs ${active ? "text-gold-light" : "text-ink-faint"}`}>{n}</span>
+                  </a>
+                );
+              })}
+            </div>
+            <div className="relative">
+              <Icon name="search" className="absolute left-3 top-1/2 -translate-y-1/2 text-lg text-ink-faint" />
+              <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search by order number, name, phone or piece"
+                className="w-full rounded-lg border border-cream-line bg-white pl-10 pr-9 py-2 text-sm placeholder-ink-faint focus:border-olive focus:ring-1 focus:ring-olive" />
+              {query && <button onClick={() => setQuery("")} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-ink-faint hover:text-ink" aria-label="Clear search"><Icon name="close" className="text-lg" /></button>}
+            </div>
+          </div>
+
+          {list.length === 0 ? (
+            <Empty icon="search_off" text={query ? "No orders match that search." : "No orders at this stage."} />
+          ) : (
+            <>
+              {/* table on larger screens */}
+              <table className="hidden md:table w-full text-sm">
+                <thead>
+                  <tr className="text-left text-xs text-ink-faint">
+                    <th className="font-medium px-5 py-2.5">Order</th>
+                    <th className="font-medium px-3 py-2.5">Customer</th>
+                    <th className="font-medium px-3 py-2.5">Pieces</th>
+                    <th className="font-medium px-3 py-2.5 text-right">Total</th>
+                    <th className="font-medium px-3 py-2.5">Placed</th>
+                    <th className="font-medium px-3 py-2.5">Stage</th>
+                    <th className="w-8" />
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-cream-line border-t border-cream-line">
+                  {list.map((o) => (
+                    <tr key={o.orderId} onClick={() => (location.hash = "#/order/" + o.orderId)} className="cursor-pointer hover:bg-gold-pale/40">
+                      <td className="px-5 py-3 font-semibold text-ink whitespace-nowrap">{o.orderId}</td>
+                      <td className="px-3 py-3">
+                        <p className="text-ink">{o.customerName}</p>
+                        <p className="text-xs text-ink-faint">{o.contactNumber}</p>
+                      </td>
+                      <td className="px-3 py-3 text-ink-soft max-w-[260px] truncate">{itemsLabel(o)}</td>
+                      <td className="px-3 py-3 text-right font-medium text-ink whitespace-nowrap">{o.amount}</td>
+                      <td className="px-3 py-3 text-ink-soft whitespace-nowrap">{fmtDate(o.createdAt)}</td>
+                      <td className="px-3 py-3"><StatusPill status={o.status} /></td>
+                      <td className="pr-4 text-ink-faint"><Icon name="chevron_right" /></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              {/* cards on phones */}
+              <ul className="md:hidden divide-y divide-cream-line">
+                {list.map((o) => (
+                  <li key={o.orderId}>
+                    <a href={"#/order/" + o.orderId} className="block px-5 py-3.5 hover:bg-gold-pale/40">
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="font-semibold text-sm text-ink">{o.orderId}</span>
+                        <StatusPill status={o.status} />
+                      </div>
+                      <p className="text-sm text-ink mt-1">{o.customerName}</p>
+                      <div className="flex items-center justify-between text-xs text-ink-faint mt-0.5">
+                        <span className="truncate pr-3">{itemsLabel(o)}</span>
+                        <span className="font-medium text-ink shrink-0">{o.amount}</span>
+                      </div>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </Card>
+      );
+    }
+
+    // ===================================================================
+    // Customers (built from the orders)
+    // ===================================================================
+    function Customers({ orders, setQuery }) {
+      const [q, setQ] = useState("");
+      const people = useMemo(() => {
+        const map = new Map();
+        orders.forEach((o) => {
+          const key = (o.customerAccount || o.email || o.contactNumber || o.customerName).toLowerCase();
+          const p = map.get(key) || { name: o.customerName, phone: o.contactNumber, email: o.email || o.customerAccount, address: o.shippingAddress, orders: 0, spent: 0, last: o.createdAt };
+          p.orders += 1;
+          if (o.status !== "Payment Pending") p.spent += o.total || 0;
+          if (o.createdAt > p.last) { p.last = o.createdAt; p.name = o.customerName; p.phone = o.contactNumber; p.address = o.shippingAddress; }
+          map.set(key, p);
+        });
+        return [...map.values()].sort((a, b) => b.last.localeCompare(a.last));
+      }, [orders]);
+      const list = people.filter((p) => !q || [p.name, p.phone, p.email].join(" ").toLowerCase().includes(q.toLowerCase()));
+
+      return (
+        <Card>
+          <div className="px-5 py-3 border-b border-cream-line">
+            <div className="relative">
+              <Icon name="search" className="absolute left-3 top-1/2 -translate-y-1/2 text-lg text-ink-faint" />
+              <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search customers"
+                className="w-full rounded-lg border border-cream-line bg-white pl-10 pr-3 py-2 text-sm placeholder-ink-faint focus:border-olive focus:ring-1 focus:ring-olive" />
+            </div>
+          </div>
+          {list.length === 0 ? <Empty icon="group" text="No customers yet." /> : (
+            <ul className="divide-y divide-cream-line">
+              {list.map((p) => (
+                <li key={p.email + p.phone} className="flex flex-wrap items-center gap-x-6 gap-y-2 px-5 py-3.5">
+                  <div className="w-9 h-9 rounded-full bg-olive-light text-olive-dark grid place-items-center text-sm font-semibold shrink-0">
+                    {p.name.split(/\s+/).map((w) => w[0]).slice(0, 2).join("").toUpperCase()}
+                  </div>
+                  <div className="flex-1 min-w-[180px]">
+                    <p className="text-sm font-medium text-ink">{p.name}</p>
+                    <p className="text-xs text-ink-faint">{[p.phone, p.email].filter(Boolean).join(" · ")}</p>
+                  </div>
+                  <div className="text-xs text-ink-soft w-28"><span className="block text-ink-faint">Orders</span>{p.orders}</div>
+                  <div className="text-xs text-ink-soft w-32"><span className="block text-ink-faint">Confirmed spend</span>{lkr(p.spent)}</div>
+                  <div className="text-xs text-ink-soft w-28"><span className="block text-ink-faint">Last order</span>{fmtDate(p.last)}</div>
+                  <div className="flex items-center gap-1.5">
+                    {p.phone && <a href={`https://wa.me/${waNumber(p.phone)}`} target="_blank" rel="noopener" title="WhatsApp" className="p-2 rounded-lg border border-cream-line hover:border-olive hover:text-olive"><Icon name="chat" className="text-lg" /></a>}
+                    <button onClick={() => { setQuery(p.phone || p.name); location.hash = "#/orders"; }} className="rounded-lg border border-cream-line px-3 py-1.5 text-xs font-medium hover:border-olive hover:text-olive">View orders</button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Card>
+      );
+    }
+
+    // ===================================================================
+    // Order detail
+    // ===================================================================
+    // In-site dialog (replaces the browser prompt): pick a reason, adjust the wording, open WhatsApp
+    const RESEND_REASONS = [
+      { label: "Slip is unclear", text: "the photo of the slip is unclear, so we can't read the details" },
+      { label: "Amount doesn't match", text: "the amount on the slip doesn't match the order total" },
+      { label: "Wrong account", text: "the payment seems to have gone to a different account" },
+      { label: "Details cut off", text: "part of the slip (date, amount or reference) is cut off" },
+      { label: "Not received yet", text: "we can't see this payment in our account yet" }
+    ];
+
+    function ResendSlipDialog({ order, onClose }) {
+      const [reason, setReason] = useState(RESEND_REASONS[0].text);
+      const [picked, setPicked] = useState(0);
+      useEffect(() => {
+        const onKey = (e) => { if (e.key === "Escape") onClose(); };
+        document.addEventListener("keydown", onKey);
+        return () => document.removeEventListener("keydown", onKey);
+      }, []);
+
+      const message = `Hello ${order.customerName}, this is Cintamani Linens about your order ${order.orderId} (${order.amount}). ` +
+        `Could you please send us your bank transfer slip again? Reason: ${reason.trim() || "—"}. ` +
+        `You can reply to this message with a clear photo of the slip. Thank you!`;
+
+      const send = () => {
+        window.open(`https://wa.me/${waNumber(order.contactNumber)}?text=${encodeURIComponent(message)}`, "_blank", "noopener");
+        onClose();
       };
 
+      return (
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" onClick={onClose}>
+          <div role="dialog" aria-modal="true" aria-labelledby="resend-title" className="w-full max-w-lg bg-cream-card rounded-xl shadow-xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-start gap-3 px-6 pt-5 pb-4 border-b border-cream-line">
+              <span className="w-9 h-9 rounded-full bg-gold-pale text-[#7a4f00] grid place-items-center shrink-0"><Icon name="restart_alt" className="text-lg" /></span>
+              <div className="flex-1">
+                <h2 id="resend-title" className="font-serif text-2xl leading-tight text-ink">Ask for the slip again</h2>
+                <p className="text-xs text-ink-faint mt-0.5">{order.customerName} · {order.contactNumber} · {order.orderId}</p>
+              </div>
+              <button onClick={onClose} className="p-1.5 -mr-1.5 rounded-lg hover:bg-cream text-ink-faint" aria-label="Close"><Icon name="close" /></button>
+            </div>
+
+            <div className="px-6 py-5 flex flex-col gap-4">
+              <div>
+                <p className="text-xs font-semibold text-ink-soft mb-2">What's wrong with the slip?</p>
+                <div className="flex flex-wrap gap-2">
+                  {RESEND_REASONS.map((r, i) => (
+                    <button key={r.label} type="button" onClick={() => { setPicked(i); setReason(r.text); }}
+                      className={`rounded-full border px-3 py-1.5 text-xs transition-colors ${picked === i ? "bg-ink border-ink text-cream" : "border-cream-line text-ink-soft hover:border-olive hover:text-olive"}`}>
+                      {r.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <label className="block">
+                <span className="block text-xs font-semibold text-ink-soft mb-1.5">Reason (you can edit this)</span>
+                <textarea value={reason} onChange={(e) => { setReason(e.target.value); setPicked(-1); }} rows={2} maxLength={240}
+                  className="w-full rounded-lg border border-cream-line bg-white px-3 py-2 text-sm focus:border-olive focus:ring-1 focus:ring-olive resize-none" />
+              </label>
+
+              <div>
+                <p className="text-xs font-semibold text-ink-soft mb-1.5">Message preview</p>
+                <div className="rounded-lg bg-[#e7f1dd] border border-[#d3e3c4] px-4 py-3 text-sm text-[#1f2b17] leading-relaxed">{message}</div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-2 px-6 py-4 bg-cream border-t border-cream-line">
+              <button onClick={onClose} className="rounded-lg px-4 py-2 text-sm font-medium text-ink-soft hover:bg-cream-line/60">Cancel</button>
+              <button onClick={send} disabled={!reason.trim()} className="flex items-center gap-2 rounded-lg bg-[#2f5d3a] hover:bg-[#244a2d] text-white px-4 py-2 text-sm font-semibold disabled:opacity-50">
+                <Icon name="chat" className="text-base" /> Open in WhatsApp
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function OrderDetail({ order, onSave, toast }) {
+      const [slip, setSlip] = useState({ url: null, type: null, error: null });
+      const [zoom, setZoom] = useState(false);
+      const [tracking, setTracking] = useState(order.deliveryBarcode || "");
+      const [busy, setBusy] = useState(false);
+      const [showStatus, setShowStatus] = useState(false);
+
+      useEffect(() => { setTracking(order.deliveryBarcode || ""); setShowStatus(false); }, [order.orderId]);
+
+      useEffect(() => {
+        let url = null;
+        setSlip({ url: null, type: null, error: null });
+        if (!order.hasSlip) return;
+        api(`/admin/orders/${order.orderId}/slip`)
+          .then(async (res) => { const blob = await res.blob(); url = URL.createObjectURL(blob); setSlip({ url, type: blob.type, error: null }); })
+          .catch((err) => setSlip({ url: null, type: null, error: err.message }));
+        return () => { if (url) URL.revokeObjectURL(url); };
+      }, [order.orderId]);
+
+      const stageIdx = STAGES.findIndex((s) => s.value === order.status);
+      const next = NEXT_STEP[order.status];
+      const needsTracking = next && next.to === "Dispatched";
+
+      const save = async (patch, message) => {
+        setBusy(true);
+        try { await onSave(order.orderId, patch); toast(message); }
+        catch (err) { toast(err.message, true); }
+        finally { setBusy(false); }
+      };
+
+      const advance = () => {
+        if (needsTracking && !tracking.trim()) { toast("Add the courier tracking number first.", true); document.getElementById("tracking").focus(); return; }
+        save({ status: next.to, ...(needsTracking ? { deliveryBarcode: tracking.trim() } : {}) }, `${order.orderId} moved to “${stageOf(next.to).label}”.`);
+      };
+
+      const [reuploadOpen, setReuploadOpen] = useState(false);
+      const askReupload = () => setReuploadOpen(true);
+
+      const notifyCustomer = () => {
+        const s = stageOf(order.status);
+        const lines = {
+          "Payment Pending": "we've received your order and are checking your payment.",
+          "Accepted": "your payment is confirmed and your order is accepted.",
+          "In Production": "your pieces are now being tailored.",
+          "Packed & Ready": "your order is packed and will be dispatched shortly.",
+          "Dispatched": `your order is on its way${order.deliveryBarcode ? ` — tracking number ${order.deliveryBarcode}` : ""}.`
+        };
+        const text = `Hello ${order.customerName}, this is Cintamani Linens. Good news about order ${order.orderId}: ${lines[order.status] || s.label}. Thank you!`;
+        window.open(`https://wa.me/${waNumber(order.contactNumber)}?text=${encodeURIComponent(text)}`, "_blank", "noopener");
+      };
+
+      const Row = ({ label, children }) => (
+        <div className="py-2.5 grid grid-cols-[110px_1fr] gap-3 text-sm">
+          <dt className="text-ink-faint">{label}</dt>
+          <dd className="text-ink break-words">{children}</dd>
+        </div>
+      );
+
+      return (
+        <div className="flex flex-col gap-6">
+          {/* progress + next step */}
+          <Card className="p-5">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
+              <ol className="flex items-center flex-1 min-w-[300px]">
+                {STAGES.map((s, i) => {
+                  const done = i < stageIdx, current = i === stageIdx;
+                  return (
+                    <li key={s.value} className="flex items-center flex-1 last:flex-none">
+                      <div className="flex flex-col items-center gap-1.5">
+                        <span className={`w-8 h-8 rounded-full grid place-items-center border ${current ? "bg-ink border-ink text-gold" : done ? "bg-olive border-olive text-cream" : "bg-white border-cream-line text-ink-faint"}`}>
+                          <Icon name={done ? "check" : s.icon} className="text-[17px]" />
+                        </span>
+                        <span className={`text-[11px] whitespace-nowrap ${current ? "font-semibold text-ink" : "text-ink-faint"}`}>{s.short}</span>
+                      </div>
+                      {i < STAGES.length - 1 && <span className={`flex-1 h-px mx-2 mb-5 ${i < stageIdx ? "bg-olive" : "bg-cream-line"}`} />}
+                    </li>
+                  );
+                })}
+              </ol>
+
+              <div className="flex flex-col items-stretch gap-2 w-full sm:w-auto">
+                {next ? (
+                  <button onClick={advance} disabled={busy} className="flex items-center justify-center gap-2 rounded-lg bg-ink hover:bg-olive text-cream px-5 py-2.5 text-sm font-semibold transition-colors disabled:opacity-60">
+                    <Icon name={next.icon} className="text-lg" /> {next.label}
+                  </button>
+                ) : (
+                  <span className="flex items-center gap-2 rounded-lg bg-olive-light text-olive-dark px-5 py-2.5 text-sm font-semibold"><Icon name="verified" className="text-lg" /> Order complete</span>
+                )}
+                <button onClick={() => setShowStatus(!showStatus)} className="text-xs text-ink-faint hover:text-olive">Change stage manually</button>
+              </div>
+            </div>
+
+            {showStatus && (
+              <div className="mt-4 pt-4 border-t border-cream-line flex flex-wrap items-center gap-2">
+                <span className="text-xs text-ink-soft mr-1">Set stage to:</span>
+                {STAGES.map((s) => (
+                  <button key={s.value} disabled={busy || s.value === order.status}
+                    onClick={() => save({ status: s.value }, `${order.orderId} set to “${s.label}”.`)}
+                    className={`pill ${s.cls} ${s.value === order.status ? "ring-2 ring-ink/30" : "opacity-70 hover:opacity-100"}`}>{s.label}</button>
+                ))}
+              </div>
+            )}
+          </Card>
+
+          <div className="grid grid-cols-1 xl:grid-cols-5 gap-6 items-start">
+            <div className="xl:col-span-3 flex flex-col gap-6">
+              {/* items */}
+              <Card>
+                <CardHead icon="checkroom" title={`Pieces (${pieces(order)})`} />
+                <ul className="divide-y divide-cream-line">
+                  {(order.items || []).map((it, i) => {
+                    const p = PRODUCT[it.id];
+                    return (
+                      <li key={i} className="flex items-center gap-4 px-5 py-3.5">
+                        {p ? <img src={p.image} alt="" className="w-14 h-14 rounded-lg object-cover object-top border border-cream-line" /> : <div className="w-14 h-14 rounded-lg bg-cream" />}
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-ink">{it.name}</p>
+                          <p className="text-xs text-ink-faint">{it.colour} · Size <strong className="text-ink">{it.size}</strong> · Qty {it.qty}</p>
+                        </div>
+                        <span className="text-sm text-ink whitespace-nowrap">{lkr(it.lineTotal)}</span>
+                      </li>
+                    );
+                  })}
+                </ul>
+                <dl className="px-5 py-3 border-t border-cream-line text-sm">
+                  <div className="flex justify-between py-1 text-ink-soft"><dt>Subtotal</dt><dd>{lkr(order.subtotal)}</dd></div>
+                  <div className="flex justify-between py-1 text-ink-soft"><dt>Delivery</dt><dd>{lkr(order.deliveryFee)}</dd></div>
+                  <div className="flex justify-between pt-2 mt-1 border-t border-cream-line font-semibold text-ink"><dt>Total</dt><dd>{order.amount}</dd></div>
+                </dl>
+              </Card>
+
+              {/* payment slip */}
+              <Card>
+                <CardHead icon="account_balance" title="Payment slip"
+                  right={slip.url && <button onClick={() => setZoom(true)} className="flex items-center gap-1 text-xs font-medium text-olive hover:underline"><Icon name="open_in_full" className="text-base" /> Enlarge</button>} />
+                <div className="p-5 flex flex-col sm:flex-row gap-5">
+                  <button type="button" onClick={() => slip.url && setZoom(true)} className="sm:w-56 h-64 shrink-0 rounded-lg border border-cream-line bg-cream overflow-hidden grid place-items-center cursor-zoom-in">
+                    {slip.url && slip.type === "application/pdf" ? (
+                      <span className="flex flex-col items-center gap-1 text-sm text-ink-soft"><Icon name="picture_as_pdf" className="text-4xl text-olive" /> PDF slip</span>
+                    ) : slip.url ? (
+                      <img src={slip.url} alt={`Payment slip for ${order.orderId}`} className="w-full h-full object-cover object-top" />
+                    ) : (
+                      <span className="text-xs text-ink-faint px-4 text-center">{slip.error ? `Couldn't load slip: ${slip.error}` : order.hasSlip ? "Loading slip…" : "No slip uploaded"}</span>
+                    )}
+                  </button>
+                  <div className="flex-1 flex flex-col">
+                    <div className="rounded-lg bg-gold-pale border border-gold-light px-4 py-3 text-sm">
+                      <p className="text-xs text-ink-soft">The slip should show</p>
+                      <p className="font-serif text-2xl text-ink leading-tight">{order.amount}</p>
+                      <p className="text-xs text-ink-soft">paid to <strong>{order.receiptDetails?.account || "Cintamani Linens"}</strong></p>
+                    </div>
+                    <dl className="divide-y divide-cream-line mt-2">
+                      <Row label="Paid from">{order.receiptDetails?.bank || "—"}</Row>
+                      <Row label="Reference">{order.receiptDetails?.reference || "—"}</Row>
+                      <Row label="Uploaded">{fmtDate(order.createdAt)} · {fmtTime(order.createdAt)}</Row>
+                    </dl>
+                    {order.status === "Payment Pending" && (
+                      <button onClick={askReupload} className="mt-auto self-start flex items-center gap-1.5 rounded-lg border border-cream-line px-3 py-2 text-xs font-medium text-ink-soft hover:border-olive hover:text-olive">
+                        <Icon name="restart_alt" className="text-base" /> Ask customer to resend the slip
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </Card>
+            </div>
+
+            <div className="xl:col-span-2 flex flex-col gap-6">
+              {/* customer */}
+              <Card>
+                <CardHead icon="person" title="Customer" />
+                <div className="px-5 pt-2 pb-4">
+                  <dl className="divide-y divide-cream-line">
+                    <Row label="Name">{order.customerName}</Row>
+                    <Row label="Phone"><a href={`tel:${order.contactNumber}`} className="hover:text-olive">{order.contactNumber}</a></Row>
+                    {(order.email || order.customerAccount) && <Row label="Email"><a href={`mailto:${order.email || order.customerAccount}`} className="hover:text-olive">{order.email || order.customerAccount}</a></Row>}
+                    <Row label="Deliver to"><span className="whitespace-pre-line">{order.shippingAddress}</span></Row>
+                    {order.notes && <Row label="Note">{order.notes}</Row>}
+                  </dl>
+                  <div className="grid grid-cols-2 gap-2 mt-3">
+                    <a href={`https://wa.me/${waNumber(order.contactNumber)}`} target="_blank" rel="noopener" className="flex items-center justify-center gap-1.5 rounded-lg bg-[#2f5d3a] hover:bg-[#244a2d] text-white px-3 py-2 text-xs font-semibold">
+                      <Icon name="chat" className="text-base" /> WhatsApp
+                    </a>
+                    <button onClick={notifyCustomer} className="flex items-center justify-center gap-1.5 rounded-lg border border-cream-line px-3 py-2 text-xs font-medium text-ink-soft hover:border-olive hover:text-olive">
+                      <Icon name="campaign" className="text-base" /> Send stage update
+                    </button>
+                  </div>
+                </div>
+              </Card>
+
+              {/* delivery */}
+              <Card>
+                <CardHead icon="local_shipping" title="Delivery" />
+                <div className="p-5 flex flex-col gap-3">
+                  <label className="block">
+                    <span className="block text-xs text-ink-faint mb-1.5">Courier tracking number</span>
+                    <input id="tracking" value={tracking} onChange={(e) => setTracking(e.target.value)} placeholder="e.g. DOMEX 9920148"
+                      disabled={stageIdx < 3}
+                      className="w-full rounded-lg border border-cream-line bg-white px-3 py-2 text-sm placeholder-ink-faint focus:border-olive focus:ring-1 focus:ring-olive disabled:bg-cream disabled:text-ink-faint" />
+                  </label>
+                  {stageIdx < 3 ? (
+                    <p className="text-xs text-ink-faint">You can add this once the order is packed.</p>
+                  ) : (
+                    <button onClick={() => save({ deliveryBarcode: tracking.trim() || null }, "Tracking number saved. The customer sees it on their account.")}
+                      disabled={busy || (tracking.trim() || null) === (order.deliveryBarcode || null)}
+                      className="self-start rounded-lg border border-ink px-4 py-2 text-xs font-semibold text-ink hover:bg-ink hover:text-cream transition-colors disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-ink">
+                      Save tracking number
+                    </button>
+                  )}
+                </div>
+              </Card>
+
+              <Card className="px-5 py-4 text-xs text-ink-faint flex flex-col gap-1">
+                <p>Placed {fmtDate(order.createdAt)} at {fmtTime(order.createdAt)}</p>
+                {order.updatedAt && <p>Last updated {ago(order.updatedAt)}</p>}
+                {order.customerAccount && <p>Ordered from account {order.customerAccount}</p>}
+              </Card>
+            </div>
+          </div>
+
+          {reuploadOpen && <ResendSlipDialog order={order} onClose={() => setReuploadOpen(false)} />}
+
+          {/* slip lightbox */}
+          {zoom && (
+            <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4" onClick={() => setZoom(false)}>
+              <div className="bg-cream-card rounded-xl w-full max-w-3xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
+                <div className="flex items-center justify-between px-5 py-3 border-b border-cream-line">
+                  <p className="text-sm font-semibold">Payment slip · {order.orderId} · expected {order.amount}</p>
+                  <button onClick={() => setZoom(false)} className="p-1.5 rounded-lg hover:bg-cream" aria-label="Close"><Icon name="close" /></button>
+                </div>
+                <div className="bg-cream p-3 max-h-[78vh] overflow-auto grid place-items-center">
+                  {slip.type === "application/pdf"
+                    ? <iframe src={slip.url} title="Slip PDF" className="w-full h-[72vh] bg-white rounded" />
+                    : <img src={slip.url} alt="Payment slip, enlarged" className="max-h-[74vh] w-auto object-contain" />}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // ===================================================================
+    // App shell
+    // ===================================================================
+    function App() {
+      const [isAuthenticated, setIsAuthenticated] = useState(() => {
+        if (new URLSearchParams(location.search).get("logout") === "true") { clearToken(); return false; }
+        return Boolean(getToken());
+      });
       const [orders, setOrders] = useState([]);
       const [loadState, setLoadState] = useState("idle"); // idle | loading | ready | error
       const [loadError, setLoadError] = useState(null);
-      const [selectedOrderId, setSelectedOrderId] = useState(null);
+      const [syncedAt, setSyncedAt] = useState(null);
+      const [refreshing, setRefreshing] = useState(false);
+      const [menuOpen, setMenuOpen] = useState(false);
+      const [query, setQuery] = useState("");
+      const [toastMsg, setToastMsg] = useState(null);
+      const [route, go] = useRoute();
 
-      const handleApiError = (err) => {
-        if (err instanceof AuthError) { setIsAuthenticated(false); return; }
-        triggerToast(err.message);
+      const toast = (text, isError = false) => {
+        setToastMsg({ text, isError, id: Date.now() });
       };
+      useEffect(() => {
+        if (!toastMsg) return;
+        const t = setTimeout(() => setToastMsg(null), 4500);
+        return () => clearTimeout(t);
+      }, [toastMsg]);
+
+      const logout = () => { clearToken(); setIsAuthenticated(false); };
 
       const loadOrders = async () => {
+        setRefreshing(true);
         setLoadState((s) => (s === "ready" ? "ready" : "loading"));
         try {
           const data = await (await api("/admin/orders")).json();
           setOrders(data.orders);
-          setSelectedOrderId((id) => (id && data.orders.some((o) => o.orderId === id) ? id : data.orders[0]?.orderId || null));
           setLoadState("ready");
+          setSyncedAt(new Date().toISOString());
         } catch (err) {
           if (err instanceof AuthError) { setIsAuthenticated(false); return; }
           setLoadError(err.message);
-          setLoadState("error");
+          setLoadState((s) => (s === "ready" ? "ready" : "error"));
+          toast(`Couldn't refresh orders: ${err.message}`, true);
+        } finally {
+          setRefreshing(false);
         }
       };
 
@@ -391,860 +967,84 @@
         return () => clearInterval(timer);
       }, [isAuthenticated]);
 
-      const replaceOrder = (updated) => setOrders((prev) => prev.map((o) => (o.orderId === updated.orderId ? updated : o)));
-      const saveOrder = async (patch) =>
-        (await (await api(`/admin/orders/${currentOrder.orderId}`, {
-          method: "PATCH",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify(patch)
-        })).json()).order;
-
-      const [searchQuery, setSearchQuery] = useState("");
-      const [statusFilter, setStatusFilter] = useState("ALL");
-      const [isZoomModalOpen, setIsZoomModalOpen] = useState(false);
-      const [toastMessage, setToastMessage] = useState(null);
-      const [isBarcodeSaved, setIsBarcodeSaved] = useState(false);
-
-      // Selected Order lookup
-      const currentOrder = useMemo(() => {
-        return orders.find(o => o.orderId === selectedOrderId) || orders[0];
-      }, [orders, selectedOrderId]);
-
-      // Uploaded slip (fetched with the admin token, shown via a local object URL)
-      const [slip, setSlip] = useState({ url: null, type: null });
-      useEffect(() => {
-        let url = null;
-        setSlip({ url: null, type: null });
-        if (!isAuthenticated || !currentOrder || !currentOrder.hasSlip) return;
-        api(`/admin/orders/${currentOrder.orderId}/slip`)
-          .then(async (res) => {
-            const blob = await res.blob();
-            url = URL.createObjectURL(blob);
-            setSlip({ url, type: blob.type });
-          })
-          .catch(handleApiError);
-        return () => { if (url) URL.revokeObjectURL(url); };
-      }, [currentOrder?.orderId, isAuthenticated]);
-
-      // Local draft state for bottom action bar
-      const [statusDraft, setStatusDraft] = useState(currentOrder ? currentOrder.status : "Payment Pending");
-      const [barcodeDraft, setBarcodeDraft] = useState(currentOrder ? (currentOrder.deliveryBarcode || "") : "");
-
-      // Synchronize draft when selected order changes
-      useEffect(() => {
-        if (currentOrder) {
-          setStatusDraft(currentOrder.status);
-          setBarcodeDraft(currentOrder.deliveryBarcode || "");
-          setIsBarcodeSaved(false);
+      const saveOrder = async (id, patch) => {
+        try {
+          const { order } = await (await api(`/admin/orders/${id}`, {
+            method: "PATCH",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify(patch)
+          })).json();
+          setOrders((prev) => prev.map((o) => (o.orderId === order.orderId ? order : o)));
+          return order;
+        } catch (err) {
+          if (err instanceof AuthError) setIsAuthenticated(false);
+          throw err;
         }
-      }, [currentOrder?.orderId]);
+      };
 
-      // Daily Summaries Calculation
-      const summaries = useMemo(() => {
-        const total = orders.length;
-        const pendingVerification = orders.filter(o => o.status === "Payment Pending").length;
-        const readyForDispatch = orders.filter(o => o.status === "Packed & Ready").length;
-        const inProduction = orders.filter(o => o.status === "In Production").length;
-        return { total, pendingVerification, readyForDispatch, inProduction };
+      const counts = useMemo(() => {
+        const c = { all: orders.length };
+        STAGES.forEach((s) => { c[s.value] = orders.filter((o) => o.status === s.value).length; });
+        return c;
       }, [orders]);
 
-      // Filtered queue
-      const filteredOrders = useMemo(() => {
-        return orders.filter(o => {
-          const matchesSearch = o.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                                o.orderId.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                                o.garmentType.toLowerCase().includes(searchQuery.toLowerCase());
-          const matchesStatus = statusFilter === "ALL" || o.status === statusFilter;
-          return matchesSearch && matchesStatus;
-        });
-      }, [orders, searchQuery, statusFilter]);
+      // keep the browser tab title useful: (3) when slips are waiting
+      useEffect(() => {
+        const n = counts["Payment Pending"] || 0;
+        document.title = `${n ? `(${n}) ` : ""}Cintamani — Admin`;
+      }, [counts]);
 
-      // Show toast alert
-      const triggerToast = (msg) => {
-        setToastMessage(msg);
-        setTimeout(() => setToastMessage(null), 4500);
-      };
+      if (!isAuthenticated) return <Login onLoginSuccess={() => setIsAuthenticated(true)} />;
 
-      // Handler: Verify Payment & Accept Order
-      const handleVerifyPayment = async () => {
-        try {
-          const updated = await saveOrder({ status: "Accepted" });
-          replaceOrder(updated);
-          setStatusDraft("Accepted");
-          triggerToast(`Order #${updated.orderId} accepted. Let ${updated.customerName} know via WhatsApp.`);
-        } catch (err) { handleApiError(err); }
-      };
+      const [view, sub] = route;
+      let title = "Overview", subtitle = "What needs doing today", back = null, body = null;
 
-      // Handler: Request Re-upload — opens WhatsApp with a prepared message
-      const handleRequestReupload = () => {
-        const defaultReason = "the slip is unclear or the amount does not match";
-        const reason = window.prompt(
-          `Reason for asking ${currentOrder.customerName} to re-upload the slip:`,
-          defaultReason
-        );
-        if (!reason) return;
-        const text = `Hello ${currentOrder.customerName}, this is Cintamani Linens about order ${currentOrder.orderId}. ` +
-          `Could you please send us your bank transfer slip again? Reason: ${reason}. Thank you.`;
-        window.open(`https://wa.me/${currentOrder.contactNumber.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(text)}`, "_blank", "noopener");
-      };
-
-      // Handler: Save status + delivery barcode
-      const handleSaveAndUpdate = async () => {
-        try {
-          const updated = await saveOrder({
-            status: statusDraft,
-            deliveryBarcode: barcodeDraft.trim() ? barcodeDraft.trim() : null
-          });
-          replaceOrder(updated);
-          setIsBarcodeSaved(true);
-          triggerToast(`Order #${updated.orderId} saved: "${updated.status}"${updated.deliveryBarcode ? ` • Barcode: ${updated.deliveryBarcode}` : ""}.`);
-          setTimeout(() => setIsBarcodeSaved(false), 3000);
-        } catch (err) { handleApiError(err); }
-      };
-
-      // Rule: Barcode editable only if "Packed & Ready" or "Dispatched"
-      const isBarcodeEditable = statusDraft === "Packed & Ready" || statusDraft === "Dispatched";
-
-      if (!isAuthenticated) {
-        return <OverseerLogin onLoginSuccess={() => setIsAuthenticated(true)} />;
-      }
-
-      if (!currentOrder) {
-        const message = loadState === "error"
-          ? `Could not load orders: ${loadError}`
-          : loadState === "ready" ? "No orders yet. New orders from the shop will appear here." : "Loading orders…";
-        return (
-          <div className="min-h-screen bg-white flex flex-col items-center justify-center gap-4 p-6 font-sans text-neutral-700">
-            <span className="material-symbols-outlined text-rose-900 text-4xl">inventory_2</span>
-            <p className="text-sm">{message}</p>
-            <div className="flex gap-2">
-              <button onClick={loadOrders} className="px-3 py-1.5 rounded-lg border border-rose-900/30 text-rose-900 text-xs font-semibold">Refresh</button>
-              <button onClick={handleLogout} className="px-3 py-1.5 rounded-lg border border-rose-900/20 text-rose-900 text-xs font-semibold">Sign out</button>
-            </div>
-          </div>
-        );
+      if (loadState !== "ready") {
+        body = loadState === "error"
+          ? <Card className="p-8 text-center"><p className="text-sm text-red-800 mb-3">Couldn't load orders: {loadError}</p><button onClick={loadOrders} className="rounded-lg bg-ink text-cream px-4 py-2 text-sm">Try again</button></Card>
+          : <div className="py-24 grid place-items-center text-ink-faint"><Icon name="progress_activity" className="animate-spin text-3xl" /></div>;
+      } else if (view === "order") {
+        const order = orders.find((o) => o.orderId === sub);
+        back = "#/orders" + (order ? "/" + stageOf(order.status).slug : "");
+        if (order) {
+          title = `Order ${order.orderId}`;
+          subtitle = `${order.customerName} · ${order.amount} · ${stageOf(order.status).label}`;
+          body = <OrderDetail order={order} onSave={saveOrder} toast={toast} />;
+        } else {
+          title = "Order not found";
+          body = <Card><Empty icon="search_off" text="This order doesn't exist (it may have been removed)." /></Card>;
+        }
+      } else if (view === "orders") {
+        const stage = stageBySlug(sub);
+        title = stage ? stage.label : "All orders";
+        subtitle = stage
+          ? { verify: "New orders waiting for you to check the payment slip", accepted: "Paid and confirmed — ready to start tailoring", tailoring: "Being cut and sewn", packed: "Packed — add the tracking number and dispatch", dispatched: "On the way or delivered" }[stage.slug]
+          : "Every order, newest first";
+        body = <OrdersList orders={orders} stage={stage} query={query} setQuery={setQuery} />;
+      } else if (view === "customers") {
+        title = "Customers";
+        subtitle = "Everyone who has placed an order";
+        body = <Customers orders={orders} setQuery={setQuery} />;
+      } else {
+        body = <Overview orders={orders} counts={counts} go={go} />;
       }
 
       return (
-        <div className="min-h-screen bg-white flex flex-col font-sans text-neutral-900">
-          
-          {/* TOAST NOTIFICATION BANNER */}
-          {toastMessage && (
-            <div className="fixed top-5 right-6 z-50 flex items-center gap-3 bg-neutral-900 text-white px-5 py-3 rounded-xl border border-neutral-700 shadow-lg transition-all animate-fade-in">
-              <span className="material-symbols-outlined text-rose-300 text-lg">check_circle</span>
-              <div className="flex flex-col">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-rose-300 font-sans">Atelier Notification</span>
-                <span className="text-xs font-medium text-white font-sans">{toastMessage}</span>
-              </div>
-              <button onClick={() => setToastMessage(null)} className="ml-2 text-neutral-400 hover:text-white">
-                <span className="material-symbols-outlined text-sm">close</span>
-              </button>
-            </div>
-          )}
+        <div className="min-h-screen">
+          <Sidebar route={route} go={go} counts={counts} open={menuOpen} onClose={() => setMenuOpen(false)} onLogout={logout} />
 
-          {/* TOP HEADER */}
-          <header className="w-full bg-white border-b-2 border-dashed border-rose-900 px-6 py-3.5 flex flex-wrap items-center justify-between gap-4 sticky top-0 z-30">
-            <div className="flex items-center gap-3.5">
-              <div className="w-9 h-9 rounded-lg bg-rose-900 flex items-center justify-center text-white font-sans font-bold text-lg">
-                C
-              </div>
-              <div className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <h1 className="font-sans text-lg font-bold tracking-tight text-rose-900">Cintamani</h1>
-                  <span className="badge-clean-pill bg-[#f6ecee] text-[#5e1924]">
-                    OMS v2.4
-                  </span>
-                </div>
-                <span className="text-[11px] font-medium uppercase tracking-wider text-neutral-500 font-sans">
-                  Sustainable Made-To-Order Linen • Atelier Console
-                </span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4">
-              {/* Guild Location Tag */}
-              <div className="hidden md:flex items-center gap-2 px-3.5 py-1 rounded-full bg-stone-100 text-xs text-rose-900 font-medium">
-                <span className="w-2 h-2 rounded-full bg-rose-900 animate-pulse"></span>
-                <span>Atelier Walawwa: Kurunegala & Kandy Guild</span>
-              </div>
-
-              {/* Link to Main Site */}
-              <a 
-                href="index.html" 
-                className="px-3 py-1.5 rounded-lg bg-white border border-rose-900/30 hover:bg-rose-50 text-rose-900 font-semibold text-xs flex items-center gap-1.5 transition-colors"
-                title="Return to Public Storefront"
-              >
-                <span className="material-symbols-outlined text-sm">storefront</span>
-                <span>Storefront</span>
-              </a>
-
-              <div className="h-5 w-px bg-neutral-200"></div>
-
-              {/* Staff Profile & Logout */}
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2.5">
-                  <div className="text-right hidden sm:block">
-                    <span className="text-xs font-bold text-neutral-800 block">Ananda Senanayake</span>
-                    <span className="text-[10px] uppercase tracking-wider text-rose-900 font-bold">Master Overseer</span>
-                  </div>
-                  <div className="w-8 h-8 rounded-full bg-rose-50 text-rose-900 flex items-center justify-center font-bold text-xs">
-                    AS
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  className="px-2.5 py-1.5 rounded-lg border border-rose-900/20 hover:bg-rose-50 text-rose-900 text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer"
-                  title="Lock Console and Return to Overseer Sign-In"
-                >
-                  <span className="material-symbols-outlined text-sm">lock</span>
-                  <span className="hidden md:inline">Lock / Sign Out</span>
-                </button>
-              </div>
-            </div>
-          </header>
-
-          {/* MAIN DASHBOARD CONTENT AREA */}
-          <div className="flex-1 flex flex-col lg:flex-row pb-28">
-            
-            {/* ========================================================= */}
-            {/* 1. LEFT SIDEBAR: Daily Summaries & Scrollable Order Queue */}
-            {/* ========================================================= */}
-            <aside className="w-full lg:w-96 bg-stone-50 border-r-2 border-dashed border-rose-900 p-5 flex flex-col gap-6 shrink-0">
-              
-              {/* Daily Summaries Widget */}
-              <div className="bg-white rounded-xl p-4 border-2 border-dashed border-rose-900 flex flex-col gap-3">
-                <div className="flex items-center justify-between pb-2 border-b border-neutral-100">
-                  <div className="flex items-center gap-2">
-                    <span className="material-symbols-outlined text-rose-900 text-lg">stacked_bar_chart</span>
-                    <h2 className="font-sans text-xs font-bold text-rose-900 uppercase tracking-wider">Daily Overview</h2>
-                  </div>
-                  <span className="badge-clean-pill badge-neutral-soft">Live Sync</span>
-                </div>
-
-                <div className="grid grid-cols-3 gap-2 text-center">
-                  {/* Summary 1: Total Orders */}
-                  <div className="bg-stone-50 p-2.5 rounded-lg border border-neutral-200/70 flex flex-col items-center">
-                    <span className="text-xl font-bold font-sans text-neutral-900 leading-none">{summaries.total}</span>
-                    <span className="text-[9px] font-bold text-neutral-500 uppercase mt-1 tracking-wider">Total Orders</span>
-                  </div>
-
-                  {/* Summary 2: Pending Verifications */}
-                  <div className="bg-rose-50/70 p-2.5 rounded-lg border border-rose-100 flex flex-col items-center">
-                    <span className="text-xl font-bold font-sans text-rose-900 leading-none">{summaries.pendingVerification}</span>
-                    <span className="text-[9px] font-bold text-rose-900 uppercase mt-1 tracking-wider">Pending Verify</span>
-                  </div>
-
-                  {/* Summary 3: Ready for Dispatch */}
-                  <div className="bg-emerald-50/70 p-2.5 rounded-lg border border-emerald-100 flex flex-col items-center">
-                    <span className="text-xl font-bold font-sans text-emerald-900 leading-none">{summaries.readyForDispatch}</span>
-                    <span className="text-[9px] font-bold text-emerald-800 uppercase mt-1 tracking-wider">Ready Ship</span>
-                  </div>
-                </div>
-
-                <div className="text-[11px] text-neutral-500 flex items-center justify-between pt-1">
-                  <span>In Atelier Looming: <strong>{summaries.inProduction} items</strong></span>
-                  <span className="text-rose-900 font-semibold">100% Organic Flax</span>
-                </div>
-              </div>
-
-              {/* Order Queue Header & Filter */}
-              <div className="flex flex-col gap-2.5">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="material-symbols-outlined text-rose-900 text-lg">format_list_bulleted</span>
-                    <h3 className="font-sans text-sm font-bold text-rose-900">Order Queue</h3>
-                  </div>
-                  <span className="text-xs font-mono font-bold text-neutral-400">({filteredOrders.length})</span>
-                </div>
-
-                {/* Search Bar */}
-                <div className="relative">
-                  <span className="material-symbols-outlined text-neutral-400 absolute left-3 top-2.5 text-base">search</span>
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search order ID, customer, garment..."
-                    className="w-full pl-9 pr-3 py-1.5 text-xs bg-white border border-neutral-300 rounded-lg focus:outline-none focus:border-rose-900 text-neutral-800 placeholder:text-neutral-400"
-                  />
-                  {searchQuery && (
-                    <button onClick={() => setSearchQuery("")} className="absolute right-2.5 top-2 text-neutral-400 hover:text-neutral-700">
-                      <span className="material-symbols-outlined text-xs">close</span>
-                    </button>
-                  )}
-                </div>
-
-                {/* Filter Pills */}
-                <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-[11px]">
-                  {["ALL", "Payment Pending", "Accepted", "In Production", "Packed & Ready", "Dispatched"].map(filterVal => (
-                    <button
-                      key={filterVal}
-                      onClick={() => setStatusFilter(filterVal)}
-                      className={`px-3 py-1 rounded-full shrink-0 font-medium transition-all ${
-                        statusFilter === filterVal
-                          ? "bg-rose-900 text-white font-bold"
-                          : "bg-white text-neutral-600 hover:bg-rose-50 border border-neutral-200"
-                      }`}
-                    >
-                      {filterVal === "Payment Pending" ? "Pending" : filterVal === "Packed & Ready" ? "Packed" : filterVal}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Scrollable Order Queue List */}
-              <div className="flex flex-col gap-2.5 overflow-y-auto max-h-[calc(100vh-420px)] pr-1">
-                {filteredOrders.length === 0 ? (
-                  <div className="text-center py-10 bg-white rounded-xl border-2 border-dashed border-rose-900/30 p-4">
-                    <span className="material-symbols-outlined text-neutral-300 text-3xl mb-1">search_off</span>
-                    <p className="text-xs text-neutral-500 font-medium">No commissions found matching filter.</p>
-                  </div>
-                ) : (
-                  filteredOrders.map(order => {
-                    const isSelected = order.orderId === currentOrder.orderId;
-                    return (
-                      <div
-                        key={order.orderId}
-                        onClick={() => setSelectedOrderId(order.orderId)}
-                        className={`p-3.5 rounded-xl cursor-pointer transition-all duration-150 flex flex-col gap-2 ${
-                          isSelected
-                            ? "bg-white border-2 border-dashed border-rose-900 shadow-sm"
-                            : "bg-white border border-neutral-200/90 hover:border-rose-900/50 hover:bg-rose-50/30"
-                        }`}
-                      >
-                        <div className="flex items-start justify-between gap-2">
-                          <div>
-                            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-rose-900 block font-mono-code">
-                              {order.orderId}
-                            </span>
-                            <h4 className="font-bold text-sm text-neutral-900 leading-tight">
-                              {order.customerName}
-                            </h4>
-                          </div>
-                          
-                          {/* Clean flat pill status badge - NO 3D effects */}
-                          <span className={getStatusBadgeClass(order.status)}>
-                            {order.status}
-                          </span>
-                        </div>
-
-                        <p className="text-xs text-neutral-500 line-clamp-1">
-                          {order.garmentType}
-                        </p>
-
-                        <div className="flex items-center justify-between text-[11px] pt-1.5 border-t border-neutral-100 text-neutral-500">
-                          <span className="flex items-center gap-1">
-                            <span className="material-symbols-outlined text-[13px] text-neutral-400">schedule</span>
-                            {order.orderDate}
-                          </span>
-                          <span className="font-bold text-rose-900 font-sans">
-                            {order.amount}
-                          </span>
-                        </div>
-                      </div>
-                    );
-                  })
-                )}
-              </div>
-            </aside>
-
-            {/* ========================================================= */}
-            {/* 2. CENTER SPLIT-SCREEN CONSOLE: Order & Receipt Scrutiny */}
-            {/* ========================================================= */}
-            <main className="flex-1 p-6 lg:p-8 flex flex-col gap-6 bg-white overflow-y-auto">
-              
-              {/* Order Meta Bar / Title */}
-              <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b-2 border-dashed border-rose-900/20">
-                <div className="flex items-center gap-3.5">
-                  <div className="w-10 h-10 rounded-xl bg-rose-900 text-white flex items-center justify-center font-bold">
-                    <span className="material-symbols-outlined text-xl">stylus_note</span>
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-3">
-                      <h2 className="font-sans text-xl font-bold text-rose-900 tracking-tight">
-                        Order #{currentOrder.orderId}
-                      </h2>
-                      {/* Clean flat pill tag matching screenshot */}
-                      <span className={getStatusBadgeClass(currentOrder.status)}>
-                        {currentOrder.status}
-                      </span>
-                    </div>
-                    <p className="text-xs text-neutral-500 mt-0.5 font-sans">
-                      Assigned Weaver: <strong className="text-neutral-800">{currentOrder.artisan}</strong> • {currentOrder.loomGuild}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <button 
-                    onClick={() => window.print()}
-                    className="px-3.5 py-1.5 rounded-lg border border-neutral-300 hover:bg-stone-50 text-neutral-700 text-xs font-semibold flex items-center gap-1.5"
-                  >
-                    <span className="material-symbols-outlined text-base">print</span>
-                    <span>Print Loom Ticket</span>
-                  </button>
-                  <a
-                    href={`https://wa.me/${currentOrder.contactNumber.replace(/[^0-9]/g, "")}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="px-3.5 py-1.5 rounded-lg bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-bold flex items-center gap-1.5 transition-colors"
-                  >
-                    <span className="material-symbols-outlined text-base">chat</span>
-                    <span>Direct WhatsApp</span>
-                  </a>
-                </div>
-              </div>
-
-              {/* SPLIT SCREEN GRID */}
-              <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 items-start">
-                
-                {/* ---------------------------------------------------- */}
-                {/* COLUMN A: Order & Customer Details (Ivory Card, Dashed Border) */}
-                {/* ---------------------------------------------------- */}
-                <div className="bg-[#FFFFF0] border-2 border-dashed border-rose-900 rounded-2xl p-6 flex flex-col gap-6">
-                  
-                  {/* Card Section Header */}
-                  <div className="flex items-center justify-between pb-3 border-b-2 border-dashed border-rose-900/30">
-                    <div className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-rose-900 text-lg">badge</span>
-                      <h3 className="font-sans text-base font-bold text-rose-900">
-                        Order & Patron Dossier
-                      </h3>
-                    </div>
-                    <span className="badge-clean-pill bg-[#f6ecee] text-[#5e1924]">
-                      Column A • Soft Ivory
-                    </span>
-                  </div>
-
-                  {/* Customer Identity Block */}
-                  <div className="bg-white p-4 rounded-xl border border-rose-900/15 flex flex-col gap-3">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-rose-900 font-sans">Patron Name</span>
-                        <h4 className="font-sans text-base font-bold text-neutral-900">{currentOrder.customerName}</h4>
-                        <span className="text-xs text-neutral-500 font-medium">{currentOrder.patronTier}</span>
-                      </div>
-                      <span className="badge-clean-pill badge-neutral-soft">
-                        {currentOrder.gender} Patron
-                      </span>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-neutral-100 text-xs">
-                      <div>
-                        <span className="text-[10px] uppercase font-bold text-neutral-400 block font-sans">Contact Phone</span>
-                        <a href={`tel:${currentOrder.contactNumber}`} className="font-mono font-bold text-rose-900 hover:underline font-mono-code">
-                          {currentOrder.contactNumber}
-                        </a>
-                      </div>
-                      <div>
-                        <span className="text-[10px] uppercase font-bold text-neutral-400 block font-sans">Commission Placed</span>
-                        <span className="font-medium text-neutral-700">{currentOrder.orderDate}</span>
-                      </div>
-                    </div>
-
-                    <div className="pt-2 border-t border-neutral-100 text-xs">
-                      <span className="text-[10px] uppercase font-bold text-neutral-400 block font-sans">Shipping Destination</span>
-                      <p className="font-medium text-neutral-800 leading-relaxed mt-0.5 font-sans">
-                        {currentOrder.shippingAddress}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Garment Specifications */}
-                  <div className="flex flex-col gap-3">
-                    <div className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-rose-900 text-base">checkroom</span>
-                      <h4 className="font-sans text-xs font-bold text-rose-900 uppercase tracking-wider">
-                        Garment Specifications
-                      </h4>
-                    </div>
-
-                    <div className="bg-white p-4 rounded-xl border border-rose-900/15 flex flex-col gap-3.5">
-                      <div>
-                        <span className="text-[10px] uppercase font-bold text-neutral-400 block font-sans">Piece / Silhouette</span>
-                        <h5 className="font-sans text-sm font-bold text-neutral-900">{currentOrder.garmentType}</h5>
-                        <p className="text-xs text-neutral-500 font-sans">{currentOrder.fabricSpec}</p>
-                      </div>
-
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 border-t border-neutral-100">
-                        <div>
-                          <span className="text-[10px] uppercase font-bold text-neutral-400 block font-sans">Tailored Size</span>
-                          <span className="badge-clean-pill bg-[#f6ecee] text-[#5e1924] mt-0.5">
-                            {currentOrder.size}
-                          </span>
-                        </div>
-                        <div>
-                          <span className="text-[10px] uppercase font-bold text-neutral-400 block font-sans">Atelier Colorway</span>
-                          <span className="font-semibold text-xs text-neutral-900 flex items-center gap-1.5 mt-1">
-                            <span 
-                              className={`w-2.5 h-2.5 rounded-full border border-black/20 ${
-                                currentOrder.color.includes("Crimson") ? "bg-[#800000]" :
-                                currentOrder.color.includes("Blue") ? "bg-[#1f505d]" :
-                                currentOrder.color.includes("Flax") ? "bg-[#e5dccb]" :
-                                currentOrder.color.includes("Ochre") ? "bg-[#c68b3d]" : "bg-[#5b5f5e]"
-                              }`}
-                            ></span>
-                            {currentOrder.color}
-                          </span>
-                        </div>
-                        <div>
-                          <span className="text-[10px] uppercase font-bold text-neutral-400 block font-sans">Monogram Glyphs</span>
-                          <span className="font-bold text-sm text-rose-900 block mt-0.5">
-                            {currentOrder.monogram}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Packaging Notes Section (Directives for staff) */}
-                  <div className="bg-white p-4 rounded-xl border-2 border-dashed border-rose-900/30 flex flex-col gap-2.5">
-                    <div className="flex items-center gap-2 text-rose-900">
-                      <span className="material-symbols-outlined text-lg">redeem</span>
-                      <h4 className="font-sans text-xs font-bold uppercase tracking-wider">
-                        Packaging Notes & Free Collectibles
-                      </h4>
-                    </div>
-                    
-                    <div className="p-3 bg-rose-50/60 rounded-lg border border-rose-100 text-xs flex flex-col gap-2 font-sans">
-                      <div className="flex items-start gap-2">
-                        <span className="material-symbols-outlined text-rose-900 text-base mt-0.5">inventory_2</span>
-                        <div>
-                          <strong className="text-neutral-900">Eco-Wrap Directive: </strong>
-                          <span className="text-neutral-700">{currentOrder.packagingDirectives.wrap}</span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start gap-2 bg-white p-2.5 rounded-lg border border-rose-900/10">
-                        <span className="material-symbols-outlined text-amber-700 text-base mt-0.5">stars</span>
-                        <div>
-                          <strong className="text-rose-900">Complimentary Patron Collectible: </strong>
-                          <span className="font-bold text-neutral-900">
-                            {currentOrder.packagingDirectives.gift}
-                          </span>
-                          <p className="text-[11px] text-neutral-500 mt-0.5">
-                            *Rule: Automated recommendation assigned based on patron profile ({currentOrder.gender}).
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start gap-2">
-                        <span className="material-symbols-outlined text-rose-900 text-base mt-0.5">spa</span>
-                        <div>
-                          <strong className="text-neutral-900">Atelier Sachet: </strong>
-                          <span className="text-neutral-700">{currentOrder.packagingDirectives.fragrance}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Invoiced Total */}
-                  <div className="flex items-center justify-between p-3.5 bg-white rounded-xl border border-rose-900/15">
-                    <div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block font-sans">Total Invoiced</span>
-                      <span className="font-sans text-lg font-bold text-rose-900">{currentOrder.amount}</span>
-                    </div>
-                    <span className="text-[11px] font-medium text-neutral-500 font-sans">Includes Artisan Guild Living Wage Levy</span>
-                  </div>
-
-                </div>
-
-                {/* ---------------------------------------------------- */}
-                {/* COLUMN B: Payment Verification (White Card, Solid Maroon Border) */}
-                {/* ---------------------------------------------------- */}
-                <div className="bg-white border-2 border-rose-900 rounded-2xl p-6 flex flex-col justify-between gap-6">
-                  
-                  <div className="flex flex-col gap-5">
-                    {/* Card Section Header */}
-                    <div className="flex items-center justify-between pb-3 border-b-2 border-rose-900">
-                      <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-rose-900 text-lg">account_balance</span>
-                        <h3 className="font-sans text-base font-bold text-rose-900">
-                          Payment Slip Scrutiny
-                        </h3>
-                      </div>
-                      <span className="badge-clean-pill bg-[#f6ecee] text-[#5e1924]">
-                        Column B • Solid Border
-                      </span>
-                    </div>
-
-                    {/* Bank Transfer Meta Ribbon */}
-                    <div className="bg-stone-50 p-4 rounded-xl border border-neutral-200 grid grid-cols-2 gap-3 text-xs font-sans">
-                      <div>
-                        <span className="text-[10px] font-bold uppercase text-neutral-400 block">Banking Institution</span>
-                        <span className="font-bold text-neutral-900">{currentOrder.receiptDetails.bank}</span>
-                      </div>
-                      <div>
-                        <span className="text-[10px] font-bold uppercase text-neutral-400 block">Credit Beneficiary</span>
-                        <span className="font-bold text-neutral-900">{currentOrder.receiptDetails.account}</span>
-                      </div>
-                      <div>
-                        <span className="text-[10px] font-bold uppercase text-neutral-400 block">Transaction Reference</span>
-                        <span className="font-mono font-bold text-rose-900 font-mono-code">{currentOrder.receiptDetails.reference}</span>
-                      </div>
-                      <div>
-                        <span className="text-[10px] font-bold uppercase text-neutral-400 block">Slip Deposit Date</span>
-                        <span className="font-medium text-neutral-800">{currentOrder.receiptDetails.date}</span>
-                      </div>
-                    </div>
-
-                    {/* Large Image Viewer for Payment Receipt */}
-                    <div className="flex flex-col gap-2">
-                      <div className="flex items-center justify-between text-xs font-semibold text-neutral-700">
-                        <span className="flex items-center gap-1.5">
-                          <span className="material-symbols-outlined text-rose-900 text-base">receipt_long</span>
-                          <span>Uploaded Bank Deposit Slip</span>
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => setIsZoomModalOpen(true)}
-                          className="text-rose-900 hover:text-rose-950 font-bold flex items-center gap-1 text-[11px]"
-                        >
-                          <span className="material-symbols-outlined text-sm">fullscreen</span>
-                          <span>Enlarge Scan</span>
-                        </button>
-                      </div>
-
-                      <div 
-                        onClick={() => setIsZoomModalOpen(true)}
-                        className="relative rounded-xl border border-neutral-200 bg-stone-100 overflow-hidden group cursor-zoom-in flex items-center justify-center min-h-[280px] max-h-[360px]"
-                      >
-                        {slip.url && slip.type === "application/pdf" ? (
-                          <span className="flex flex-col items-center gap-2 text-rose-900 text-xs font-bold">
-                            <span className="material-symbols-outlined text-4xl">picture_as_pdf</span>
-                            PDF slip — click to open
-                          </span>
-                        ) : slip.url ? (
-                          <img
-                            src={slip.url}
-                            alt={`Bank transfer slip for order ${currentOrder.orderId}`}
-                            className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
-                          />
-                        ) : (
-                          <span className="text-xs text-neutral-500">{currentOrder.hasSlip ? "Loading slip…" : "No slip uploaded"}</span>
-                        )}
-                        
-                        {/* Hover Overlay Hint */}
-                        <div className="absolute inset-0 bg-neutral-950/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                          <span className="px-3.5 py-1.5 rounded-lg bg-black/80 text-white text-xs font-bold flex items-center gap-1.5">
-                            <span className="material-symbols-outlined text-sm">zoom_in</span>
-                            Click to Inspect Verification Details
-                          </span>
-                        </div>
-
-                      </div>
-
-                      <p className="text-[11px] text-neutral-500 italic text-center font-sans">
-                        Check the slip's amount, date and account before accepting the order.
-                      </p>
-                    </div>
-
-                    {/* Verification Checklist */}
-                    <div className="p-3 bg-rose-50/60 rounded-xl border border-rose-100 text-xs flex items-center gap-2.5 text-neutral-800 font-sans">
-                      <span className="material-symbols-outlined text-rose-900 text-lg">verified</span>
-                      <div>
-                        <strong className="text-rose-900">Expected amount: </strong>
-                        <span>{currentOrder.amount} (including delivery).</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Operational Verification Buttons */}
-                  <div className="pt-4 flex flex-col gap-2.5 border-t border-neutral-100">
-                    {/* Button 1: Solid Maroon Verify */}
-                    <button
-                      type="button"
-                      onClick={handleVerifyPayment}
-                      disabled={currentOrder.status !== "Payment Pending"}
-                      className={`w-full py-3 px-4 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-150 ${
-                        currentOrder.status === "Payment Pending"
-                          ? "bg-rose-900 hover:bg-rose-950 text-white cursor-pointer active:scale-[0.99]"
-                          : "bg-neutral-200 text-neutral-400 cursor-not-allowed"
-                      }`}
-                    >
-                      <span className="material-symbols-outlined text-base">check_circle</span>
-                      <span>
-                        {currentOrder.status === "Payment Pending" 
-                          ? "Verify Payment & Accept Order" 
-                          : "Payment Already Accepted"}
-                      </span>
-                    </button>
-
-                    {/* Button 2: Outlined Maroon Re-upload */}
-                    <button
-                      type="button"
-                      onClick={handleRequestReupload}
-                      className="w-full py-2.5 px-4 rounded-xl bg-white hover:bg-rose-50 text-rose-900 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors border-2 border-dashed border-rose-900"
-                    >
-                      <span className="material-symbols-outlined text-base">restart_alt</span>
-                      <span>Request Re-upload</span>
-                    </button>
-                  </div>
-
-                </div>
-
-              </div>
-            </main>
+          <div className="lg:pl-64">
+            <TopBar title={title} subtitle={subtitle} back={back} onMenu={() => setMenuOpen(true)} onRefresh={loadOrders} syncedAt={syncedAt} refreshing={refreshing} />
+            <main className="px-4 sm:px-8 py-6 max-w-[1400px]">{body}</main>
           </div>
 
-          {/* ========================================================= */}
-          {/* 3. BOTTOM ACTION BAR: Production Tracking & Logistics */}
-          {/* ========================================================= */}
-          <footer className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md px-6 py-3.5 border-t-2 border-dashed border-rose-900 shadow-lg z-40 flex flex-wrap items-center justify-between gap-4 font-sans">
-            
-            {/* Status Dropdown Bound to State */}
-            <div className="flex items-center gap-4">
-              <div className="flex flex-col">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-rose-900">
-                  Production Tracking
-                </span>
-                <span className="text-xs font-bold text-neutral-900">
-                  Update Order Lifecycle
-                </span>
-              </div>
-
-              {/* Status Select dropdown */}
-              <div className="relative">
-                <select
-                  value={statusDraft}
-                  onChange={(e) => setStatusDraft(e.target.value)}
-                  className="bg-stone-50 border border-neutral-300 text-neutral-900 font-bold text-xs rounded-xl px-3 py-2 pr-8 focus:outline-none focus:border-rose-900 cursor-pointer"
-                >
-                  {STATUS_ENUM.map(st => (
-                    <option key={st} value={st}>{st}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Status Stepper visualization pills - Clean flat tags */}
-              <div className="hidden xl:flex items-center gap-1.5 pl-2">
-                {STATUS_ENUM.map((st, idx) => {
-                  const isCurrent = statusDraft === st;
-                  return (
-                    <React.Fragment key={st}>
-                      {idx > 0 && <span className="text-neutral-300 text-xs">›</span>}
-                      <button
-                        type="button"
-                        onClick={() => setStatusDraft(st)}
-                        className={`transition-all ${
-                          isCurrent
-                            ? getStatusBadgeClass(st)
-                            : "badge-clean-pill badge-neutral-soft hover:bg-rose-50 hover:text-neutral-900 cursor-pointer"
-                        }`}
-                      >
-                        {st}
-                      </button>
-                    </React.Fragment>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Delivery Barcode Input & Action Confirmation */}
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2">
-                <label htmlFor="deliveryBarcodeInput" className="text-xs font-bold text-neutral-700 whitespace-nowrap">
-                  Delivery Barcode:
-                </label>
-                
-                <div className="relative flex items-center">
-                  <span className="material-symbols-outlined text-neutral-400 absolute left-2.5 text-base">
-                    barcode_scanner
-                  </span>
-                  
-                  <input
-                    id="deliveryBarcodeInput"
-                    type="text"
-                    value={barcodeDraft}
-                    onChange={(e) => setBarcodeDraft(e.target.value)}
-                    disabled={!isBarcodeEditable}
-                    placeholder={isBarcodeEditable ? "e.g. CM-DOMEX-9920148-LK" : "Requires Packed & Ready state"}
-                    className={`pl-8 pr-3 py-1.5 text-xs font-mono font-medium rounded-xl border transition-all w-56 font-mono-code ${
-                      isBarcodeEditable
-                        ? "bg-white border-2 border-rose-900 text-neutral-900 focus:outline-none focus:ring-1 focus:ring-rose-900"
-                        : "bg-neutral-100 border-neutral-300 text-neutral-400 cursor-not-allowed italic"
-                    }`}
-                  />
-                </div>
-              </div>
-
-              {/* Save & Update Customer Button */}
-              <button
-                type="button"
-                onClick={handleSaveAndUpdate}
-                className={`px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all duration-150 ${
-                  isBarcodeSaved
-                    ? "bg-emerald-800 text-white"
-                    : "bg-rose-900 hover:bg-rose-950 text-white active:scale-95"
-                }`}
-              >
-                <span className="material-symbols-outlined text-base">
-                  {isBarcodeSaved ? "done_all" : "cloud_sync"}
-                </span>
-                <span>
-                  {isBarcodeSaved ? "Logged & Dispatched!" : "Save & Update Customer"}
-                </span>
-              </button>
-            </div>
-
-          </footer>
-
-          {/* ========================================================= */}
-          {/* RECEIPT ZOOM / LIGHTBOX MODAL */}
-          {/* ========================================================= */}
-          {isZoomModalOpen && (
-            <div 
-              className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 font-sans"
-              onClick={() => setIsZoomModalOpen(false)}
-            >
-              <div 
-                className="bg-white rounded-2xl max-w-3xl w-full p-6 flex flex-col gap-4 border-2 border-dashed border-rose-900 relative"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <div className="flex items-center justify-between pb-3 border-b border-neutral-200">
-                  <div className="flex items-center gap-2">
-                    <span className="material-symbols-outlined text-rose-900 text-xl">verified</span>
-                    <div>
-                      <h3 className="font-sans text-base font-bold text-rose-900">
-                        {currentOrder.receiptDetails.bank} Deposit Receipt
-                      </h3>
-                      <span className="text-xs text-neutral-500 font-mono font-mono-code">
-                        Ref: {currentOrder.receiptDetails.reference} • Order #{currentOrder.orderId}
-                      </span>
-                    </div>
-                  </div>
-                  <button 
-                    onClick={() => setIsZoomModalOpen(false)}
-                    className="p-1.5 rounded-lg hover:bg-stone-100 text-neutral-600 hover:text-neutral-900"
-                  >
-                    <span className="material-symbols-outlined text-xl">close</span>
-                  </button>
-                </div>
-
-                <div className="max-h-[70vh] overflow-auto flex items-center justify-center bg-stone-100 rounded-xl p-2 border border-neutral-200">
-                  {slip.type === "application/pdf" ? (
-                    <iframe src={slip.url} title="Slip PDF" className="w-full h-[65vh] rounded-lg bg-white" />
-                  ) : slip.url ? (
-                    <img
-                      src={slip.url}
-                      alt="Enlarged slip preview"
-                      className="max-h-[65vh] w-auto object-contain rounded-lg"
-                    />
-                  ) : (
-                    <span className="text-xs text-neutral-500 p-8">No slip uploaded</span>
-                  )}
-                </div>
-
-                <div className="flex items-center justify-between text-xs text-neutral-600 pt-2 border-t border-neutral-100">
-                  <span>Teller Counter: <strong>{currentOrder.receiptDetails.tellerStamp}</strong></span>
-                  <span className="font-bold text-rose-900 font-mono font-mono-code">Order total: {currentOrder.amount}</span>
-                </div>
-              </div>
+          {toastMsg && (
+            <div key={toastMsg.id} role="status" className={`fixed bottom-5 right-5 z-50 max-w-sm flex items-start gap-3 rounded-xl px-4 py-3 shadow-lg text-sm ${toastMsg.isError ? "bg-red-900 text-white" : "bg-night text-cream"}`}>
+              <Icon name={toastMsg.isError ? "error" : "check_circle"} className={`text-lg ${toastMsg.isError ? "" : "text-gold"}`} />
+              <span className="flex-1">{toastMsg.text}</span>
+              <button onClick={() => setToastMsg(null)} className="opacity-60 hover:opacity-100" aria-label="Dismiss"><Icon name="close" className="text-base" /></button>
             </div>
           )}
-
         </div>
       );
     }
