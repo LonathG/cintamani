@@ -1,0 +1,170 @@
+/* Homepage hero: full-bleed Walawwa photo, centred title, three floating photos */
+
+.cm-hero {
+  position: relative;
+  min-height: 100svh;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0b0b0b;
+}
+
+/* index.html's inline styles pin .home_hero to 85svh with !important */
+.home_hero.cm-hero {
+  min-height: 100svh !important;
+  padding-bottom: 0 !important;
+}
+
+.cm-hero_bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: 50% 40%;
+}
+
+/* darken edges and top/bottom so the menu, title and floating photos stay legible */
+.cm-hero_shade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0) 22%, rgba(0, 0, 0, 0) 68%, rgba(0, 0, 0, 0.6) 100%),
+    radial-gradient(ellipse at 50% 55%, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.5) 75%);
+}
+
+.cm-hero_inner {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.75rem;
+  padding: 0 1rem;
+  /* plain offset, not a transform: a transformed layer here made the title
+     shimmer whenever a photo's hover fade re-composited the hero */
+  top: 6vh;
+}
+
+.cm-hero_heading {
+  margin: 0;
+  font-size: 11.6vw;
+  white-space: nowrap;
+}
+
+.cm-hero_text {
+  max-width: 25rem;
+  margin: 0;
+  opacity: 0.85;
+}
+
+.cm-hero .link-w-circle {
+  justify-content: center;
+}
+
+.cm-hero_dec {
+  position: absolute;
+  z-index: 2;
+  height: auto;
+  max-width: none;
+  object-fit: cover;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
+  /* same hover effect as the original hero photos: grey until hovered */
+  filter: grayscale(100%);
+  /* slow, eased colour fade with a gentle lift; `scale` is a separate property so it
+     doesn't fight the float animation's transform */
+  transition:
+    filter 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+    scale 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+  animation: cm-hero-float 7s ease-in-out infinite;
+  /* keep each photo on its own stable layer so the fade doesn't repaint the title */
+  will-change: filter, transform;
+}
+
+.cm-hero_dec:hover {
+  filter: grayscale(0%);
+  scale: 1.04;
+  box-shadow: 0 32px 64px rgba(0, 0, 0, 0.45);
+}
+
+/* each photo drifts on its own rhythm so they never move in sync */
+@keyframes cm-hero-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+.cm-hero_dec.is-1 {
+  animation-duration: 6.5s;
+  animation-delay: 0s;
+  left: 2.6%;
+  top: 56%;
+  width: 8%;
+  aspect-ratio: 1;
+  object-position: 50% 35%;
+}
+
+.cm-hero_dec.is-2 {
+  animation-duration: 8s;
+  animation-delay: -2.5s;
+  left: 10.6%;
+  top: 70%;
+  width: 12.9%;
+  aspect-ratio: 130 / 137;
+  object-position: 50% 30%;
+}
+
+.cm-hero_dec.is-3 {
+  animation-duration: 7.2s;
+  animation-delay: -4.8s;
+  right: 5.2%;
+  top: 17.5%;
+  width: 10.5%;
+  aspect-ratio: 105 / 111;
+  object-position: 50% 40%;
+}
+
+.cm-hero_scroll {
+  position: absolute;
+  z-index: 3;
+  right: 4.8%;
+  bottom: 6%;
+}
+
+@media screen and (max-width: 767px) {
+  .cm-hero_bg {
+    object-position: 58% 20%;
+  }
+
+  .cm-hero_inner {
+    top: 0;
+    gap: 1.25rem;
+  }
+
+  .cm-hero_heading {
+    font-size: 15vw;
+  }
+
+  .cm-hero_text {
+    max-width: 85%;
+  }
+
+  .cm-hero_dec,
+  .cm-hero_scroll {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cm-hero_dec {
+    animation: none;
+    transition-duration: 0.01s;
+  }
+}
