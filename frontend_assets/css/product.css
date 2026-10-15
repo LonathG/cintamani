@@ -164,14 +164,6 @@
   }
 }
 
-/* ---------- Mobile: hide the artist biography section ---------- */
-
-@media screen and (max-width: 767px) {
-  .section_art_artist {
-    display: none;
-  }
-}
-
 /* ---------- piece description under the name + price ---------- */
 .art_desc {
   width: 100%;
