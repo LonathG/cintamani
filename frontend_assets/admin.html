@@ -149,169 +149,25 @@
   <script type="text/babel">
     const { useState, useMemo, useEffect } = React;
 
-    // --- Mock Data: Initial Orders Collection ---
-    const INITIAL_ORDERS = [
-      {
-        orderId: "CM-8402",
-        customerName: "Ananya Wickramasinghe",
-        gender: "Female",
-        shippingAddress: "42/3 Horton Gardens, Off Gregory's Road, Colombo 07, Western Province 00700",
-        contactNumber: "+94 77 234 8891",
-        orderDate: "Today, 13:48",
-        garmentType: "Verandah Tunic & Pleated Planter Pant Set",
-        size: "M",
-        color: "Kandyan Crimson",
-        monogram: "අ. ව.",
-        fabricSpec: "Pre-washed 185 GSM Pure Sri Lankan Flax",
-        loomGuild: "Batch № 08 - Kurunegala Guild",
-        artisan: "Somalatha Menike (Loom #04)",
-        amount: "LKR 24,400.00",
-        paymentReceiptImg: "https://lh3.googleusercontent.com/aida-public/AB6AXuC36ujXjSBxibwJV20kH1vs6zX2zTxN9Vbu-Ar5Uum4-MPkLWzF-_YJ3Ujx9b-WCFOnqlQ70iJMlWW2BxYVTztztFbAJmZux9j3D6-juWpjVZDcEixqKO4NVgbXszSxfT9INCWwc8Nz0QohkTNZwNHVIW0uPgfbmVia0fz-m3XDu15YfRyI20aURjaBDZ-UGsk5Hb3EQqgE-O-GoVMq3wCMLsuF2BM1Kr-Dtp_gl__G_EeAVSq5BpuS",
-        receiptDetails: {
-          bank: "Commercial Bank of Ceylon PLC",
-          account: "Cintamani Heritage Handlooms",
-          reference: "COMB-89210-WCK",
-          date: "14-OCT-2026",
-          tellerStamp: "Branch 014 - Colombo Fort Teller 03"
-        },
-        status: "Payment Pending",
-        deliveryBarcode: null,
-        patronTier: "Heritage Circle (3rd Commission)",
-        packagingDirectives: {
-          wrap: "100% Zero-Plastic Handloomed Cotton & Cinnamon Stick Seal",
-          gift: "Hand-turned Terracotta Clay Beads (Female Patron Tier)",
-          fragrance: "Organic Cinnamon & Cardamom Wood Sachet"
-        }
-      },
-      {
-        orderId: "CM-8399",
-        customerName: "Devaka Senanayake",
-        gender: "Male",
-        shippingAddress: "18 Rajasinghe Mawatha, Kandy Central, Central Province 20000",
-        contactNumber: "+94 71 884 1920",
-        orderDate: "Today, 11:15",
-        garmentType: "Artisan Cinnamon-Dyed Bed Runner + 2 Shams",
-        size: "Free Size",
-        color: "Monara Blue",
-        monogram: "ද. ස.",
-        fabricSpec: "Heavy Textured 220 GSM Hand-spun Raw Linen",
-        loomGuild: "Batch № 05 - Kandy Valley Guild",
-        artisan: "Karunaratne Banda (Loom #01)",
-        amount: "LKR 38,200.00",
-        paymentReceiptImg: "https://lh3.googleusercontent.com/aida/AEtjO1XRXfG0S58XXhL22sWVAcinkZ4zN56gckZod4FApm-uCs6MNTbGjxdKQRnLt8ro10koRSpltBgqyoDGtVqm_YMZ5ZTyoPkM382nS1NtBiqct9Z2d-Rht_PTyhfRfYF5XWzhdd6Wae1XIkUEMin6wKc-llL_kBZteiZFrPHzdVIUsy00a2yf0u27mdZ8VnD5CqGbW7nW1QR93bn2W3sgqeHmUX_GbCmTouW0I4GVEDE6PVpdrAXkPPh2Fw",
-        receiptDetails: {
-          bank: "Sampath Bank PLC",
-          account: "Cintamani Textiles",
-          reference: "SAMP-77312-DSN",
-          date: "14-OCT-2026",
-          tellerStamp: "Kandy City Branch Stamp Verified"
-        },
-        status: "Accepted",
-        deliveryBarcode: null,
-        patronTier: "Private Patron (1st Commission)",
-        packagingDirectives: {
-          wrap: "Handmade Banana Fiber Wrap & Brass Eyelet String",
-          gift: "Heritage Ceylon Botanical Playing Cards (Male Patron Tier)",
-          fragrance: "Dried Sun-cured Vetiver Sprig"
-        }
-      },
-      {
-        orderId: "CM-8395",
-        customerName: "Malini Perera",
-        gender: "Female",
-        shippingAddress: "77/2 Galle Road, Bambalapitiya, Colombo 04",
-        contactNumber: "+94 76 541 3322",
-        orderDate: "Yesterday, 17:40",
-        garmentType: "Walawwa Heirloom Tablecloth (10-Seater)",
-        size: "L",
-        color: "Raw Flax",
-        monogram: "ම. ප.",
-        fabricSpec: "210 GSM Organic Unbleached Flax Woven with Silver Edge",
-        loomGuild: "Batch № 02 - Matale Weavers Collective",
-        artisan: "Dingiri Amma (Loom #06)",
-        amount: "LKR 46,000.00",
-        paymentReceiptImg: "https://lh3.googleusercontent.com/aida-public/AB6AXuC36ujXjSBxibwJV20kH1vs6zX2zTxN9Vbu-Ar5Uum4-MPkLWzF-_YJ3Ujx9b-WCFOnqlQ70iJMlWW2BxYVTztztFbAJmZux9j3D6-juWpjVZDcEixqKO4NVgbXszSxfT9INCWwc8Nz0QohkTNZwNHVIW0uPgfbmVia0fz-m3XDu15YfRyI20aURjaBDZ-UGsk5Hb3EQqgE-O-GoVMq3wCMLsuF2BM1Kr-Dtp_gl__G_EeAVSq5BpuS",
-        receiptDetails: {
-          bank: "Hatton National Bank PLC",
-          account: "Cintamani Heritage Handlooms",
-          reference: "HNB-44810-MLP",
-          date: "13-OCT-2026",
-          tellerStamp: "HNB Kollupitiya Premier Teller Stamped"
-        },
-        status: "In Production",
-        deliveryBarcode: null,
-        patronTier: "Master Patron (5th Commission)",
-        packagingDirectives: {
-          wrap: "Cotton Weft Sheath tied with Hand-twisted Coir Cord",
-          gift: "Hand-turned Terracotta Clay Beads (Female Patron Tier)",
-          fragrance: "Organic Cinnamon & Cardamom Wood Sachet"
-        }
-      },
-      {
-        orderId: "CM-8392",
-        customerName: "Dr. Priyantha Silva",
-        gender: "Male",
-        shippingAddress: "Villa Dunhinda, Circular Road, Nuwara Eliya 22200",
-        contactNumber: "+94 77 902 4411",
-        orderDate: "Yesterday, 09:12",
-        garmentType: "Kurunegala Weave Kurta & Scarf",
-        size: "L",
-        color: "Sigiriya Ochre",
-        monogram: "P. S.",
-        fabricSpec: "190 GSM Indigo & Ochre Resist-Dyed Linen",
-        loomGuild: "Batch № 09 - Sigiriya Foothills Atelier",
-        artisan: "Upali Wijesinghe (Loom #03)",
-        amount: "LKR 18,900.00",
-        paymentReceiptImg: "https://lh3.googleusercontent.com/aida/AEtjO1XRXfG0S58XXhL22sWVAcinkZ4zN56gckZod4FApm-uCs6MNTbGjxdKQRnLt8ro10koRSpltBgqyoDGtVqm_YMZ5ZTyoPkM382nS1NtBiqct9Z2d-Rht_PTyhfRfYF5XWzhdd6Wae1XIkUEMin6wKc-llL_kBZteiZFrPHzdVIUsy00a2yf0u27mdZ8VnD5CqGbW7nW1QR93bn2W3sgqeHmUX_GbCmTouW0I4GVEDE6PVpdrAXkPPh2Fw",
-        receiptDetails: {
-          bank: "Bank of Ceylon (BOC)",
-          account: "Cintamani Textiles",
-          reference: "BOC-99014-PSL",
-          date: "13-OCT-2026",
-          tellerStamp: "BOC Ward Place Teller 02 Verified"
-        },
-        status: "Packed & Ready",
-        deliveryBarcode: "CM-DOMEX-88319-LK",
-        patronTier: "Heritage Circle (2nd Commission)",
-        packagingDirectives: {
-          wrap: "Pure Flax Cloth Envelope & Wax Atelier Stamp",
-          gift: "Heritage Ceylon Botanical Playing Cards (Male Patron Tier)",
-          fragrance: "Sandalwood & Cinnamon Bark Chips"
-        }
-      },
-      {
-        orderId: "CM-8388",
-        customerName: "Chamari Atapattu",
-        gender: "Female",
-        shippingAddress: "15/4 Beach Road, Mount Lavinia, Western Province",
-        contactNumber: "+94 70 411 2288",
-        orderDate: "11-OCT, 16:20",
-        garmentType: "Aria Linen Maxi Dress",
-        size: "S",
-        color: "Kandyan Crimson",
-        monogram: "ච. අ.",
-        fabricSpec: "175 GSM Superfine Air-woven Linen",
-        loomGuild: "Batch № 08 - Kurunegala Guild",
-        artisan: "Somalatha Menike (Loom #04)",
-        amount: "LKR 29,800.00",
-        paymentReceiptImg: "https://lh3.googleusercontent.com/aida-public/AB6AXuC36ujXjSBxibwJV20kH1vs6zX2zTxN9Vbu-Ar5Uum4-MPkLWzF-_YJ3Ujx9b-WCFOnqlQ70iJMlWW2BxYVTztztFbAJmZux9j3D6-juWpjVZDcEixqKO4NVgbXszSxfT9INCWwc8Nz0QohkTNZwNHVIW0uPgfbmVia0fz-m3XDu15YfRyI20aURjaBDZ-UGsk5Hb3EQqgE-O-GoVMq3wCMLsuF2BM1Kr-Dtp_gl__G_EeAVSq5BpuS",
-        receiptDetails: {
-          bank: "Commercial Bank of Ceylon PLC",
-          account: "Cintamani Heritage Handlooms",
-          reference: "COMB-10992-CAT",
-          date: "11-OCT-2026",
-          tellerStamp: "Dehiwala Branch Stamped"
-        },
-        status: "Dispatched",
-        deliveryBarcode: "CM-DOMEX-9920148-LK",
-        patronTier: "Private Patron (1st Commission)",
-        packagingDirectives: {
-          wrap: "100% Zero-Plastic Handloomed Cotton & Cinnamon Stick Seal",
-          gift: "Hand-turned Terracotta Clay Beads (Female Patron Tier)",
-          fragrance: "Organic Cinnamon & Cardamom Wood Sachet"
-        }
+    // --- Order API (netlify/functions/api.mjs) ---
+    const TOKEN_KEY = "cintamani_admin_token";
+    const getToken = () => localStorage.getItem(TOKEN_KEY) || sessionStorage.getItem(TOKEN_KEY);
+    const clearToken = () => { localStorage.removeItem(TOKEN_KEY); sessionStorage.removeItem(TOKEN_KEY); };
+
+    class AuthError extends Error {}
+
+    async function api(path, options = {}) {
+      const res = await fetch(`/api${path}`, {
+        ...options,
+        headers: { ...(options.headers || {}), authorization: `Bearer ${getToken()}` }
+      });
+      if (res.status === 401) { clearToken(); throw new AuthError("Session expired"); }
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error || `Request failed (${res.status})`);
       }
-    ];
+      return res;
+    }
 
     const STATUS_ENUM = [
       "Payment Pending",
@@ -339,18 +195,9 @@
       }
     }
 
-    // Hardcoded Master Overseer Credentials
-    const HARDCODED_CREDENTIALS = {
-      email: "overseer.ananda@cintamani-textiles.lk",
-      cipher: "cintamani2026",
-      name: "Ananda Senanayake",
-      title: "Master Overseer",
-      node: "Kandy & Kurunegala Gateway"
-    };
-
     function OverseerLogin({ onLoginSuccess }) {
-      const [email, setEmail] = useState("overseer.ananda@cintamani-textiles.lk");
-      const [password, setPassword] = useState("cintamani2026");
+      const [email, setEmail] = useState("");
+      const [password, setPassword] = useState("");
       const [rememberMe, setRememberMe] = useState(true);
       const [isLoading, setIsLoading] = useState(false);
       const [errorMsg, setErrorMsg] = useState(null);
@@ -361,29 +208,21 @@
         setErrorMsg(null);
         setIsLoading(true);
 
-        const cleanEmail = email.trim().toLowerCase();
-        const cleanPassword = password.trim();
-
-        setTimeout(() => {
-          const isEmailValid = cleanEmail === HARDCODED_CREDENTIALS.email.toLowerCase() ||
-                               cleanEmail === "admin@cintamani.lk" ||
-                               cleanEmail === "admin";
-          const isPassValid = cleanPassword === HARDCODED_CREDENTIALS.cipher ||
-                              cleanPassword === "admin123" ||
-                              cleanPassword === "walawwa1826";
-
-          if (isEmailValid && isPassValid) {
-            if (rememberMe) {
-              localStorage.setItem("cintamani_admin_auth", "true");
-            } else {
-              sessionStorage.setItem("cintamani_admin_auth", "true");
-            }
+        fetch("/api/admin/login", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ email: email.trim(), password })
+        })
+          .then(async (res) => {
+            const body = await res.json().catch(() => ({}));
+            if (!res.ok || !body.token) throw new Error(body.error || "Invalid credentials. Please verify your email and password.");
+            (rememberMe ? localStorage : sessionStorage).setItem(TOKEN_KEY, body.token);
             onLoginSuccess();
-          } else {
+          })
+          .catch((err) => {
             setIsLoading(false);
-            setErrorMsg("Invalid credentials. Please verify your email and password.");
-          }
-        }, 450);
+            setErrorMsg(err.message === "Failed to fetch" ? "Cannot reach the order server." : err.message);
+          });
       };
 
       return (
@@ -420,7 +259,7 @@
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="overseer.ananda@cintamani-textiles.lk"
+                  placeholder="admin@cintamani.lk"
                   className="w-full bg-[#fbf0e8] border border-transparent rounded-xl px-4 py-3 text-sm text-neutral-900 placeholder-neutral-400 focus:outline-none focus:border-rose-900/30 focus:bg-[#f8ede4] transition-colors"
                 />
               </div>
@@ -452,9 +291,7 @@
               {/* Forgot password hint */}
               {forgotMsg && (
                 <div className="p-3 rounded-xl bg-[#fdf5f0] border border-[#f5ded0] text-xs text-neutral-700 leading-relaxed">
-                  <span className="font-semibold text-[#8c2938]">Demo credentials:</span><br/>
-                  Email: <code className="font-mono text-neutral-900 font-bold">overseer.ananda@cintamani-textiles.lk</code><br/>
-                  Password: <code className="font-mono text-neutral-900 font-bold">cintamani2026</code>
+                  Admin sign-in is set in Netlify (environment variables <code className="font-mono">ADMIN_EMAIL</code> and <code className="font-mono">ADMIN_PASSWORD</code>). Ask the site owner to reset them there.
                 </div>
               )}
 
@@ -511,27 +348,57 @@
     }
 
     function App() {
-      // Authentication State
+      // Authentication State (signed token from /api/admin/login)
       const [isAuthenticated, setIsAuthenticated] = useState(() => {
         const params = new URLSearchParams(window.location.search);
-        if (params.get("login") === "true") return false;
-        if (params.get("logout") === "true") {
-          localStorage.removeItem("cintamani_admin_auth");
-          sessionStorage.removeItem("cintamani_admin_auth");
-          return false;
-        }
-        return localStorage.getItem("cintamani_admin_auth") === "true" ||
-               sessionStorage.getItem("cintamani_admin_auth") === "true";
+        if (params.get("logout") === "true") { clearToken(); return false; }
+        return Boolean(getToken());
       });
 
       const handleLogout = () => {
-        localStorage.removeItem("cintamani_admin_auth");
-        sessionStorage.removeItem("cintamani_admin_auth");
+        clearToken();
         setIsAuthenticated(false);
       };
 
-      const [orders, setOrders] = useState(INITIAL_ORDERS);
-      const [selectedOrderId, setSelectedOrderId] = useState("CM-8402");
+      const [orders, setOrders] = useState([]);
+      const [loadState, setLoadState] = useState("idle"); // idle | loading | ready | error
+      const [loadError, setLoadError] = useState(null);
+      const [selectedOrderId, setSelectedOrderId] = useState(null);
+
+      const handleApiError = (err) => {
+        if (err instanceof AuthError) { setIsAuthenticated(false); return; }
+        triggerToast(err.message);
+      };
+
+      const loadOrders = async () => {
+        setLoadState((s) => (s === "ready" ? "ready" : "loading"));
+        try {
+          const data = await (await api("/admin/orders")).json();
+          setOrders(data.orders);
+          setSelectedOrderId((id) => (id && data.orders.some((o) => o.orderId === id) ? id : data.orders[0]?.orderId || null));
+          setLoadState("ready");
+        } catch (err) {
+          if (err instanceof AuthError) { setIsAuthenticated(false); return; }
+          setLoadError(err.message);
+          setLoadState("error");
+        }
+      };
+
+      useEffect(() => {
+        if (!isAuthenticated) return;
+        loadOrders();
+        const timer = setInterval(loadOrders, 60000); // pick up new orders every minute
+        return () => clearInterval(timer);
+      }, [isAuthenticated]);
+
+      const replaceOrder = (updated) => setOrders((prev) => prev.map((o) => (o.orderId === updated.orderId ? updated : o)));
+      const saveOrder = async (patch) =>
+        (await (await api(`/admin/orders/${currentOrder.orderId}`, {
+          method: "PATCH",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(patch)
+        })).json()).order;
+
       const [searchQuery, setSearchQuery] = useState("");
       const [statusFilter, setStatusFilter] = useState("ALL");
       const [isZoomModalOpen, setIsZoomModalOpen] = useState(false);
@@ -542,6 +409,22 @@
       const currentOrder = useMemo(() => {
         return orders.find(o => o.orderId === selectedOrderId) || orders[0];
       }, [orders, selectedOrderId]);
+
+      // Uploaded slip (fetched with the admin token, shown via a local object URL)
+      const [slip, setSlip] = useState({ url: null, type: null });
+      useEffect(() => {
+        let url = null;
+        setSlip({ url: null, type: null });
+        if (!isAuthenticated || !currentOrder || !currentOrder.hasSlip) return;
+        api(`/admin/orders/${currentOrder.orderId}/slip`)
+          .then(async (res) => {
+            const blob = await res.blob();
+            url = URL.createObjectURL(blob);
+            setSlip({ url, type: blob.type });
+          })
+          .catch(handleApiError);
+        return () => { if (url) URL.revokeObjectURL(url); };
+      }, [currentOrder?.orderId, isAuthenticated]);
 
       // Local draft state for bottom action bar
       const [statusDraft, setStatusDraft] = useState(currentOrder ? currentOrder.status : "Payment Pending");
@@ -583,44 +466,40 @@
       };
 
       // Handler: Verify Payment & Accept Order
-      const handleVerifyPayment = () => {
-        setOrders(prev => prev.map(o => {
-          if (o.orderId === currentOrder.orderId) {
-            return { ...o, status: "Accepted" };
-          }
-          return o;
-        }));
-        setStatusDraft("Accepted");
-        triggerToast(`Order #${currentOrder.orderId} verified! Status updated to "Accepted" & patron notified via WhatsApp.`);
+      const handleVerifyPayment = async () => {
+        try {
+          const updated = await saveOrder({ status: "Accepted" });
+          replaceOrder(updated);
+          setStatusDraft("Accepted");
+          triggerToast(`Order #${updated.orderId} accepted. Let ${updated.customerName} know via WhatsApp.`);
+        } catch (err) { handleApiError(err); }
       };
 
-      // Handler: Request Re-upload (triggers alert / prompt modal)
+      // Handler: Request Re-upload — opens WhatsApp with a prepared message
       const handleRequestReupload = () => {
-        const defaultReason = "Mismatched invoice amount / blurry bank teller ink stamp";
+        const defaultReason = "the slip is unclear or the amount does not match";
         const reason = window.prompt(
-          `Specify reason for requesting re-upload from ${currentOrder.customerName}:`,
+          `Reason for asking ${currentOrder.customerName} to re-upload the slip:`,
           defaultReason
         );
-        if (reason) {
-          triggerToast(`Re-upload notice sent to ${currentOrder.customerName} (${currentOrder.contactNumber}): "${reason}"`);
-        }
+        if (!reason) return;
+        const text = `Hello ${currentOrder.customerName}, this is Cintamani Linens about order ${currentOrder.orderId}. ` +
+          `Could you please send us your bank transfer slip again? Reason: ${reason}. Thank you.`;
+        window.open(`https://wa.me/${currentOrder.contactNumber.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(text)}`, "_blank", "noopener");
       };
 
-      // Handler: Save & Update Customer from bottom action bar
-      const handleSaveAndUpdate = () => {
-        setOrders(prev => prev.map(o => {
-          if (o.orderId === currentOrder.orderId) {
-            return {
-              ...o,
-              status: statusDraft,
-              deliveryBarcode: barcodeDraft.trim() ? barcodeDraft.trim() : null
-            };
-          }
-          return o;
-        }));
-        setIsBarcodeSaved(true);
-        triggerToast(`Order #${currentOrder.orderId} updated! Status: "${statusDraft}"${barcodeDraft ? ` • Barcode: ${barcodeDraft}` : ""} logged to Cintamani DB.`);
-        setTimeout(() => setIsBarcodeSaved(false), 3000);
+      // Handler: Save status + delivery barcode
+      const handleSaveAndUpdate = async () => {
+        try {
+          const updated = await saveOrder({
+            status: statusDraft,
+            deliveryBarcode: barcodeDraft.trim() ? barcodeDraft.trim() : null
+          });
+          replaceOrder(updated);
+          setIsBarcodeSaved(true);
+          triggerToast(`Order #${updated.orderId} saved: "${updated.status}"${updated.deliveryBarcode ? ` • Barcode: ${updated.deliveryBarcode}` : ""}.`);
+          setTimeout(() => setIsBarcodeSaved(false), 3000);
+        } catch (err) { handleApiError(err); }
       };
 
       // Rule: Barcode editable only if "Packed & Ready" or "Dispatched"
@@ -628,6 +507,22 @@
 
       if (!isAuthenticated) {
         return <OverseerLogin onLoginSuccess={() => setIsAuthenticated(true)} />;
+      }
+
+      if (!currentOrder) {
+        const message = loadState === "error"
+          ? `Could not load orders: ${loadError}`
+          : loadState === "ready" ? "No orders yet. New orders from the shop will appear here." : "Loading orders…";
+        return (
+          <div className="min-h-screen bg-white flex flex-col items-center justify-center gap-4 p-6 font-sans text-neutral-700">
+            <span className="material-symbols-outlined text-rose-900 text-4xl">inventory_2</span>
+            <p className="text-sm">{message}</p>
+            <div className="flex gap-2">
+              <button onClick={loadOrders} className="px-3 py-1.5 rounded-lg border border-rose-900/30 text-rose-900 text-xs font-semibold">Refresh</button>
+              <button onClick={handleLogout} className="px-3 py-1.5 rounded-lg border border-rose-900/20 text-rose-900 text-xs font-semibold">Sign out</button>
+            </div>
+          </div>
+        );
       }
 
       return (
@@ -1116,11 +1011,20 @@
                         onClick={() => setIsZoomModalOpen(true)}
                         className="relative rounded-xl border border-neutral-200 bg-stone-100 overflow-hidden group cursor-zoom-in flex items-center justify-center min-h-[280px] max-h-[360px]"
                       >
-                        <img
-                          src={currentOrder.paymentReceiptImg}
-                          alt={`Bank receipt slip for order ${currentOrder.orderId}`}
-                          className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
-                        />
+                        {slip.url && slip.type === "application/pdf" ? (
+                          <span className="flex flex-col items-center gap-2 text-rose-900 text-xs font-bold">
+                            <span className="material-symbols-outlined text-4xl">picture_as_pdf</span>
+                            PDF slip — click to open
+                          </span>
+                        ) : slip.url ? (
+                          <img
+                            src={slip.url}
+                            alt={`Bank transfer slip for order ${currentOrder.orderId}`}
+                            className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                          />
+                        ) : (
+                          <span className="text-xs text-neutral-500">{currentOrder.hasSlip ? "Loading slip…" : "No slip uploaded"}</span>
+                        )}
                         
                         {/* Hover Overlay Hint */}
                         <div className="absolute inset-0 bg-neutral-950/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
@@ -1130,17 +1034,10 @@
                           </span>
                         </div>
 
-                        {/* Stamped badge watermark */}
-                        <div className="absolute top-3 left-3">
-                          <span className="badge-clean-pill bg-white text-[#800000] border border-neutral-200">
-                            <span className="w-1.5 h-1.5 rounded-full bg-rose-700 animate-pulse mr-1.5"></span>
-                            Teller Ink Stamp Detected
-                          </span>
-                        </div>
                       </div>
 
                       <p className="text-[11px] text-neutral-500 italic text-center font-sans">
-                        Verified via official teller ink stamp & branch journal verification.
+                        Check the slip's amount, date and account before accepting the order.
                       </p>
                     </div>
 
@@ -1148,8 +1045,8 @@
                     <div className="p-3 bg-rose-50/60 rounded-xl border border-rose-100 text-xs flex items-center gap-2.5 text-neutral-800 font-sans">
                       <span className="material-symbols-outlined text-rose-900 text-lg">verified</span>
                       <div>
-                        <strong className="text-rose-900">Financial Ledger Check: </strong>
-                        <span>Deposit slip amount matches invoice sum ({currentOrder.amount}).</span>
+                        <strong className="text-rose-900">Expected amount: </strong>
+                        <span>{currentOrder.amount} (including delivery).</span>
                       </div>
                     </div>
                   </div>
@@ -1327,16 +1224,22 @@
                 </div>
 
                 <div className="max-h-[70vh] overflow-auto flex items-center justify-center bg-stone-100 rounded-xl p-2 border border-neutral-200">
-                  <img
-                    src={currentOrder.paymentReceiptImg}
-                    alt="Enlarged Slip Preview"
-                    className="max-h-[65vh] w-auto object-contain rounded-lg"
-                  />
+                  {slip.type === "application/pdf" ? (
+                    <iframe src={slip.url} title="Slip PDF" className="w-full h-[65vh] rounded-lg bg-white" />
+                  ) : slip.url ? (
+                    <img
+                      src={slip.url}
+                      alt="Enlarged slip preview"
+                      className="max-h-[65vh] w-auto object-contain rounded-lg"
+                    />
+                  ) : (
+                    <span className="text-xs text-neutral-500 p-8">No slip uploaded</span>
+                  )}
                 </div>
 
                 <div className="flex items-center justify-between text-xs text-neutral-600 pt-2 border-t border-neutral-100">
                   <span>Teller Counter: <strong>{currentOrder.receiptDetails.tellerStamp}</strong></span>
-                  <span className="font-bold text-rose-900 font-mono font-mono-code">Total Verified: {currentOrder.amount}</span>
+                  <span className="font-bold text-rose-900 font-mono font-mono-code">Order total: {currentOrder.amount}</span>
                 </div>
               </div>
             </div>

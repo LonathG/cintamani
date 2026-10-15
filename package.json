@@ -1,0 +1,14 @@
+{
+  "name": "cintamani-linens",
+  "private": true,
+  "description": "Cintamani Linens storefront + order API (Netlify Functions)",
+  "scripts": {
+    "dev": "node scripts/dev-server.mjs"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
