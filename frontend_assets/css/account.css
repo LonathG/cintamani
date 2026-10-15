@@ -695,3 +695,73 @@
   .cm-a_card { padding: 0.95rem 0.8rem 1rem; }
   .cm-a_track li { font-size: 0.47rem; letter-spacing: 0; }
 }
+
+/* ---------- terms agreement (create account) ---------- */
+.cm-auth .cm-a_agree { margin-top: 1.25rem; }
+
+.cm-auth .cm-a_check {
+  position: static;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0 0 0 0.1rem;
+  font-size: 0.85rem;
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--glass-muted);
+  transform: none;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.cm-auth .cm-a_check input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.cm-a_box {
+  position: relative;
+  flex: none;
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-top: 0.08rem;
+  border: 1px solid rgba(201, 180, 109, 0.6);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.04);
+  transition: background-color 0.35s var(--ease), border-color 0.35s, box-shadow 0.35s;
+}
+
+.cm-a_box::after {
+  content: "";
+  position: absolute;
+  left: 0.34rem;
+  top: 0.12rem;
+  width: 0.3rem;
+  height: 0.58rem;
+  border: solid #15110b;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) scale(0);
+  transition: transform 0.35s var(--ease);
+}
+
+.cm-auth .cm-a_check:hover .cm-a_box { border-color: var(--gold); box-shadow: 0 0 10px rgba(201, 180, 109, 0.3); }
+.cm-auth .cm-a_check input:focus-visible + .cm-a_box { outline: 1px solid var(--gold); outline-offset: 3px; }
+.cm-auth .cm-a_check input:checked + .cm-a_box { background: var(--gold); border-color: var(--gold); }
+.cm-auth .cm-a_check input:checked + .cm-a_box::after { transform: rotate(45deg) scale(1); }
+
+.cm-auth .cm-a_check a {
+  color: var(--glass-text);
+  text-decoration: underline;
+  text-decoration-color: rgba(201, 180, 109, 0.6);
+  text-underline-offset: 3px;
+  transition: color 0.3s;
+}
+.cm-auth .cm-a_check a:hover { color: var(--gold); }
+
+.cm-auth .cm-a_agree.is-invalid .cm-a_box { border-color: var(--warn-light); }
+.cm-auth .cm-a_agree .cm-r_fielderr { margin-left: 1.85rem; }

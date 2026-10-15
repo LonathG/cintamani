@@ -74,6 +74,7 @@ export async function registerCustomer({ email, password, name }) {
     failedLogins: 0,
     lockedUntil: 0,
     createdAt: new Date().toISOString(),
+    termsAcceptedAt: new Date().toISOString(), // registration requires agreeing to the T&C
   };
   await saveCustomer(customer);
   return { customer };
