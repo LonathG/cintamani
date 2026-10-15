@@ -21,3 +21,8 @@
   to = "/admin.html"
   status = 200
 
+
+# Order API (netlify/functions/api.mjs serves /api/*)
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
