@@ -83,8 +83,11 @@ async function createOrder(req) {
     if (!product) return fail("One of the pieces is no longer available.");
     if (!shop.sizes.includes(size)) return fail(`Please choose a size for ${product.name}.`);
     if (!(qty >= 1 && qty <= shop.maxQtyPerLine)) return fail(`Please check the quantity for ${product.name}.`);
+    // colour chosen on the product page; must be one of the shop's colours (else the photographed one)
+    const colourNames = (shop.colours || []).map((c) => c.name);
+    const colour = colourNames.includes(String(raw.colour)) ? String(raw.colour) : product.colour;
     items.push({
-      id: product.id, name: product.name, colour: product.colour, size, qty,
+      id: product.id, name: product.name, colour, size, qty,
       unitPrice: product.price, lineTotal: product.price * qty,
     });
   }

@@ -74,21 +74,32 @@
   function subtotal() { return cart.reduce(function (s, l) { return s + PRODUCTS[l.id].price * l.qty; }, 0); }
 
   var pendingAdd = null; // piece chosen while signed out; added right after sign-in
+  var pendingColour = null;
 
-  function add(id) {
+  // colours every piece can be made in (shop-data.js); a line without one uses the photographed colour
+  var COLOURS = SHOP.colours || [];
+  function colourOf(line) {
+    var name = line.colour || PRODUCTS[line.id].colour;
+    var c = COLOURS.find(function (x) { return x.name === name; });
+    return { name: name, hex: c ? c.hex : "transparent" };
+  }
+
+  function add(id, colour) {
     if (!PRODUCTS[id]) return;
+    colour = colour || PRODUCTS[id].colour;
     if (!account) {
       pendingAdd = id;
+      pendingColour = colour;
       open(4, { view: "signin", reason: "add" });
       return;
     }
-    var line = cart.find(function (l) { return l.id === id && !l.size; });
+    var line = cart.find(function (l) { return l.id === id && !l.size && colourOf(l).name === colour; });
     if (line) line.qty = Math.min(SHOP.maxQtyPerLine, line.qty + 1);
-    else { line = { id: id, size: null, qty: 1 }; cart.push(line); }
+    else { line = { id: id, colour: colour, size: null, qty: 1 }; cart.push(line); }
     highlight = line;
     save();
     bumpTrigger();
-    toast(PRODUCTS[id].name);
+    toast(PRODUCTS[id].name + " · " + colour);
   }
 
   // small note under the nav: the piece is in the selection, the cart stays closed
@@ -443,7 +454,7 @@
             '<div class="cm-r_item_top">' +
               "<div>" +
                 '<p class="cm-r_name">' + esc(p.name) + "</p>" +
-                '<span class="cm-r_sub">' + esc(p.subline) + "</span>" +
+                '<span class="cm-r_colour"><i style="background:' + colourOf(line).hex + '"></i>' + esc(colourOf(line).name) + "</span>" +
               "</div>" +
               '<div class="cm-r_price">' + lkr(p.price * line.qty) +
                 '<button type="button" class="cm-r_remove" data-act="remove" data-i="' + i + '" aria-label="Remove ' + esc(p.name) + '" title="Remove">' + TRASH_ICON + "</button>" +
@@ -757,9 +768,11 @@
       accountReason = null;
       if (pendingAdd) {
         var id = pendingAdd;
+        var chosenColour = pendingColour;
         pendingAdd = null;
+        pendingColour = null;
         close(true);
-        add(id); // now signed in: adds the piece and confirms with a note
+        add(id, chosenColour); // now signed in: adds the piece and confirms with a note
       } else if (accountReturn === 1 && cart.length) go(1);
       else go(4, { view: "profile" });
     }).catch(function (err) {
@@ -951,7 +964,7 @@
     if (location.protocol === "file:") { showError(scope, "Checkout needs the live site (or npm run dev) — it can't send from a file preview."); return; }
 
     var form = new FormData();
-    form.append("items", JSON.stringify(cart.map(function (l) { return { id: l.id, size: l.size, qty: l.qty }; })));
+    form.append("items", JSON.stringify(cart.map(function (l) { return { id: l.id, colour: colourOf(l).name, size: l.size, qty: l.qty }; })));
     ["name", "phone", "address", "email", "payerBank", "reference"].forEach(function (k) { form.append(k, details[k] || ""); });
     form.append("slip", slipFile, slipFile.name);
 
@@ -1043,7 +1056,7 @@
     highlight = null;
     if (act === "size") {
       var size = el.getAttribute("data-size");
-      var twin = cart.find(function (l) { return l !== line && l.id === line.id && l.size === size; });
+      var twin = cart.find(function (l) { return l !== line && l.id === line.id && l.size === size && colourOf(l).name === colourOf(line).name; });
       if (twin) { twin.qty = Math.min(SHOP.maxQtyPerLine, twin.qty + line.qty); cart.splice(i, 1); }
       else line.size = size;
     }
@@ -1178,7 +1191,8 @@
     e.preventDefault();
     e.stopPropagation();
     var m = location.pathname.match(/u-(\d+)(\.html)?\/?$/);
-    if (m) add("u-" + m[1]);
+    var rail = document.querySelector(".cm-colours");
+    if (m) add("u-" + m[1], rail && rail.getAttribute("data-selected"));
   }, true);
 
   // following a link from inside the popup (e.g. "View collection") closes it

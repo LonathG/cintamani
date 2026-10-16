@@ -378,6 +378,25 @@
   color: var(--ink-soft);
 }
 
+/* chosen colour under the piece name */
+.cm-r_colour {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(1 * var(--u));
+  font-size: calc(1.85 * var(--u));
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.cm-r_colour i {
+  width: calc(2.1 * var(--u));
+  height: calc(2.1 * var(--u));
+  border-radius: 50%;
+  border: 1px solid rgba(43, 29, 20, 0.35);
+  flex: none;
+}
+
 .cm-r_controls {
   display: flex;
   flex-wrap: wrap;
@@ -1452,4 +1471,201 @@
   }
   .cm-r_col--form { padding: calc(5 * var(--u)) 0 0; }
   .cm-receipt_scroll:not(:has(> .cm-r_col)) { width: auto; }
+}
+
+/* =====================================================================
+   Product pages: colour swatches (js/colours.js)
+   desktop — a vertical rail beside the photo, five at a time, hover preview to the side
+   phones  — a swipeable row under the photo
+   ===================================================================== */
+.art_main_wrap:has(> .cm-colours) {
+  position: relative;
+  container-type: inline-size;
+}
+
+.cm-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.cm-colours {
+  --gap: 0.7rem;
+  position: absolute;
+  top: 0;
+  left: calc(100% + 1.5rem);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  /* as tall as the (square) photo: exactly five swatches between the arrows
+     (photo height − two arrows and their gaps − four swatch gaps − list padding) / 5, plus padding */
+  width: calc((100cqw - 8rem - 8px) / 5 + 8px);
+  height: 100cqw;
+}
+
+.cm-colours_viewport {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+}
+.cm-colours_viewport::-webkit-scrollbar { display: none; }
+
+.cm-colours_list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+}
+
+.cm-colours_list li { scroll-snap-align: start; scroll-margin: 4px; }
+
+/* a swatch: the colour with a faint woven texture so it reads as linen */
+.cm-colour {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 3px;
+  background-color: var(--swatch, #ccc);
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.06) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.07) 0 1px, transparent 1px 3px),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(0, 0, 0, 0.16));
+  background-size: auto, auto, 100% 100%;
+  cursor: pointer;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s, box-shadow 0.3s;
+}
+.cm-colour[style*="background-image"] { background-size: cover; background-position: center; }
+
+.cm-colour:hover,
+.cm-colour:focus-visible {
+  transform: scale(1.05);
+  border-color: rgba(226, 211, 168, 0.8);
+  outline: none;
+}
+
+.cm-colour.is-selected {
+  border-color: #c9b46d;
+  box-shadow: 0 0 0 2px #0a0907, 0 0 0 3px #c9b46d;
+}
+
+.cm-colours_arrow {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+  background: rgba(10, 9, 7, 0.4);
+  color: #efeeec;
+  cursor: pointer;
+  transition: border-color 0.3s, color 0.3s, opacity 0.3s;
+}
+.cm-colours_arrow svg { width: 1rem; height: 1rem; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.cm-colours_arrow:hover:not(:disabled) { border-color: #c9b46d; color: #e2d3a8; }
+.cm-colours_arrow:disabled { opacity: 0.25; cursor: default; }
+
+/* hover preview: a bigger swatch + name, beside the hovered one */
+.cm-colours_preview {
+  position: absolute;
+  left: calc(100% + 1rem);
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 0.6rem 0.6rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  background: rgba(14, 12, 9, 0.82);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-0.4rem, -50%) scale(0.94);
+  transform-origin: left center;
+  transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), top 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.cm-colours_preview.is-shown { opacity: 1; transform: translate(0, -50%) scale(1); }
+.cm-colours_preview.is-left { left: auto; right: calc(100% + 1rem); transform-origin: right center; transform: translate(0.4rem, -50%) scale(0.94); }
+.cm-colours_preview.is-left.is-shown { transform: translate(0, -50%) scale(1); }
+
+.cm-colours_preview_swatch {
+  display: block;
+  width: clamp(6.5rem, 10vw, 9.5rem);
+  aspect-ratio: 1;
+  border-radius: 2px;
+  background-color: var(--swatch, #ccc);
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.07) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.08) 0 1px, transparent 1px 3px),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(0, 0, 0, 0.18));
+  background-size: auto, auto, 100% 100%;
+}
+.cm-colours_preview_swatch[style*="background-image"] { background-size: cover; background-position: center; }
+
+.cm-colours_preview_name {
+  font-family: var(--font--primary-family, serif);
+  font-size: 1.25rem;
+  line-height: 1;
+  color: #fff;
+}
+
+.cm-colours_preview_meta {
+  font-size: 0.66rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #c9b46d;
+}
+
+/* "Colour: Olive · 24 colours available" under the name and price */
+.cm-colour_label {
+  width: 100%;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+.cm-colour_label strong { margin: 0 0.35rem; font-weight: 500; color: #e2d3a8; }
+
+/* phones: a row of swatches under the photo, swipe sideways */
+@media (max-width: 767px) {
+  .art_main_wrap:has(> .cm-colours) { container-type: normal; }
+
+  .cm-colours {
+    position: static;
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+  }
+
+  .cm-colours { gap: 0.4rem; align-items: center; }
+  .cm-colours_preview { display: none; }
+
+  /* the same arrows, turned sideways: ◀ before the row, ▶ after it */
+  .cm-colours_arrow { width: 1.9rem; height: 1.9rem; }
+  .cm-colours_arrow svg { transform: rotate(-90deg); }
+
+  .cm-colours_viewport {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x proximity;
+  }
+
+  .cm-colours_list { flex-direction: row; gap: 0.6rem; }
+  .cm-colours_list li { flex: none; width: 2.9rem; scroll-snap-align: center; }
 }
