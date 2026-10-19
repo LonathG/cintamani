@@ -1,3 +1,11 @@
+/* Wide screens: the site was designed on a 1536px-wide window (1920px screen at 125% zoom).
+   Above that, grow the root size with the window so the whole layout scales as one piece —
+   the headline (sized in vw) and everything sized in rem (nav, text, spacing, grid) stay in
+   proportion, exactly as at 1536px. Laptops, tablets and phones are unchanged. */
+@media (min-width: 1537px) {
+  html { font-size: calc(100vw / 96); } /* 16px at 1536px, 20px at 1920px */
+}
+
 /* Cintamani cart: receipt-paper popups (js/cart.js) + nav cart button */
 
 /* ---------- nav cart button ---------- */
