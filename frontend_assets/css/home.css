@@ -307,4 +307,14 @@
   .home_slider {
     margin-top: 4.5rem;
   }
+  /* slide title + "View piece" in the middle of the photo, clear of the fixed logo at the top */
+  .home_slider .slide__info {
+    justify-content: center;
+    padding: 0 1.5rem;
+    text-align: center;
+  }
+  /* arrows and "Visit Collection" sit higher, clear of the phone's browser bar */
+  .home_slider .slider_controls_wrap {
+    bottom: calc(10vh + 5.5rem + env(safe-area-inset-bottom, 0px)); /* the slider is 110vh tall */
+  }
 }

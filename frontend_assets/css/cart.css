@@ -2301,3 +2301,48 @@
   .cm-sizetab::after,
   .cm-sizetab svg { animation: none; }
 }
+
+/* About: sideways gallery. The photos are sized by width, so on short windows (laptops, a 1920px
+   screen at 100% with the browser bars) the stacked pair and the tall shots pushed their captions
+   below the screen. Cap each photo's height to the window so every caption stays visible. */
+@media (min-width: 768px) {
+  .section_about_horizontal .about_gallery_wrapper .about_horizontal_image { max-height: calc(100vh - 15rem); }
+  .section_about_horizontal .about_horizontal_image_column .about_horizontal_image { max-height: calc((100vh - 19rem) / 2); }
+}
+
+/* homepage intro: nothing scrolls underneath it (the class is set by the intro script in index.html) */
+html.cm-intro-lock,
+html.cm-intro-lock body { overflow: hidden !important; overscroll-behavior: none; }
+
+/* "Curated in Colours" marquee: keep the moving strip on its own GPU layer so phones don't
+   repaint it every frame (that repaint was the jitter) */
+[tr-marquee-element="panel"] {
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  transform: translateZ(0);
+}
+[tr-marquee-element="panel"] img { -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+
+/* phones: the edge-fade mask on the paper background is costly to redraw while the section moves,
+   so use a plain gradient overlay there instead (same look: fades to black top and bottom) */
+@media (max-width: 767px) {
+  .marquee_bg_wrap { -webkit-mask-image: none; mask-image: none; }
+  .marquee_bg_wrap::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0) 22%, rgba(0, 0, 0, 0) 78%, #000 100%);
+  }
+}
+
+/* phones: footer menu stacked and centred, "Cintamani Linens" centred */
+@media (max-width: 767px) {
+  .footer_link_wrap { display: flex; flex-direction: column; align-items: center; row-gap: 0; }
+  .footer_link { text-align: center; }
+  .footer_column_left { width: 100%; }
+  .footer_column_right { align-items: center; }
+  .footer_logo_text { text-align: center; }
+}

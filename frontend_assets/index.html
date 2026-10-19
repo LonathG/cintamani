@@ -1074,6 +1074,35 @@
 				var pre = document.querySelector(".pre-container");
 				var btnWrap = pre && pre.querySelector("[data-loader='btn-wrapper']");
 				if (!btnWrap) return;
+
+				// No scrolling behind the intro (phones could swipe the page underneath it).
+				// Released once the template hides the intro after "Visit Collection".
+				var html = document.documentElement;
+				var KEYS = { " ": 1, PageDown: 1, PageUp: 1, ArrowDown: 1, ArrowUp: 1, Home: 1, End: 1 };
+				function block(e) { if (e.type !== "keydown" || KEYS[e.key]) e.preventDefault(); }
+				function lock() {
+					html.classList.add("cm-intro-lock");
+					window.addEventListener("touchmove", block, { passive: false });
+					window.addEventListener("wheel", block, { passive: false });
+					window.addEventListener("keydown", block);
+				}
+				function unlock() {
+					html.classList.remove("cm-intro-lock");
+					window.removeEventListener("touchmove", block);
+					window.removeEventListener("wheel", block);
+					window.removeEventListener("keydown", block);
+				}
+				// the intro plays unless it was already seen in this tab; the template shows it (inline
+				// display) and finally hides it with an inline display: none — that's when we unlock
+				if (!html.classList.contains("cm-skip-intro")) {
+					lock();
+					var watch = new MutationObserver(function () {
+						if (pre.style.display === "none") { unlock(); watch.disconnect(); }
+					});
+					watch.observe(pre, { attributes: true, attributeFilter: ["style"] });
+					// safety net: if the intro isn't on screen at all, don't leave the page stuck
+					setTimeout(function () { if (getComputedStyle(pre).display === "none") { unlock(); watch.disconnect(); } }, 8000);
+				}
 				var opened = false;
 				function open() {
 					if (opened) return;
@@ -1086,7 +1115,11 @@
 				check();
 				// on "Visit Collection" the halves fade while the template slides the panels away
 				var btn = pre.querySelector("[data-loader='btn']");
-				if (btn) btn.addEventListener("click", function () { pre.classList.add("cm-intro-leave"); });
+				if (btn) btn.addEventListener("click", function () {
+					pre.classList.add("cm-intro-leave");
+					// the panels have slid away by now; never leave the page locked
+					setTimeout(unlock, 2500);
+				});
 			})();
 		</script>
 		<div class="page_content">
@@ -1499,7 +1532,7 @@
 							data-us-project-src="Images/Paper/paper-scene.json"></div>
 						<div class="marquee-wrap-overlay"></div>
 					</div>
-					<div class="marquee_height" tr-marquee-element="component" tr-marquee-speed="80">
+					<div class="marquee_height" tr-marquee-element="component" tr-marquee-speed="50">
 						<div class="marquee_flex">
 							<div class="marquee_container w-dyn-list" tr-marquee-element="panel">
 								<div class="marquee_wrapper w-dyn-items" role="list">

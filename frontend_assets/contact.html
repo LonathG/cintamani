@@ -485,7 +485,7 @@
 
 		img { display: block; max-width: 100%; }
 
-		.c_wrap { max-width: 1180px; margin: 0 auto; padding: 0 2rem; }
+		.c_wrap { max-width: 92rem; margin: 0 auto; padding: 0 2.5rem; }
 
 		.c_eyebrow {
 			display: inline-flex;
@@ -548,7 +548,7 @@
 			letter-spacing: -0.02em;
 		}
 		.c_hero_title em { font-weight: 100; color: var(--gold-light); }
-		.c_hero_text { max-width: 560px; margin: 0; font-size: clamp(1rem, 1.3vw, 1.15rem); line-height: 1.7; color: var(--text); }
+		.c_hero_text { max-width: 38rem; margin: 0; font-size: clamp(1rem, 1.3vw, 1.15rem); line-height: 1.7; color: var(--text); }
 		.c_hero_actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2.2rem; }
 
 		.c_btn {
@@ -681,8 +681,8 @@
 		.c_faq_sec { padding: 6.5rem 0; background: #11100c; }
 		.c_faq {
 			display: grid;
-			grid-template-columns: minmax(0, 1fr) 280px minmax(0, 1fr);
-			gap: 3rem;
+			grid-template-columns: minmax(0, 1fr) 15rem minmax(0, 1fr);
+			gap: 3.5rem;
 			align-items: start;
 			margin-top: 3.5rem;
 		}
@@ -811,14 +811,14 @@
 			background: rgba(8, 8, 8, 0.7);
 		}
 		.c_form_sec .c_wrap { position: relative; z-index: 2; }
-		.c_form_intro { max-width: 640px; margin: 0 auto 3rem; text-align: center; }
+		.c_form_intro { max-width: 46rem; margin: 0 auto 3rem; text-align: center; }
 		.c_form_intro p { margin: 1.2rem 0 0; color: var(--text); line-height: 1.7; }
 
 		.c_card {
 			position: relative;
 			display: grid;
-			grid-template-columns: 0.8fr 1.2fr;
-			max-width: 1020px;
+			grid-template-columns: 0.72fr 1.28fr;
+			max-width: 78rem;
 			margin: 0 auto;
 			background: var(--cream);
 			color: var(--brown);
@@ -832,9 +832,9 @@
 			border: 1px solid rgba(43, 29, 20, 0.28);
 			pointer-events: none;
 		}
-		.c_card_photo { padding: 28px 0 28px 28px; }
-		.c_card_photo img { width: 100%; height: 100%; min-height: 420px; object-fit: cover; object-position: 50% 25%; }
-		.c_card_form { padding: 2.6rem 2.8rem 2.4rem 2.6rem; }
+		.c_card_photo { display: flex; padding: 28px 0 28px 28px; }
+		.c_card_photo img { flex: 1 1 auto; width: 100%; height: auto; min-height: 420px; object-fit: cover; object-position: 50% 25%; }
+		.c_card_form { padding: 2.8rem 3.4rem 2.6rem 3rem; }
 		.c_card_form h3 {
 			margin: 0 0 1.6rem;
 			font-family: var(--serif);
@@ -844,7 +844,7 @@
 		}
 		.c_card_form h3 em { color: var(--olive); }
 
-		.c_fields { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem 1.6rem; }
+		.c_fields { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem 2rem; }
 		.c_field { position: relative; }
 		.c_field.is-wide { grid-column: 1 / -1; }
 		.c_field label {
@@ -918,22 +918,22 @@
 		.c_send_btn:focus-visible::before { transform: scaleY(1); }
 		.c_send_btn svg { width: 1.1rem; height: 1.1rem; }
 
-		/* ---------- footer ---------- */
-		.c_footer {
-			display: flex;
-			flex-wrap: wrap;
-			align-items: center;
-			justify-content: space-between;
-			gap: 1rem;
-			max-width: 1400px;
-			margin: 0 auto;
-			padding: 2rem;
-			border-top: 1px solid var(--line);
-			font-size: 0.8rem;
-			color: rgba(255, 255, 255, 0.42);
+		/* ---------- footer: the shared site footer (styles in style_1.css) ---------- */
+		/* no visible page scrollbar, same as the other pages */
+		html { scrollbar-width: none; }
+		body { -ms-overflow-style: none; }
+		html::-webkit-scrollbar,
+		body::-webkit-scrollbar { display: none; }
+
+		.c_site_footer { background: #000; }
+		/* "Get in Touch" hover fill, as on the other pages (they set this in their own head styles) */
+		.footer_btn .footer_btn_circle {
+			transition: transform 0.7s cubic-bezier(0.625, 0.05, 0, 1), background-color 0.4s cubic-bezier(0.625, 0.05, 0, 1);
+			transform: translate(-50%, -50%) scale(0) rotate(0.001deg);
+			background-color: #C9B46D;
 		}
-		.c_footer a { color: rgba(255, 255, 255, 0.68); text-decoration: none; transition: color 0.3s; }
-		.c_footer a:hover { color: #fff; }
+		.footer_btn:hover .footer_btn_circle { transform: translate(-50%, -50%) scale(1) rotate(0.001deg); }
+		.footer_btn:hover .footer_btn_text { color: black; }
 
 		.c_reveal { opacity: 0; transform: translateY(24px); transition: opacity 1s var(--ease), transform 1s var(--ease); }
 		.c_reveal.is-in { opacity: 1; transform: none; }
@@ -966,7 +966,6 @@
 			.c_card_form { padding: 1.8rem 1.5rem 1.8rem; }
 			.c_fields { grid-template-columns: minmax(0, 1fr); }
 			.c_send_btn { width: 100%; justify-content: center; }
-			.c_footer { flex-direction: column; text-align: center; padding: 2rem 1rem; }
 		}
 
 		@media (prefers-reduced-motion: reduce) {
@@ -1213,17 +1212,79 @@
 		</section>
 	</main>
 
-	<footer class="c_footer">
-		<span>©26 Cintamani Linens – All rights reserved · <a href="terms.html">Terms &amp; Conditions</a></span>
-		<span>The essence of heritage in linen</span>
-		<span>Site by: <a href="https://www.themindsstudio.com/" rel="noopener" target="_blank">The Minds Studio</a></span>
-	</footer>
+	<div class="c_site_footer">
+		<section class="footer">
+			<div class="footer_container u-container"><a aria-label="Get in Touch" class="footer_btn w-inline-block"
+					data-btn-hover="" href="#message">
+					<div class="footer_btn_bg"></div>
+					<div class="footer_btn_circle-wrap">
+						<div class="footer_btn_circle">
+							<div class="before__100"></div>
+						</div>
+					</div>
+					<div class="footer_btn_text">
+						<div class="footer_btn_text-p">Get in Touch</div>
+					</div>
+				</a>
+				<div class="footer_layout u-grid-custom">
+					<div class="footer_column_left">
+						<nav class="footer_link_wrap"><a aria-label="Home"
+								class="footer_link w-inline-block" href="index.html">
+								<div>Home</div>
+								<div class="footer_link_bg"></div>
+							</a><a aria-label="About" class="footer_link hide w-inline-block" href="about.html">
+								<div>About</div>
+								<div class="footer_link_bg"></div>
+							</a><a aria-label="About" class="footer_link w-inline-block" href="about.html">
+								<div>About</div>
+								<div class="footer_link_bg"></div>
+							</a><a aria-label="Collections" class="footer_link w-inline-block" href="gallery.html">
+								<div>Collections</div>
+								<div class="footer_link_bg"></div>
+							</a><a data-barba-prevent="self" aria-current="page" aria-label="Contact Us" class="footer_link w-inline-block w--current"
+								href="contact.html">
+								<div>Contact Us</div>
+								<div class="footer_link_bg"></div>
+							</a></nav>
+					</div>
+					<div class="footer_column_right" id="w-node-_74391df9-571a-a587-5245-01254281c23d-4281c229">
+						<div class="footer_logo_text">Cintamani</div>
+						<div class="footer_logo_text">Linens</div>
+					</div>
+				</div>
+				<div class="footer_copyright">
+					<div class="u-text-light">©26 Cintamani Linens – All rights reserved · <a class="link" data-barba-prevent="self" href="terms.html">Terms &amp; Conditions</a></div>
+					<div class="u-text-align-center" id="w-node-_74391df9-571a-a587-5245-01254281c245-4281c229">THE
+						ESSENCE OF HERITAGE IN FASHION</div>
+					<div class="u-text-light" id="w-node-_74391df9-571a-a587-5245-01254281c247-4281c229">Site by: <a
+							class="link" href="https://www.themindsstudio.com/" rel="noopener" target="_blank">The
+							Minds
+							Studio</a></div>
+				</div>
+			</div>
+		</section>
+	</div>
 
 	<script src="js/shop-data.js"></script>
 	<script src="js/consent.js"></script>
 	<script src="js/cart.js"></script>
 	<script src="js/colours.js"></script>
 	<script src="js/closeups.js"></script>
+	<script>
+		// footer "Get in Touch": the gold fill grows from where the pointer enters (same as the site script)
+		document.querySelectorAll("[data-btn-hover]").forEach(function (btn) {
+			function place(e) {
+				var r = btn.getBoundingClientRect(), circle = btn.querySelector(".footer_btn_circle");
+				if (!circle) return;
+				var d = Math.abs((e.clientX - (r.left + r.width / 2)) / (r.width / 2) * 50);
+				circle.style.left = ((e.clientX - r.left) / r.width * 100).toFixed(1) + "%";
+				circle.style.top = ((e.clientY - r.top) / r.height * 100).toFixed(1) + "%";
+				circle.style.width = (115 + 2 * d) + "%";
+			}
+			btn.addEventListener("mouseenter", place);
+			btn.addEventListener("mouseleave", place);
+		});
+	</script>
 	<script>
 		// phone menu: same open/close look as the rest of the site
 		(function () {
