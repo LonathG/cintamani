@@ -60,4 +60,5 @@ http.createServer(async (req, res) => {
   const response = await api(request);
   res.writeHead(response.status, Object.fromEntries(response.headers));
   res.end(Buffer.from(await response.arrayBuffer()));
-}).listen(PORT, () => console.log(`Cintamani dev server: http://localhost:${PORT}`));
+// HOST=127.0.0.1 on the server, so only nginx (not the internet) can reach this port
+}).listen(PORT, process.env.HOST || undefined, () => console.log(`Cintamani dev server: http://localhost:${PORT}`));

@@ -5,4 +5,4 @@ Disallow: /admin
 Disallow: /admin.html
 Disallow: /api/
 
-Sitemap: https://www.cintamanilinens.com/sitemap.xml
+Sitemap: https://cintamaniceylon.com/sitemap.xml
