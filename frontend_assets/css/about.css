@@ -1,0 +1,65 @@
+/* About page touch-ups (layout only — template styles live in style_1.css) */
+
+/* "HEART / OF CINTAMANI": keep both words inside the page margins instead of touching the edges */
+.about_tradition_container {
+  padding-left: var(--site--margin);
+  padding-right: var(--site--margin);
+}
+
+.about_tradition_heading {
+  font-size: 14cqw !important; /* was 16.5cqw inline, which ran past both edges */
+}
+
+/* timeline ("Ancient Beginnings" …): breathing room at the sides, bullets inside the text column */
+.about_list {
+  padding-left: 1.15rem;
+}
+
+@media (max-width: 991px) {
+  .about_horizontal_container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+/* ---------- phones ---------- */
+@media (max-width: 767px) {
+  /* "More than an organic textile…": smaller text, and the photo fills the whole section
+     (it sat under a ~200px black band and the text spilled past it) */
+  .about_art {
+    position: relative;
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .about_art_bg {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+  }
+
+  .about_art::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: rgba(8, 8, 8, 0.45); /* keeps the white text readable over the photo */
+    pointer-events: none;
+  }
+
+  .about_art .home_masterpiece_text {
+    font-size: 1.15rem;
+    line-height: 1.45;
+  }
+
+  /* "A (Journey) Through Time": a bigger photo stack and a shorter scroll
+     (was 500vh — about five screens of mostly black around a small stack) */
+  .about_pin_height {
+    height: 300vh;
+  }
+
+  .about_medias {
+    width: min(72vw, 20rem);
+  }
+}

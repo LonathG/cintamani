@@ -31,6 +31,9 @@
     return m && PRODUCTS["u-" + m[1]] ? "u-" + m[1] : null;
   }
 
+  // "Walaakulu White (Snow White)": the Cintamani name with the plain colour name
+  function fullName(c) { return c.shade ? c.name + " (" + c.shade + ")" : c.name; }
+
   function swatchStyle(c) {
     return c.image ? "background-image:url('" + c.image + "')" : "--swatch:" + c.hex;
   }
@@ -55,8 +58,8 @@
           COLOURS.map(function (c) {
             var sel = c.name === start;
             return '<li><button type="button" role="option" class="cm-colour' + (sel ? " is-selected" : "") + '" aria-selected="' + sel + '"' +
-              ' data-name="' + esc(c.name) + '" title="' + esc(c.name) + '" style="' + swatchStyle(c) + '">' +
-              '<span class="cm-sr">' + esc(c.name) + "</span></button></li>";
+              ' data-name="' + esc(c.name) + '" title="' + esc(fullName(c)) + '" style="' + swatchStyle(c) + '">' +
+              '<span class="cm-sr">' + esc(fullName(c)) + "</span></button></li>";
           }).join("") +
         "</ul>" +
       "</div>" +
@@ -68,7 +71,7 @@
     // "Colour: …" line with the details under the name and price
     var label = document.createElement("div");
     label.className = "cm-colour_label";
-    label.innerHTML = 'Colour <strong></strong><span>· ' + COLOURS.length + " colours available</span>";
+    label.innerHTML = 'Colour <strong></strong><em></em><span>· ' + COLOURS.length + " colours available</span>";
 
     place(rail, image);
     var details = document.querySelector(".art_main_details");
@@ -77,7 +80,10 @@
     select(rail, start, false);
     wire(rail, id);
     // once laid out: align with the photo and centre the selected colour
-    setTimeout(function () { place(rail, image); scrollToSelected(rail); }, 50);
+    // (repeated while the template finishes laying out the page, which can reset the scroll)
+    [50, 700, 1600].forEach(function (ms) {
+      setTimeout(function () { if (rail.isConnected) { place(rail, image); scrollToSelected(rail); } }, ms);
+    });
   }
 
   // right after the photo: CSS puts it beside the photo on desktop and in a row below it on phones
@@ -97,6 +103,9 @@
     });
     var label = document.querySelector(".cm-colour_label strong");
     if (label) label.textContent = name;
+    var shade = document.querySelector(".cm-colour_label em");
+    var c = COLOURS.find(function (x) { return x.name === name; });
+    if (shade) shade.textContent = c && c.shade ? "(" + c.shade + ")" : "";
     var id = productId();
     if (remember && id) chosen[id] = name;
   }
@@ -109,7 +118,7 @@
     sw.setAttribute("style", swatchStyle(c));
     box.querySelector(".cm-colours_preview_name").textContent = c.name;
     box.querySelector(".cm-colours_preview_meta").textContent =
-      (COLOURS.indexOf(c) + 1) + " / " + COLOURS.length + (btn.classList.contains("is-selected") ? " · selected" : "");
+      (c.shade ? c.shade + " · " : "") + (COLOURS.indexOf(c) + 1) + " / " + COLOURS.length + (btn.classList.contains("is-selected") ? " · selected" : "");
     // line the preview up with the hovered swatch
     var r = btn.getBoundingClientRect(), rr = rail.getBoundingClientRect();
     box.style.top = (r.top - rr.top + r.height / 2) + "px";
@@ -193,4 +202,49 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", build);
   else build();
   new MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true });
+})();
+
+/* Scroll hint on product pages — on tablets/desktops the page moves sideways (the wheel or trackpad
+ * drives it), which isn't obvious at first glance. A small "Scroll to explore" cue sits at the bottom
+ * right and fades away once the visitor scrolls. Hidden on phones (CSS), where the page scrolls down.
+ */
+(function () {
+  "use strict";
+  var hint = null;
+
+  function make() {
+    var el = document.createElement("div");
+    el.className = "cm-scrollhint";
+    el.setAttribute("aria-hidden", "true");
+    el.innerHTML = '<span class="cm-scrollhint_text">Scroll to explore</span>' +
+      '<span class="cm-scrollhint_line"><span class="cm-scrollhint_dot"></span></span>';
+    return el;
+  }
+  function onProduct() { return !!document.querySelector(".section_art_hero"); }
+  function update() {
+    if (!hint) return;
+    hint.classList.toggle("is-gone", window.scrollY > 40);
+  }
+  function check() {
+    if (onProduct()) {
+      if (!hint) {
+        hint = make();
+        document.body.appendChild(hint);
+        update();
+        setTimeout(function () { if (hint) hint.classList.add("is-shown"); }, 1400);
+      }
+    } else if (hint) {
+      hint.remove();
+      hint = null;
+    }
+  }
+  window.addEventListener("scroll", update, { passive: true });
+  var pending = false;
+  new MutationObserver(function () {
+    if (pending) return;
+    pending = true;
+    setTimeout(function () { pending = false; check(); }, 80);
+  }).observe(document.documentElement, { childList: true, subtree: true });
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", check);
+  else check();
 })();

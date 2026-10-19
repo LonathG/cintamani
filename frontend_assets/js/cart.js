@@ -67,6 +67,8 @@
   var account = read(ACCOUNT_KEY, null); // { token, profile } while signed in
   var slipFile = null;
   var highlight = null;
+  var confirmRemove = -1;   // index of the piece asking "Remove this piece?"
+  var confirmClear = false; // "Clear selection" asking for confirmation
   var busy = false;
 
   function save() { write(CART_KEY, cart); updateTrigger(); }
@@ -247,6 +249,8 @@
   var lastFocus = null;
 
   function open(step, opts) {
+    confirmRemove = -1;
+    confirmClear = false;
     if (!root.classList.contains("is-open")) {
       lastFocus = document.activeElement;
       root.classList.add("is-open");
@@ -348,6 +352,7 @@
       if (opts.reason !== undefined) accountReason = opts.reason;
       panel.innerHTML = renderAccount();
       panel.scrollTop = 0;
+      setProfileEditing(panel, false); // saved details start locked
       if (accountView === "profile") loadOrders(panel);
     }
   }
@@ -448,7 +453,7 @@
         return '<button type="button" class="cm-r_size" data-act="size" data-i="' + i + '" data-size="' + s + '" aria-pressed="' + (line.size === s) + '">' + s + "</button>";
       }).join("");
       return (
-        '<li class="cm-r_item' + (line === highlight ? " is-new" : "") + '" data-i="' + i + '">' +
+        '<li class="cm-r_item' + (line === highlight ? " is-new" : "") + (confirmRemove === i ? " is-confirming" : "") + '" data-i="' + i + '">' +
           '<img class="cm-r_thumb" alt="" src="' + asset(p.image) + '">' +
           "<div>" +
             '<div class="cm-r_item_top">' +
@@ -469,10 +474,22 @@
                 '<button type="button" data-act="inc" data-i="' + i + '" aria-label="One more ' + esc(p.name) + '"' + (line.qty >= SHOP.maxQtyPerLine ? " disabled" : "") + ">+</button>" +
               "</div>" +
             "</div>" +
+            (confirmRemove === i
+              ? '<div class="cm-r_confirm" role="alert"><span>Remove this piece?</span>' +
+                  '<button type="button" class="cm-r_confirm_yes" data-act="remove-yes" data-i="' + i + '" data-autofocus>Remove</button>' +
+                  '<button type="button" class="cm-r_confirm_no" data-act="remove-no" data-i="' + i + '">Keep</button></div>'
+              : "") +
           "</div>" +
         "</li>"
       );
     }).join("") + "</ul>";
+
+    var n = pieces();
+    html += confirmClear
+      ? '<div class="cm-r_confirm is-clear" role="alert"><span>Remove all ' + n + (n === 1 ? " piece" : " pieces") + " from your selection?</span>" +
+          '<button type="button" class="cm-r_confirm_yes" data-act="clear-yes" data-autofocus>Clear all</button>' +
+          '<button type="button" class="cm-r_confirm_no" data-act="clear-no">Cancel</button></div>'
+      : '<button type="button" class="cm-r_clear" data-act="clear">Clear selection</button>';
 
     var sub = subtotal();
     html +=
@@ -596,7 +613,7 @@
           '<div data-orders><p class="cm-a_note">Loading your orders…</p></div>' +
         "</div>" +
         '<h3 class="cm-a_section">Saved details</h3>' +
-        '<div class="cm-a_fields">' +
+        '<div class="cm-a_fields" data-profile>' +
           aField("acc_name", "Full name", { auto: "name", max: 80, value: p.name }) +
           aField("acc_phone", "Contact number", { type: "tel", auto: "tel", max: 16, inputmode: "tel", value: p.phone }) +
           aField("acc_address", "Delivery address", { multiline: true, auto: "street-address", max: 300, value: p.address }) +
@@ -604,6 +621,7 @@
         '<p class="cm-a_note">Used for your delivery at checkout.</p>' +
         '<p class="cm-r_error" role="alert"></p>' +
         '<button type="button" class="cm-a_btn" data-act="acc-save">Edit details</button>' +
+        '<button type="button" class="cm-a_link cm-a_cancel" data-act="acc-cancel-edit" hidden>Cancel</button>' +
         '<button type="button" class="cm-a_link" data-act="acc-signout">Sign out</button>'
       );
     }
@@ -721,21 +739,55 @@
   }
   function syncProfileButton(scope) {
     var btn = scope.querySelector('[data-act="acc-save"]');
-    if (btn && !btn.disabled) btn.textContent = profileDirty(scope) ? "Save details" : "Edit details";
+    if (btn && !btn.disabled) btn.textContent = isProfileEditing(scope) ? "Save details" : "Edit details";
   }
 
-  function accountSubmit(act, scope, btn) {
-    if (act === "acc-save" && !profileDirty(scope)) {
-      // nothing changed yet: take them to the first field to edit
-      var first = scope.querySelector('[name="acc_phone"]') || scope.querySelector('[name="acc_name"]');
+  // saved details are greyed out and locked until "Edit details" is pressed
+  function isProfileEditing(scope) {
+    var box = scope.querySelector("[data-profile]");
+    return Boolean(box && box.classList.contains("is-editing"));
+  }
+  function setProfileEditing(scope, on) {
+    var box = scope.querySelector("[data-profile]");
+    if (!box) return;
+    box.classList.toggle("is-editing", on);
+    box.querySelectorAll("input, textarea").forEach(function (el) {
+      if (on) el.removeAttribute("readonly"); else el.setAttribute("readonly", "");
+      el.tabIndex = on ? 0 : -1;
+    });
+    var cancel = scope.querySelector('[data-act="acc-cancel-edit"]');
+    if (cancel) cancel.hidden = !on;
+    syncProfileButton(scope);
+    if (on) {
+      var first = box.querySelector('[name="acc_phone"]') || box.querySelector("input");
       if (first) {
-        revealInReceipt(first.closest(".cm-r_field"));
         first.focus({ preventScroll: true });
         var end = first.value.length;
         try { first.setSelectionRange(end, end); } catch (err) { /* not supported on every input type */ }
+        revealInReceipt(first.closest(".cm-r_field"));
       }
-      return;
     }
+  }
+  // Cancel: put the saved values back and lock again
+  function cancelProfileEdit(scope) {
+    var p = (account && account.profile) || {};
+    Object.keys(PROFILE_INPUTS).forEach(function (n) {
+      var el = scope.querySelector('[name="' + n + '"]');
+      if (!el) return;
+      el.value = p[PROFILE_INPUTS[n]] || "";
+      var f = el.closest(".cm-r_field");
+      f.classList.toggle("is-filled", Boolean(el.value));
+      f.classList.remove("is-invalid");
+      var err = f.querySelector(".cm-r_fielderr");
+      if (err) err.textContent = "";
+    });
+    showError(scope, "");
+    setProfileEditing(scope, false);
+  }
+
+  function accountSubmit(act, scope, btn) {
+    if (act === "acc-save" && !isProfileEditing(scope)) { setProfileEditing(scope, true); return; }
+    if (act === "acc-save" && !profileDirty(scope)) { setProfileEditing(scope, false); return; } // nothing changed
     var fields = Array.prototype.slice.call(scope.querySelectorAll(".cm-r_field"));
     var ok = fields.map(function (f) { f.setAttribute("data-touched", ""); return checkField(f); }).every(Boolean);
     if (!ok) {
@@ -760,6 +812,7 @@
       if (act === "acc-save") {
         applyProfile(false);
         btn.disabled = false;
+        setProfileEditing(scope, false);
         btn.textContent = "Saved ✓";
         setTimeout(function () { syncProfileButton(scope); }, 1800);
         return;
@@ -1008,6 +1061,7 @@
 
     if (act === "close") return close();
     if (act === "acc-signin" || act === "acc-register" || act === "acc-save") return accountSubmit(act, scope, el);
+    if (act === "acc-cancel-edit") return cancelProfileEdit(scope);
     if (act === "acc-view-register") return go(4, { view: "register" });
     if (act === "acc-view-signin") return go(4, { view: "signin" });
     if (act === "acc-open") { readDetails(scope); return go(4, { returnTo: 1, reason: null }); }
@@ -1050,10 +1104,28 @@
       return go(2);
     }
     if (act === "place") return placeOrder(scope);
+    if (act === "clear" || act === "clear-no" || act === "clear-yes") {
+      readDetails(scope);
+      confirmRemove = -1;
+      confirmClear = act === "clear";
+      if (act === "clear-yes") { cart = []; highlight = null; save(); }
+      var keepClear = scrollState(scope);
+      render(1, {});
+      restoreScroll(scope, keepClear);
+      var focusClear = scope.querySelector(act === "clear" ? '[data-act="clear-yes"]' : '[data-act="clear"]');
+      if (focusClear) focusClear.focus({ preventScroll: true });
+      return;
+    }
     if (!line) return;
 
     readDetails(scope);
     highlight = null;
+    confirmClear = false;
+    // the trash icon asks first; "Remove" confirms, "Keep" cancels
+    if (act === "remove") confirmRemove = i;
+    else if (act === "remove-no") confirmRemove = -1;
+    else if (act === "remove-yes") { cart.splice(i, 1); confirmRemove = -1; }
+    else confirmRemove = -1;
     if (act === "size") {
       var size = el.getAttribute("data-size");
       var twin = cart.find(function (l) { return l !== line && l.id === line.id && l.size === size && colourOf(l).name === colourOf(line).name; });
@@ -1062,14 +1134,14 @@
     }
     if (act === "inc") line.qty = Math.min(SHOP.maxQtyPerLine, line.qty + 1);
     if (act === "dec") line.qty = Math.max(1, line.qty - 1);
-    if (act === "remove") cart.splice(i, 1);
     save();
 
     // re-render step 1 in place, keeping the scroll position and focus
     var top = scrollState(scope);
     render(1, {});
     restoreScroll(scope, top);
-    var again = scope.querySelector('[data-act="' + act + '"][data-i="' + Math.min(i, cart.length - 1) + '"]' + (act === "size" ? '[data-size="' + el.getAttribute("data-size") + '"]' : ""));
+    var focusAct = act === "remove" ? "remove-yes" : act === "remove-no" ? "remove" : act === "remove-yes" ? "remove" : act;
+    var again = scope.querySelector('[data-act="' + focusAct + '"][data-i="' + Math.min(i, cart.length - 1) + '"]' + (act === "size" ? '[data-size="' + el.getAttribute("data-size") + '"]' : ""));
     if (again) again.focus({ preventScroll: true });
   });
 

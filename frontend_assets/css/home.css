@@ -301,3 +301,10 @@
   .cm-intro_half,
   .pre-container .loader_text_wrap > * { transition-duration: 0.01s; transition-delay: 0s !important; }
 }
+
+/* phones: a gap between the "Expressions of Colors" photo grid and the slider below it */
+@media (max-width: 767px) {
+  .home_slider {
+    margin-top: 4.5rem;
+  }
+}

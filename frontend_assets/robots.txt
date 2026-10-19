@@ -1,0 +1,8 @@
+# Cintamani Linens
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin.html
+Disallow: /api/
+
+Sitemap: https://www.cintamanilinens.com/sitemap.xml

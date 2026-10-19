@@ -765,3 +765,28 @@
 
 .cm-auth .cm-a_agree.is-invalid .cm-a_box { border-color: var(--warn-light); }
 .cm-auth .cm-a_agree .cm-r_fielderr { margin-left: 1.85rem; }
+
+/* ---------- saved details: greyed out and locked until "Edit details" ---------- */
+.cm-auth [data-profile] .cm-a_field {
+  transition: opacity 0.35s ease;
+}
+
+.cm-auth [data-profile]:not(.is-editing) .cm-a_field {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.cm-auth [data-profile]:not(.is-editing) input,
+.cm-auth [data-profile]:not(.is-editing) textarea {
+  cursor: default;
+}
+
+.cm-auth .cm-a_cancel[hidden] { display: none; }
+.cm-auth .cm-a_cancel { margin-top: 0.4rem; }
+
+/* room under "Sign out" at the bottom of the account panel */
+.cm-auth_panel { padding-bottom: 3.2rem; }
+
+@media (max-width: 767px) {
+  .cm-auth_panel { padding-bottom: 3rem; }
+}
