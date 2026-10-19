@@ -56,6 +56,8 @@
     .st-production { background: #f5e4d8; color: #7a3e1d; }
     .st-packed { background: #dfecee; color: #1f4f58; }
     .st-dispatched { background: #ebe8e3; color: #4a433b; }
+    .st-completed { background: #dcebd9; color: #2f5d3a; }
+    .st-cancelled { background: #f3dcd8; color: #8a2c22; }
 
     ::-webkit-scrollbar { width: 8px; height: 8px; }
     ::-webkit-scrollbar-thumb { background: #d6c9b3; border-radius: 99px; }
@@ -96,8 +98,14 @@
       { value: "Accepted", label: "Accepted", short: "Accepted", cls: "st-accepted", icon: "task_alt", slug: "accepted" },
       { value: "In Production", label: "Tailoring", short: "Tailoring", cls: "st-production", icon: "content_cut", slug: "tailoring" },
       { value: "Packed & Ready", label: "Packed", short: "Packed", cls: "st-packed", icon: "inventory_2", slug: "packed" },
-      { value: "Dispatched", label: "Dispatched", short: "Dispatched", cls: "st-dispatched", icon: "local_shipping", slug: "dispatched" }
+      { value: "Dispatched", label: "Dispatched", short: "Dispatched", cls: "st-dispatched", icon: "local_shipping", slug: "dispatched" },
+      { value: "Completed", label: "Completed", short: "Completed", cls: "st-completed", icon: "verified", slug: "completed" },
+      { value: "Cancelled", label: "Cancelled", short: "Cancelled", cls: "st-cancelled", icon: "cancel", slug: "cancelled" }
     ];
+    // the normal journey of an order (Cancelled sits outside it)
+    const PIPELINE = STAGES.filter((s) => s.value !== "Cancelled");
+    // finished with: these can be deleted (they stay in the Excel export)
+    const isClosed = (o) => o.status === "Completed" || o.status === "Cancelled";
     const stageOf = (status) => STAGES.find((s) => s.value === status) || STAGES[0];
     const stageBySlug = (slug) => STAGES.find((s) => s.slug === slug);
 
@@ -106,7 +114,8 @@
       "Payment Pending": { to: "Accepted", label: "Payment checked — accept order", icon: "check_circle" },
       "Accepted": { to: "In Production", label: "Start tailoring", icon: "content_cut" },
       "In Production": { to: "Packed & Ready", label: "Mark as packed", icon: "inventory_2" },
-      "Packed & Ready": { to: "Dispatched", label: "Mark as dispatched", icon: "local_shipping" }
+      "Packed & Ready": { to: "Dispatched", label: "Mark as dispatched", icon: "local_shipping" },
+      "Dispatched": { to: "Completed", label: "Delivered — mark as completed", icon: "verified" }
     };
 
     const lkr = (n) => "LKR " + Number(n || 0).toLocaleString("en-LK", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -308,7 +317,7 @@
       );
     }
 
-    function TopBar({ title, subtitle, onMenu, onRefresh, syncedAt, refreshing, back }) {
+    function TopBar({ title, subtitle, onMenu, onRefresh, syncedAt, refreshing, back, onExport }) {
       return (
         <header className="sticky top-0 z-20 bg-cream/95 backdrop-blur border-b border-cream-line">
           <div className="flex items-center gap-3 px-4 sm:px-8 h-16">
@@ -321,6 +330,10 @@
               {subtitle && <p className="text-xs text-ink-faint mt-1 truncate">{subtitle}</p>}
             </div>
             <span className="hidden sm:block text-xs text-ink-faint">{syncedAt ? `Updated ${fmtTime(syncedAt)}` : ""}</span>
+            <button onClick={onExport} title="Every order (including deleted ones), the pieces, customers and the activity log"
+              className="flex items-center gap-1.5 rounded-lg border border-cream-line bg-white px-3 py-1.5 text-xs font-medium text-ink-soft hover:border-olive hover:text-olive transition-colors">
+              <Icon name="table_view" className="text-base" /> <span className="hidden sm:inline">Download</span> Excel
+            </button>
             <button onClick={onRefresh} className="flex items-center gap-1.5 rounded-lg border border-cream-line bg-white px-3 py-1.5 text-xs font-medium text-ink-soft hover:border-olive hover:text-olive transition-colors">
               <Icon name="refresh" className={`text-base ${refreshing ? "animate-spin" : ""}`} /> Refresh
             </button>
@@ -356,7 +369,7 @@
       const now = new Date();
       const month = orders.filter((o) => {
         const d = new Date(o.createdAt);
-        return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear() && o.status !== "Payment Pending";
+        return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear() && o.status !== "Payment Pending" && o.status !== "Cancelled";
       });
       const revenue = month.reduce((s, o) => s + (o.total || 0), 0);
 
@@ -433,7 +446,7 @@
 
           <Card>
             <CardHead icon="route" title="Orders by stage" />
-            <div className="grid grid-cols-2 sm:grid-cols-5">
+            <div className="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-7">
               {STAGES.map((s, i) => (
                 <a key={s.slug} href={"#/orders/" + s.slug} className={`px-5 py-4 hover:bg-gold-pale/40 ${i ? "sm:border-l" : ""} border-cream-line`}>
                   <span className={`pill ${s.cls}`}>{s.label}</span>
@@ -449,7 +462,14 @@
     // ===================================================================
     // Orders list
     // ===================================================================
-    function OrdersList({ orders, stage, query, setQuery }) {
+    function OrdersList({ orders, stage, query, setQuery, onDelete }) {
+      const [toDelete, setToDelete] = useState(null);
+      const Trash = ({ o }) => isClosed(o) ? (
+        <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); setToDelete(o); }} title="Delete order"
+          className="p-1.5 rounded-lg text-ink-faint hover:text-[#8a2c22] hover:bg-[#f3dcd8]" aria-label={`Delete order ${o.orderId}`}>
+          <Icon name="delete" className="text-lg" />
+        </button>
+      ) : null;
       const list = useMemo(() => {
         const q = query.trim().toLowerCase();
         return orders.filter((o) => {
@@ -498,7 +518,7 @@
                     <th className="font-medium px-3 py-2.5 text-right">Total</th>
                     <th className="font-medium px-3 py-2.5">Placed</th>
                     <th className="font-medium px-3 py-2.5">Stage</th>
-                    <th className="w-8" />
+                    <th className="w-20" />
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-cream-line border-t border-cream-line">
@@ -513,7 +533,7 @@
                       <td className="px-3 py-3 text-right font-medium text-ink whitespace-nowrap">{o.amount}</td>
                       <td className="px-3 py-3 text-ink-soft whitespace-nowrap">{fmtDate(o.createdAt)}</td>
                       <td className="px-3 py-3"><StatusPill status={o.status} /></td>
-                      <td className="pr-4 text-ink-faint"><Icon name="chevron_right" /></td>
+                      <td className="pr-4 text-ink-faint"><span className="flex items-center justify-end gap-1"><Trash o={o} /><Icon name="chevron_right" /></span></td>
                     </tr>
                   ))}
                 </tbody>
@@ -526,7 +546,7 @@
                     <a href={"#/order/" + o.orderId} className="block px-5 py-3.5 hover:bg-gold-pale/40">
                       <div className="flex items-center justify-between gap-3">
                         <span className="font-semibold text-sm text-ink">{o.orderId}</span>
-                        <StatusPill status={o.status} />
+                        <span className="flex items-center gap-1"><StatusPill status={o.status} /><Trash o={o} /></span>
                       </div>
                       <p className="text-sm text-ink mt-1">{o.customerName}</p>
                       <div className="flex items-center justify-between text-xs text-ink-faint mt-0.5">
@@ -539,6 +559,8 @@
               </ul>
             </>
           )}
+          {toDelete && <ConfirmDialog danger title="Delete this order?" text={deleteText(toDelete)} confirmLabel="Delete order"
+            onConfirm={() => onDelete(toDelete.orderId)} onClose={() => setToDelete(null)} />}
         </Card>
       );
     }
@@ -595,6 +617,54 @@
           )}
         </Card>
       );
+    }
+
+    // Yes / no dialog for anything that can't be undone
+    function ConfirmDialog({ title, text, confirmLabel, danger, onConfirm, onClose }) {
+      const [busy, setBusy] = useState(false);
+      useEffect(() => {
+        const onKey = (e) => { if (e.key === "Escape" && !busy) onClose(); };
+        document.addEventListener("keydown", onKey);
+        return () => document.removeEventListener("keydown", onKey);
+      }, [busy]);
+      const go = async () => { setBusy(true); try { await onConfirm(); onClose(); } catch (e) { setBusy(false); } };
+      return (
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" onClick={() => !busy && onClose()}>
+          <div role="alertdialog" aria-modal="true" aria-labelledby="confirm-title" className="w-full max-w-md bg-cream-card rounded-xl shadow-xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-start gap-3 px-6 pt-5 pb-4">
+              <span className={`w-9 h-9 rounded-full grid place-items-center shrink-0 ${danger ? "bg-[#f3dcd8] text-[#8a2c22]" : "bg-gold-pale text-[#7a4f00]"}`}><Icon name={danger ? "delete" : "help"} className="text-lg" /></span>
+              <div className="flex-1">
+                <h2 id="confirm-title" className="font-serif text-2xl leading-tight text-ink">{title}</h2>
+                <p className="text-sm text-ink-soft mt-1.5 leading-relaxed">{text}</p>
+              </div>
+            </div>
+            <div className="flex items-center justify-end gap-2 px-6 py-4 bg-cream border-t border-cream-line">
+              <button onClick={onClose} disabled={busy} className="rounded-lg px-4 py-2 text-sm font-medium text-ink-soft hover:bg-cream-line/60">Keep it</button>
+              <button onClick={go} disabled={busy} autoFocus
+                className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold text-white disabled:opacity-60 ${danger ? "bg-[#8a2c22] hover:bg-[#6f2219]" : "bg-ink hover:bg-olive"}`}>
+                {busy && <Icon name="progress_activity" className="animate-spin text-base" />} {confirmLabel}
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // "Delete order" confirmation, shared by the list and the order page
+    const deleteText = (o) => `${o.orderId} (${o.customerName}, ${o.amount}) will be removed from the admin. ` +
+      "It stays in the Excel download, marked as deleted, so your records are complete. This can't be undone here.";
+
+    async function downloadExcel(toast) {
+      try {
+        const res = await api("/admin/export.xlsx");
+        const blob = await res.blob();
+        const name = (res.headers.get("content-disposition") || "").match(/filename="([^"]+)"/)?.[1] || "cintamani-orders.xlsx";
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob); a.download = name;
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+        toast("Excel file downloaded.");
+      } catch (err) { toast(`Couldn't create the Excel file: ${err.message}`, true); }
     }
 
     // ===================================================================
@@ -675,7 +745,8 @@
       );
     }
 
-    function OrderDetail({ order, onSave, toast }) {
+    function OrderDetail({ order, onSave, onDelete, toast }) {
+      const [confirm, setConfirm] = useState(null); // "cancel" | "delete"
       const [slip, setSlip] = useState({ url: null, type: null, error: null });
       const [zoom, setZoom] = useState(false);
       const [tracking, setTracking] = useState(order.deliveryBarcode || "");
@@ -694,7 +765,8 @@
         return () => { if (url) URL.revokeObjectURL(url); };
       }, [order.orderId]);
 
-      const stageIdx = STAGES.findIndex((s) => s.value === order.status);
+      const stageIdx = PIPELINE.findIndex((s) => s.value === order.status); // -1 when cancelled
+      const cancelled = order.status === "Cancelled";
       const next = NEXT_STEP[order.status];
       const needsTracking = next && next.to === "Dispatched";
 
@@ -720,7 +792,9 @@
           "Accepted": "your payment is confirmed and your order is accepted.",
           "In Production": "your pieces are now being tailored.",
           "Packed & Ready": "your order is packed and will be dispatched shortly.",
-          "Dispatched": `your order is on its way${order.deliveryBarcode ? ` — tracking number ${order.deliveryBarcode}` : ""}.`
+          "Dispatched": `your order is on its way${order.deliveryBarcode ? ` — tracking number ${order.deliveryBarcode}` : ""}.`,
+          "Completed": "your order has been delivered. We hope you love your pieces!",
+          "Cancelled": "your order has been cancelled. Please reply if you have any questions."
         };
         const text = `Hello ${order.customerName}, this is Cintamani Linens. Good news about order ${order.orderId}: ${lines[order.status] || s.label}. Thank you!`;
         window.open(`https://wa.me/${waNumber(order.contactNumber)}?text=${encodeURIComponent(text)}`, "_blank", "noopener");
@@ -738,8 +812,17 @@
           {/* progress + next step */}
           <Card className="p-5">
             <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
+              {cancelled ? (
+                <div className="flex items-center gap-3 flex-1 min-w-[300px]">
+                  <span className="w-9 h-9 rounded-full bg-[#f3dcd8] text-[#8a2c22] grid place-items-center"><Icon name="cancel" className="text-lg" /></span>
+                  <div>
+                    <p className="text-sm font-semibold text-ink">This order was cancelled</p>
+                    <p className="text-xs text-ink-faint">It no longer counts towards sales. You can delete it once you're done with it.</p>
+                  </div>
+                </div>
+              ) : (
               <ol className="flex items-center flex-1 min-w-[300px]">
-                {STAGES.map((s, i) => {
+                {PIPELINE.map((s, i) => {
                   const done = i < stageIdx, current = i === stageIdx;
                   return (
                     <li key={s.value} className="flex items-center flex-1 last:flex-none">
@@ -749,21 +832,31 @@
                         </span>
                         <span className={`text-[11px] whitespace-nowrap ${current ? "font-semibold text-ink" : "text-ink-faint"}`}>{s.short}</span>
                       </div>
-                      {i < STAGES.length - 1 && <span className={`flex-1 h-px mx-2 mb-5 ${i < stageIdx ? "bg-olive" : "bg-cream-line"}`} />}
+                      {i < PIPELINE.length - 1 && <span className={`flex-1 h-px mx-2 mb-5 ${i < stageIdx ? "bg-olive" : "bg-cream-line"}`} />}
                     </li>
                   );
                 })}
               </ol>
+              )}
 
               <div className="flex flex-col items-stretch gap-2 w-full sm:w-auto">
                 {next ? (
                   <button onClick={advance} disabled={busy} className="flex items-center justify-center gap-2 rounded-lg bg-ink hover:bg-olive text-cream px-5 py-2.5 text-sm font-semibold transition-colors disabled:opacity-60">
                     <Icon name={next.icon} className="text-lg" /> {next.label}
                   </button>
-                ) : (
+                ) : cancelled ? null : (
                   <span className="flex items-center gap-2 rounded-lg bg-olive-light text-olive-dark px-5 py-2.5 text-sm font-semibold"><Icon name="verified" className="text-lg" /> Order complete</span>
                 )}
-                <button onClick={() => setShowStatus(!showStatus)} className="text-xs text-ink-faint hover:text-olive">Change stage manually</button>
+                {isClosed(order) && (
+                  <button onClick={() => setConfirm("delete")} disabled={busy}
+                    className="flex items-center justify-center gap-2 rounded-lg border border-[#e6c2bc] text-[#8a2c22] hover:bg-[#f3dcd8] px-5 py-2 text-sm font-semibold transition-colors">
+                    <Icon name="delete" className="text-lg" /> Delete order
+                  </button>
+                )}
+                <div className="flex items-center justify-center gap-3">
+                  <button onClick={() => setShowStatus(!showStatus)} className="text-xs text-ink-faint hover:text-olive">Change stage manually</button>
+                  {!isClosed(order) && <button onClick={() => setConfirm("cancel")} className="text-xs text-ink-faint hover:text-[#8a2c22]">Cancel order</button>}
+                </div>
               </div>
             </div>
 
@@ -895,6 +988,11 @@
           </div>
 
           {reuploadOpen && <ResendSlipDialog order={order} onClose={() => setReuploadOpen(false)} />}
+          {confirm === "cancel" && <ConfirmDialog danger title="Cancel this order?" confirmLabel="Cancel order"
+            text={`${order.orderId} (${order.customerName}, ${order.amount}) will be marked as cancelled — for example when the payment never arrived or the customer changed their mind. You can still set it back to another stage later.`}
+            onConfirm={() => save({ status: "Cancelled" }, `${order.orderId} cancelled.`)} onClose={() => setConfirm(null)} />}
+          {confirm === "delete" && <ConfirmDialog danger title="Delete this order?" text={deleteText(order)} confirmLabel="Delete order"
+            onConfirm={() => onDelete(order.orderId)} onClose={() => setConfirm(null)} />}
 
           {/* slip lightbox */}
           {zoom && (
@@ -985,6 +1083,19 @@
         }
       };
 
+      const deleteOrder = async (id) => {
+        try {
+          await api(`/admin/orders/${id}`, { method: "DELETE" });
+          setOrders((prev) => prev.filter((o) => o.orderId !== id));
+          toast(`${id} deleted. It's still in the Excel download.`);
+          if (location.hash === "#/order/" + id) location.hash = "#/orders";
+        } catch (err) {
+          if (err instanceof AuthError) setIsAuthenticated(false);
+          toast(err.message, true);
+          throw err;
+        }
+      };
+
       const counts = useMemo(() => {
         const c = { all: orders.length };
         STAGES.forEach((s) => { c[s.value] = orders.filter((o) => o.status === s.value).length; });
@@ -1012,7 +1123,7 @@
         if (order) {
           title = `Order ${order.orderId}`;
           subtitle = `${order.customerName} · ${order.amount} · ${stageOf(order.status).label}`;
-          body = <OrderDetail order={order} onSave={saveOrder} toast={toast} />;
+          body = <OrderDetail order={order} onSave={saveOrder} onDelete={deleteOrder} toast={toast} />;
         } else {
           title = "Order not found";
           body = <Card><Empty icon="search_off" text="This order doesn't exist (it may have been removed)." /></Card>;
@@ -1021,9 +1132,9 @@
         const stage = stageBySlug(sub);
         title = stage ? stage.label : "All orders";
         subtitle = stage
-          ? { verify: "New orders waiting for you to check the payment slip", accepted: "Paid and confirmed — ready to start tailoring", tailoring: "Being cut and sewn", packed: "Packed — add the tracking number and dispatch", dispatched: "On the way or delivered" }[stage.slug]
+          ? { verify: "New orders waiting for you to check the payment slip", accepted: "Paid and confirmed — ready to start tailoring", tailoring: "Being cut and sewn", packed: "Packed — add the tracking number and dispatch", dispatched: "On the way — mark as completed once delivered", completed: "Delivered and done — delete them when you no longer need them here", cancelled: "Cancelled orders — delete them when you no longer need them here" }[stage.slug]
           : "Every order, newest first";
-        body = <OrdersList orders={orders} stage={stage} query={query} setQuery={setQuery} />;
+        body = <OrdersList orders={orders} stage={stage} query={query} setQuery={setQuery} onDelete={deleteOrder} />;
       } else if (view === "customers") {
         title = "Customers";
         subtitle = "Everyone who has placed an order";
@@ -1037,7 +1148,7 @@
           <Sidebar route={route} go={go} counts={counts} open={menuOpen} onClose={() => setMenuOpen(false)} onLogout={logout} />
 
           <div className="lg:pl-64">
-            <TopBar title={title} subtitle={subtitle} back={back} onMenu={() => setMenuOpen(true)} onRefresh={loadOrders} syncedAt={syncedAt} refreshing={refreshing} />
+            <TopBar title={title} subtitle={subtitle} back={back} onMenu={() => setMenuOpen(true)} onRefresh={loadOrders} syncedAt={syncedAt} refreshing={refreshing} onExport={() => downloadExcel(toast)} />
             <main className="px-4 sm:px-8 py-6 max-w-[1400px]">{body}</main>
           </div>
 

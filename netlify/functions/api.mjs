@@ -5,12 +5,15 @@
 //   GET   /api/admin/orders              all orders, newest first          (admin)
 //   PATCH /api/admin/orders/:id          { status?, deliveryBarcode? }     (admin)
 //   GET   /api/admin/orders/:id/slip     the uploaded bank slip file       (admin)
+//   DELETE /api/admin/orders/:id         remove a Completed / Cancelled order (kept in the export) (admin)
+//   GET   /api/admin/export.xlsx         Excel workbook: orders, pieces, customers, activity log (admin)
 //
 //   POST  /api/account/register          { name, email, password, acceptTerms } -> { token, profile }
 //   POST  /api/account/login             { email, password } -> { token, profile }
 //   GET   /api/account/me                saved profile                      (customer)
 //   PUT   /api/account/me                { name, phone, address }           (customer)
 //   GET   /api/account/orders            the customer's orders + status     (customer)
+//   DELETE /api/account/orders/:id       hide a Completed / Cancelled order from the list (customer)
 import shop from "../../frontend_assets/js/shop-data.js";
 import { openStore } from "../lib/store.mjs";
 import { authConfigured, login, verify } from "../lib/auth.mjs";
@@ -18,10 +21,13 @@ import {
   accountsConfigured, checkLogin, getCustomer, issueToken, normaliseEmail,
   publicProfile, registerCustomer, saveCustomer, sessionEmail,
 } from "../lib/customers.mjs";
+import { buildXlsx } from "../lib/xlsx.mjs";
 
 export const config = { path: "/api/*" };
 
-const STATUSES = ["Payment Pending", "Accepted", "In Production", "Packed & Ready", "Dispatched"];
+const STATUSES = ["Payment Pending", "Accepted", "In Production", "Packed & Ready", "Dispatched", "Completed", "Cancelled"];
+// orders that are finished with, and so may be removed from the admin / a customer's list
+const CLOSED = ["Completed", "Cancelled"];
 const MAX_SLIP_BYTES = 5 * 1024 * 1024;
 const PRODUCTS = new Map(shop.products.map((p) => [p.id, p]));
 
@@ -60,6 +66,13 @@ async function newOrderId(orders) {
     if (!(await orders.getJSON(id))) return id;
   }
   throw new Error("Could not allocate an order id");
+}
+
+// Append-only activity log (one record per event) — every order event ends up in the Excel export.
+async function logEvent(orderId, event, detail = "", by = "") {
+  const at = new Date().toISOString();
+  const key = `${at}_${Math.random().toString(36).slice(2, 8)}`;
+  await (await openStore("activity")).setJSON(key, { at, orderId, event, detail, by });
 }
 
 async function createOrder(req) {
@@ -159,6 +172,7 @@ async function createOrder(req) {
       await saveCustomer(customer);
     }
   }
+  await logEvent(orderId, "Order placed", `${order.amount} · ${items.map((i) => `${i.name} (${i.colour}, ${i.size}) ×${i.qty}`).join(", ")}`, account || email || customerName);
   return json({ orderId, amount: order.amount, status: order.status }, 201);
 }
 
@@ -217,7 +231,8 @@ async function accountRoute(route, method, req) {
 
   if (route === "/account/orders" && method === "GET") {
     const orders = await openStore("orders");
-    const list = (await Promise.all((customer.orderIds || []).slice(0, 50).map((id) => orders.getJSON(id))))
+    const hidden = new Set(customer.hiddenOrderIds || []);
+    const list = (await Promise.all((customer.orderIds || []).filter((id) => !hidden.has(id)).slice(0, 50).map((id) => orders.getJSON(id))))
       .filter((o) => o && o.customerAccount === email)
       .map((o) => ({
         orderId: o.orderId,
@@ -230,6 +245,18 @@ async function accountRoute(route, method, req) {
       }))
       .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
     return json({ orders: list });
+  }
+
+  const hide = route.match(/^\/account\/orders\/(CM-\d+)$/);
+  if (hide && method === "DELETE") {
+    const id = hide[1];
+    if (!(customer.orderIds || []).includes(id)) return fail("Order not found.", 404);
+    const order = await (await openStore("orders")).getJSON(id);
+    if (order && !CLOSED.includes(order.status)) return fail("Only completed or cancelled orders can be removed.", 409);
+    customer.hiddenOrderIds = [...new Set([id, ...(customer.hiddenOrderIds || [])])];
+    await saveCustomer(customer);
+    await logEvent(id, "Removed from customer's list", "", email);
+    return json({ ok: true });
   }
 
   return fail("Not found.", 404);
@@ -266,14 +293,93 @@ async function updateOrder(id, req) {
   if (!order) return fail("Order not found.", 404);
   let body;
   try { body = await req.json(); } catch { return fail("Expected JSON."); }
+  const events = [];
   if (body.status !== undefined) {
     if (!STATUSES.includes(body.status)) return fail("Unknown status.");
+    if (body.status !== order.status) events.push(["Stage changed", `${order.status} → ${body.status}`]);
     order.status = body.status;
   }
-  if (body.deliveryBarcode !== undefined) order.deliveryBarcode = clean(body.deliveryBarcode, 80) || null;
+  if (body.deliveryBarcode !== undefined) {
+    const code = clean(body.deliveryBarcode, 80) || null;
+    if (code !== order.deliveryBarcode) events.push(["Tracking number", code || "removed"]);
+    order.deliveryBarcode = code;
+  }
   order.updatedAt = new Date().toISOString();
   await orders.setJSON(id, order);
+  for (const [event, detail] of events) await logEvent(id, event, detail, "admin");
   return json({ order: forAdmin(order) });
+}
+
+// Deleting moves the order out of the live list into "deleted-orders" (the slip is kept too),
+// so the Excel export still has the full history.
+async function deleteOrder(id) {
+  const orders = await openStore("orders");
+  const order = await orders.getJSON(id);
+  if (!order) return fail("Order not found.", 404);
+  if (!CLOSED.includes(order.status)) return fail("Only completed or cancelled orders can be deleted.", 409);
+  order.deletedAt = new Date().toISOString();
+  await (await openStore("deleted-orders")).setJSON(id, order);
+  await orders.delete(id);
+  await logEvent(id, "Deleted from admin", order.status, "admin");
+  return json({ ok: true });
+}
+
+async function readAll(name) {
+  const store = await openStore(name);
+  return (await Promise.all((await store.keys()).map((k) => store.getJSON(k)))).filter(Boolean);
+}
+
+const colombo = (iso) => iso
+  ? new Date(iso).toLocaleString("en-GB", { timeZone: "Asia/Colombo", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false }).replace(",", "")
+  : "";
+
+async function exportXlsx() {
+  const live = (await readAll("orders")).map((o) => ({ ...o, record: "Active" }));
+  const gone = (await readAll("deleted-orders")).map((o) => ({ ...o, record: "Deleted" }));
+  const all = [...live, ...gone].sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+  const customers = (await readAll("customers")).sort((a, b) => String(a.createdAt).localeCompare(String(b.createdAt)));
+  const activity = (await readAll("activity")).sort((a, b) => a.at.localeCompare(b.at));
+  const col = (header, width) => ({ header, width });
+
+  const workbook = buildXlsx([
+    {
+      name: "Orders",
+      columns: [col("Order", 11), col("Placed (Colombo)", 17), col("Stage", 15), col("Record", 9), col("Customer", 22), col("Phone", 15),
+        col("Email", 26), col("Delivery address", 40), col("Pieces", 46), col("Qty", 6), col("Subtotal (LKR)", 14), col("Delivery (LKR)", 13),
+        col("Total (LKR)", 12), col("Tracking no.", 16), col("Paid from", 18), col("Reference", 16), col("Note", 30),
+        col("Last updated", 17), col("Deleted on", 17), col("Account", 26)],
+      rows: all.map((o) => [o.orderId, colombo(o.createdAt), o.status, o.record, o.customerName, o.contactNumber, o.email,
+        o.shippingAddress, o.items.map((i) => `${i.name} (${i.colour}, ${i.size}) ×${i.qty}`).join("; "),
+        o.items.reduce((n, i) => n + i.qty, 0), o.subtotal, o.deliveryFee, o.total, o.deliveryBarcode || "",
+        o.receiptDetails?.bank || "", o.receiptDetails?.reference || "", o.notes || "",
+        colombo(o.updatedAt), colombo(o.deletedAt), o.customerAccount || ""]),
+    },
+    {
+      name: "Pieces",
+      columns: [col("Order", 11), col("Placed (Colombo)", 17), col("Stage", 15), col("Piece", 18), col("Colour", 20), col("Size", 6),
+        col("Qty", 6), col("Unit price (LKR)", 15), col("Line total (LKR)", 15), col("Customer", 22)],
+      rows: all.flatMap((o) => o.items.map((i) => [o.orderId, colombo(o.createdAt), o.status, i.name, i.colour, i.size, i.qty,
+        i.unitPrice, i.lineTotal, o.customerName])),
+    },
+    {
+      name: "Customers",
+      columns: [col("Name", 22), col("Email", 28), col("Phone", 15), col("Address", 40), col("Orders", 8), col("Joined (Colombo)", 17)],
+      rows: customers.map((c) => [c.name, c.email, c.phone, c.address, (c.orderIds || []).length, colombo(c.createdAt)]),
+    },
+    {
+      name: "Activity log",
+      columns: [col("When (Colombo)", 17), col("Order", 11), col("Event", 26), col("Details", 60), col("By", 26)],
+      rows: activity.map((a) => [colombo(a.at), a.orderId, a.event, a.detail, a.by]),
+    },
+  ]);
+  const day = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Colombo" });
+  return new Response(workbook, {
+    headers: {
+      "content-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "content-disposition": `attachment; filename="cintamani-orders-${day}.xlsx"`,
+      "cache-control": "private, no-store",
+    },
+  });
 }
 
 async function getSlip(id) {
@@ -307,9 +413,11 @@ export default async (req) => {
     if (route.startsWith("/admin/")) {
       if (!verify(req)) return fail("Please sign in again.", 401);
       if (route === "/admin/orders" && method === "GET") return await listOrders();
+      if (route === "/admin/export.xlsx" && method === "GET") return await exportXlsx();
       const m = route.match(/^\/admin\/orders\/(CM-\d+)(\/slip)?$/);
       if (m && m[2] && method === "GET") return await getSlip(m[1]);
       if (m && !m[2] && method === "PATCH") return await updateOrder(m[1], req);
+      if (m && !m[2] && method === "DELETE") return await deleteOrder(m[1]);
     }
 
     return fail("Not found.", 404);

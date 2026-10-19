@@ -790,3 +790,69 @@
 @media (max-width: 767px) {
   .cm-auth_panel { padding-bottom: 3rem; }
 }
+
+/* order history scrolls inside its own box once there are more than two orders */
+.cm-a_orders.is-scroll {
+  max-height: 23rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 0.5rem 2.75rem 0; /* room so the last order can scroll clear of the fade */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(201, 180, 109, 0.45) transparent;
+  /* soft fade at the bottom hints there is more below */
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 2.5rem), transparent);
+          mask-image: linear-gradient(to bottom, #000 calc(100% - 2.5rem), transparent);
+}
+.cm-a_orders.is-scroll::-webkit-scrollbar { width: 4px; }
+.cm-a_orders.is-scroll::-webkit-scrollbar-thumb { background: rgba(201, 180, 109, 0.45); border-radius: 4px; }
+.cm-a_orders.is-scroll::-webkit-scrollbar-track { background: transparent; }
+
+/* finished orders: quieter card, a trash button, and an inline "Remove / Keep" check */
+.cm-a_order_tags { display: inline-flex; align-items: center; gap: 0.4rem; }
+.cm-a_card.is-closed { opacity: 0.82; }
+.cm-a_card.is-closed .cm-a_order_meta { margin-bottom: 0.35rem; }
+.cm-a_card.is-cancelled .cm-a_status { border-color: rgba(214, 120, 104, 0.55); color: #e3a294; }
+.cm-a_trash {
+  display: inline-grid;
+  place-items: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--glass-muted);
+  cursor: pointer;
+  transition: color 0.3s, border-color 0.3s, background-color 0.3s;
+}
+.cm-a_trash svg { width: 0.95rem; height: 0.95rem; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.cm-a_trash:hover,
+.cm-a_trash:focus-visible { color: #e3a294; border-color: rgba(214, 120, 104, 0.5); background: rgba(214, 120, 104, 0.08); outline: none; }
+.cm-a_confirm {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--glass-line);
+  font-size: 0.74rem;
+  color: #f2ede4;
+}
+.cm-a_confirm span { flex: 1 1 auto; }
+.cm-a_confirm button {
+  padding: 0.35rem 0.85rem;
+  border: 1px solid var(--glass-line);
+  border-radius: 999px;
+  background: transparent;
+  color: #f2ede4;
+  font: inherit;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.cm-a_confirm .cm-a_confirm_yes { border-color: rgba(214, 120, 104, 0.6); color: #e3a294; }
+.cm-a_confirm .cm-a_confirm_yes:hover { background: rgba(214, 120, 104, 0.15); }
+.cm-a_confirm .cm-a_confirm_no:hover { border-color: var(--gold-soft); color: var(--gold); }
+.cm-a_card.is-removing { opacity: 0; transform: translateX(1rem); transition: opacity 0.35s, transform 0.35s; }

@@ -26,6 +26,10 @@ function fileStore(root, name) {
       await fs.writeFile(safe(key), Buffer.from(data));
       await fs.writeFile(safe(key) + ".meta", JSON.stringify({ contentType }));
     },
+    async delete(key) {
+      await fs.rm(safe(key), { force: true });
+      await fs.rm(safe(key) + ".meta", { force: true });
+    },
     async keys() {
       try {
         return (await fs.readdir(dir)).filter((f) => !f.endsWith(".meta")).map(decodeURIComponent);
@@ -45,6 +49,7 @@ async function blobStore(name) {
       return res ? { data: Buffer.from(res.data), contentType: res.metadata.contentType } : null;
     },
     setFile: (key, data, contentType) => store.set(key, data, { metadata: { contentType } }),
+    delete: (key) => store.delete(key),
     async keys() {
       const { blobs } = await store.list();
       return blobs.map((b) => b.key);

@@ -669,6 +669,8 @@
   // in selection -> payment review -> accepted -> tailoring -> packed -> dispatched
   var TRACK = ["In selection", "Payment review", "Accepted", "Tailoring", "Packed", "Dispatched"];
   var ORDER_STATUSES = ["Payment Pending", "Accepted", "In Production", "Packed & Ready", "Dispatched"];
+  // finished orders: no tracker, and the customer can remove them from their list
+  var CLOSED_LABEL = { "Completed": "Delivered", "Cancelled": "Cancelled" };
 
   function tracker(step) {
     return (
@@ -688,24 +690,75 @@
         box.innerHTML = pieces() ? "" : '<p class="cm-a_note">No orders yet — your selection will appear here.</p>';
         return;
       }
-      // orders still on their way first, delivered ones after
-      var list = data.orders.slice().sort(function (a, b) {
-        return (a.status === "Dispatched") - (b.status === "Dispatched");
-      });
-      box.innerHTML = list.map(function (o) {
+      // orders still on their way first, then dispatched, then finished ones
+      var rank = function (o) { return CLOSED_LABEL[o.status] ? 2 : o.status === "Dispatched" ? 1 : 0; };
+      var list = data.orders.slice().sort(function (a, b) { return rank(a) - rank(b); });
+      // own scroll box (wheel stays inside it) so a long order history doesn't stretch the panel
+      box.innerHTML = '<div class="cm-a_orders' + (list.length > 2 ? " is-scroll" : "") + '" data-lenis-prevent>' + list.map(function (o) {
         var step = ORDER_STATUSES.indexOf(o.status) + 1;
+        var closed = CLOSED_LABEL[o.status];
         return (
-          '<div class="cm-a_card">' +
+          '<div class="cm-a_card' + (closed ? " is-closed" : "") + (o.status === "Cancelled" ? " is-cancelled" : "") + '" data-order="' + esc(o.orderId) + '">' +
             '<div class="cm-a_order_top"><span>' + esc(o.orderId) + "</span><span>" + esc(o.amount) + "</span></div>" +
-            '<div class="cm-a_order_meta"><span>' + esc(o.orderDate) + '</span><span class="cm-a_status">' + esc(TRACK[step] || o.status) + "</span></div>" +
-            tracker(Math.max(1, step)) +
+            '<div class="cm-a_order_meta"><span>' + esc(o.orderDate) + '</span><span class="cm-a_order_tags"><span class="cm-a_status">' + esc(closed || TRACK[step] || o.status) + "</span>" +
+              (closed ? '<button type="button" class="cm-a_trash" data-act="order-remove" aria-label="Remove ' + esc(o.orderId) + ' from your list" title="Remove from your list">' +
+                '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg></button>' : "") +
+            "</span></div>" +
+            (closed ? "" : tracker(Math.max(1, step))) +
             '<div class="cm-a_order_items">' + o.items.map(function (i) { return esc(i.name) + " · " + esc(i.size) + (i.qty > 1 ? " ×" + i.qty : ""); }).join("<br>") + "</div>" +
             (o.deliveryBarcode ? '<div class="cm-a_order_items">Tracking · ' + esc(o.deliveryBarcode) + "</div>" : "") +
           "</div>"
         );
-      }).join("");
+      }).join("") + "</div>";
+      wireOrderRemoval(box);
     }).catch(function (err) {
       box.innerHTML = '<p class="cm-a_note">' + esc(err.message) + "</p>";
+    });
+  }
+
+  // trash on a delivered / cancelled order: ask first, then hide it from this customer's list
+  function wireOrderRemoval(box) {
+    if (box.hasAttribute("data-wired")) return; // orders can reload into the same box
+    box.setAttribute("data-wired", "");
+    box.addEventListener("click", function (e) {
+      var btn = e.target.closest("[data-act]");
+      if (!btn || !box.contains(btn)) return;
+      var card = btn.closest("[data-order]");
+      var id = card && card.getAttribute("data-order");
+      var act = btn.getAttribute("data-act");
+      if (act === "order-remove") {
+        box.querySelectorAll(".cm-a_confirm").forEach(function (c) { c.remove(); });
+        var ask = document.createElement("div");
+        ask.className = "cm-a_confirm";
+        ask.setAttribute("role", "alert");
+        ask.innerHTML = "<span>Remove " + esc(id) + " from your list?</span>" +
+          '<button type="button" class="cm-a_confirm_yes" data-act="order-remove-yes">Remove</button>' +
+          '<button type="button" class="cm-a_confirm_no" data-act="order-remove-no">Keep</button>';
+        card.appendChild(ask);
+        ask.querySelector(".cm-a_confirm_no").focus({ preventScroll: true });
+        // bring the question into view inside the scrolling list (clear of the bottom fade)
+        var list = card.parentNode;
+        var below = ask.getBoundingClientRect().bottom - list.getBoundingClientRect().bottom + 44;
+        if (below > 0) list.scrollTop += below;
+      } else if (act === "order-remove-no") {
+        btn.closest(".cm-a_confirm").remove();
+      } else if (act === "order-remove-yes") {
+        btn.disabled = true;
+        btn.textContent = "Removing…";
+        apiFetch("/account/orders/" + encodeURIComponent(id), { method: "DELETE" }).then(function () {
+          card.classList.add("is-removing");
+          setTimeout(function () {
+            var list = card.parentNode;
+            card.remove();
+            if (list && !list.children.length) box.innerHTML = '<p class="cm-a_note">No orders yet — your selection will appear here.</p>';
+            else if (list && list.children.length <= 2) list.classList.remove("is-scroll");
+          }, 350);
+        }, function (err) {
+          var c = btn.closest(".cm-a_confirm");
+          if (c) c.querySelector("span").textContent = err.message;
+          btn.remove();
+        });
+      }
     });
   }
 
