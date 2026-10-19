@@ -248,3 +248,138 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", check);
   else check();
 })();
+
+
+/* Size chart: a vertical "Size chart" tab on the left of the product photo (mirroring the colour
+ * rail on the right; a plain link under the photo on phones) and a dialog with the client's chart
+ * from shop-data.js, in inches or centimetres. Other scripts open it with
+ * window.CintamaniSizeChart.open({ size: "M" }) — the cart uses this beside its size buttons.
+ */
+(function () {
+  "use strict";
+
+  var SHOP = window.CINTAMANI_SHOP;
+  var CHART = SHOP && SHOP.sizeChart;
+  if (!CHART || !CHART.length) return;
+
+  var UNIT_KEY = "cintamani_size_unit";
+  var unit = "in";
+  try { if (localStorage.getItem(UNIT_KEY) === "cm") unit = "cm"; } catch (e) { /* storage blocked */ }
+
+  var dialog = null, lastFocus = null, highlight = null;
+
+  var fmt = function (inches) {
+    return unit === "in" ? String(inches) : String(Math.round(inches * 2.54));
+  };
+
+  function rows() {
+    return CHART.map(function (r) {
+      var on = r.size === highlight;
+      return '<tr' + (on ? ' class="is-current" aria-current="true"' : "") + '><th scope="row">' + r.size + "</th>" +
+        "<td>" + fmt(r.bust) + "</td><td>" + fmt(r.waist) + "</td><td>" + fmt(r.hip) + "</td></tr>";
+    }).join("");
+  }
+
+  function paint() {
+    if (!dialog) return;
+    dialog.querySelector("tbody").innerHTML = rows();
+    dialog.querySelector(".cm-size_unitname").textContent = unit === "in" ? "inches" : "centimetres";
+    dialog.querySelectorAll("[data-unit]").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(b.getAttribute("data-unit") === unit));
+    });
+  }
+
+  function make() {
+    dialog = document.createElement("div");
+    dialog.className = "cm-size";
+    dialog.setAttribute("data-lenis-prevent", "");
+    dialog.innerHTML =
+      '<div class="cm-size_backdrop" data-size-close></div>' +
+      '<div class="cm-size_panel" role="dialog" aria-modal="true" aria-labelledby="cm-size-title">' +
+        '<button type="button" class="cm-size_close" data-size-close aria-label="Close the size chart">' +
+          '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>' +
+        '<p class="cm-size_eyebrow">Tailored to order</p>' +
+        '<h2 class="cm-size_title" id="cm-size-title">Size <em>chart</em></h2>' +
+        '<p class="cm-size_lead">Body measurements in <span class="cm-size_unitname">inches</span>. Measure over light clothing and pick the size that matches.</p>' +
+        '<div class="cm-size_units" role="group" aria-label="Units">' +
+          '<button type="button" data-unit="in" aria-pressed="true">Inches</button>' +
+          '<button type="button" data-unit="cm" aria-pressed="false">Centimetres</button>' +
+        "</div>" +
+        '<div class="cm-size_tablewrap"><table class="cm-size_table">' +
+          '<thead><tr><th scope="col">Size</th><th scope="col">Bust</th><th scope="col">Waist</th><th scope="col">Hip</th></tr></thead>' +
+          "<tbody></tbody>" +
+        "</table></div>" +
+        '<dl class="cm-size_how">' +
+          "<div><dt>Bust</dt><dd>Around the fullest part of your chest, tape level under the arms.</dd></div>" +
+          "<div><dt>Waist</dt><dd>Around the narrowest part of your waist.</dd></div>" +
+          "<div><dt>Hip</dt><dd>Around the fullest part of your hips, feet together.</dd></div>" +
+        "</dl>" +
+        '<p class="cm-size_note">Between two sizes? Choose the larger one, or add your measurements in the order note — every piece is tailored for you, so we can adjust.</p>' +
+      "</div>";
+
+    dialog.addEventListener("click", function (e) {
+      if (e.target.closest("[data-size-close]")) { close(); return; }
+      var u = e.target.closest("[data-unit]");
+      if (u) {
+        unit = u.getAttribute("data-unit");
+        try { localStorage.setItem(UNIT_KEY, unit); } catch (err) { /* storage blocked */ }
+        paint();
+      }
+    });
+    dialog.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { e.stopPropagation(); close(); return; }
+      if (e.key !== "Tab") return;
+      // keep keyboard focus inside the dialog
+      var f = dialog.querySelectorAll("button");
+      var first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+  }
+
+  function open(opts) {
+    highlight = (opts && opts.size) || null;
+    if (!dialog) make();
+    paint();
+    lastFocus = document.activeElement;
+    if (!document.body.contains(dialog)) document.body.appendChild(dialog);
+    requestAnimationFrame(function () { dialog.classList.add("is-open"); });
+    setTimeout(function () { dialog.classList.add("is-open"); }, 30);
+    dialog.querySelector(".cm-size_close").focus({ preventScroll: true });
+  }
+
+  function close() {
+    if (!dialog) return;
+    dialog.classList.remove("is-open");
+    setTimeout(function () { if (!dialog.classList.contains("is-open")) dialog.remove(); }, 450);
+    if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+  }
+
+  window.CintamaniSizeChart = { open: open, close: close };
+
+  // --- the tab beside the product photo -------------------------------------------------------
+  function addTab() {
+    var image = document.querySelector(".art_main_image");
+    if (!image || document.querySelector(".cm-sizetab")) return;
+    var tab = document.createElement("button");
+    tab.type = "button";
+    tab.className = "cm-sizetab";
+    tab.setAttribute("aria-haspopup", "dialog");
+    tab.innerHTML =
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8h18v8H3zM7 8v3M11 8v4M15 8v3M19 8v4"/></svg>' +
+      "<span>Size chart</span>";
+    tab.addEventListener("click", function () { open(); });
+    // after the colour rail when it's there (phones show both under the photo, rail first)
+    var rail = image.parentNode.querySelector(".cm-colours");
+    var after = rail || image;
+    after.parentNode.insertBefore(tab, after.nextSibling);
+  }
+
+  var pending = null;
+  function schedule() {
+    if (pending) return;
+    pending = setTimeout(function () { pending = null; addTab(); }, 120);
+  }
+  addTab();
+  new MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true });
+})();

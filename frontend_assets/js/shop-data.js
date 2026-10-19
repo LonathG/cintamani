@@ -7,8 +7,20 @@
 })(this, {
   currency: "LKR",
 
-  // Finished garments — chosen by size only (no colour option).
-  sizes: ["XS", "S", "M", "L", "XL"],
+  // Sizes a piece can be ordered in (same as the size chart below).
+  sizes: ["XS", "S", "M", "L", "XL", "XXL", "3XL", "4XL"],
+
+  // Size chart from the client: body measurements in inches (the site can also show cm).
+  sizeChart: [
+    { size: "XS",  bust: 30, waist: 24, hip: 34 },
+    { size: "S",   bust: 32, waist: 26, hip: 36 },
+    { size: "M",   bust: 34, waist: 28, hip: 38 },
+    { size: "L",   bust: 36, waist: 30, hip: 40 },
+    { size: "XL",  bust: 38, waist: 32, hip: 42 },
+    { size: "XXL", bust: 40, waist: 34, hip: 44 },
+    { size: "3XL", bust: 42, waist: 36, hip: 46 },
+    { size: "4XL", bust: 44, waist: 38, hip: 48 },
+  ],
   maxQtyPerLine: 10,
 
   // TODO(client): confirm delivery charge. Flat island-wide fee in LKR.

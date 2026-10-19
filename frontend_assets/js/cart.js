@@ -468,6 +468,7 @@
             '<div class="cm-r_controls">' +
               '<fieldset class="cm-r_sizes"><legend>Size for ' + esc(p.name) + "</legend>" + sizes + "</fieldset>" +
               (line.size ? "" : '<span class="cm-r_sizehint">Select a size</span>') +
+              (window.CintamaniSizeChart ? '<button type="button" class="cm-r_sizeguide" data-act="sizeguide" data-i="' + i + '">Size chart</button>' : "") +
               '<div class="cm-r_qty">' +
                 '<button type="button" data-act="dec" data-i="' + i + '" aria-label="One fewer ' + esc(p.name) + '"' + (line.qty <= 1 ? " disabled" : "") + ">−</button>" +
                 "<output>" + line.qty + "</output>" +
@@ -1113,6 +1114,7 @@
     var line = cart[i];
 
     if (act === "close") return close();
+    if (act === "sizeguide") return window.CintamaniSizeChart.open({ size: line && line.size });
     if (act === "acc-signin" || act === "acc-register" || act === "acc-save") return accountSubmit(act, scope, el);
     if (act === "acc-cancel-edit") return cancelProfileEdit(scope);
     if (act === "acc-view-register") return go(4, { view: "register" });
