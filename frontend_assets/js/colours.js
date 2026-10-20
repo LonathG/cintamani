@@ -1,4 +1,4 @@
-/* Cintamani — colour swatches on product pages (art/u-N.html)
+/* Cintamani — colour swatches on product pages (/collection/<slug>)
  *
  * Every piece comes in the colours listed in shop-data.js. Desktop: a vertical rail beside the
  * photo, five swatches at a time with ▲/▼; hovering one shows a larger swatch and its name to the
@@ -26,9 +26,11 @@
     });
   };
 
+  // product pages live at /collection/<slug> (older links: art/u-N.html)
   function productId() {
-    var m = location.pathname.match(/u-(\d+)(\.html)?\/?$/);
-    return m && PRODUCTS["u-" + m[1]] ? "u-" + m[1] : null;
+    var last = location.pathname.replace(/\.html$/, "").replace(/\/+$/, "").split("/").pop();
+    for (var id in PRODUCTS) if (PRODUCTS[id].slug === last) return id;
+    return PRODUCTS[last] ? last : null;
   }
 
   // "Walaakulu White (Snow White)": the Cintamani name with the plain colour name

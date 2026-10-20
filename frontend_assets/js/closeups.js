@@ -1,4 +1,4 @@
-/* Cintamani — "Close-up Details" on product pages (art/u-N.html)
+/* Cintamani — "Close-up Details" on product pages (/collection/<slug>)
  *
  * Replaces the template's decorative dots (which all opened the same full photo) with hotspots on
  * the dress itself. Clicking one opens a lightbox with a real close-up: the full-resolution studio
@@ -17,7 +17,7 @@
   if (!SHOP) return;
   var PRODUCTS = {};
   SHOP.products.forEach(function (p) { PRODUCTS[p.id] = p; });
-  var ROOT = /\/art\//.test(location.pathname) ? "../" : "";
+  var ROOT = "/"; // site root: image paths in shop-data.js are relative to it
 
   var DEFAULT_POINTS = [
     { label: "Neckline", x: 0.5, y: 0.22 },
@@ -32,9 +32,11 @@
     });
   };
 
+  // product pages live at /collection/<slug> (older links: art/u-N.html)
   function productId() {
-    var m = location.pathname.match(/u-(\d+)(\.html)?\/?$/);
-    return m && PRODUCTS["u-" + m[1]] ? "u-" + m[1] : null;
+    var last = location.pathname.replace(/\.html$/, "").replace(/\/+$/, "").split("/").pop();
+    for (var id in PRODUCTS) if (PRODUCTS[id].slug === last) return id;
+    return PRODUCTS[last] ? last : null;
   }
 
   // ---------- hotspots on the section's photo ----------

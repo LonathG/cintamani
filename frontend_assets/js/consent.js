@@ -9,7 +9,6 @@
   "use strict";
 
   var KEY = "cintamani_consent_v1";
-  var ROOT = /\/art\//.test(location.pathname) ? "../" : "";
 
   function read() {
     try { return JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) { return null; }
@@ -34,7 +33,7 @@
         '<p class="cm-consent_text">We use essential storage to keep your selection, sign-in and checkout details working. ' +
           "With your permission we'd also use analytics cookies to understand how the site is used. " +
           // the Terms page sits outside the page-transition system, so this must be a plain page load
-          '<a href="' + ROOT + 'terms.html#cookies" data-barba-prevent="self">Learn more</a></p>' +
+          '<a href="/terms#cookies" data-barba-prevent="self">Learn more</a></p>' +
         '<div class="cm-consent_actions">' +
           '<button type="button" class="cm-consent_btn is-primary" data-consent="all">Accept all</button>' +
           '<button type="button" class="cm-consent_btn" data-consent="essential">Essential only</button>' +

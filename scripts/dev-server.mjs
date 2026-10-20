@@ -29,9 +29,25 @@ const TYPES = {
   ".ico": "image/x-icon", ".woff2": "font/woff2", ".woff": "font/woff", ".mp4": "video/mp4",
 };
 
+// clean addresses, same as the live nginx setup: /about.html -> /about, /index.html -> /,
+// old product links /art/u-N(.html) -> /collection/<slug>
+const { default: shop } = await import("../frontend_assets/js/shop-data.js");
+const SLUGS = Object.fromEntries(shop.products.map((p) => [p.id, p.slug]));
+function cleanAddress(pathname) {
+  const old = pathname.match(/^\/art\/(u-\d+)(\.html)?$/);
+  if (old && SLUGS[old[1]]) return `/collection/${SLUGS[old[1]]}`;
+  if (pathname === "/index.html" || pathname === "/index") return "/";
+  if (pathname === "/admin.html" || pathname === "/admin/") return "/admin";
+  if (pathname.endsWith(".html")) return pathname.slice(0, -5);
+  return null;
+}
+
 async function serveStatic(req, res) {
-  let rel = decodeURIComponent(new URL(req.url, "http://x").pathname);
-  if (rel === "/admin" || rel.startsWith("/admin/")) rel = "/admin.html"; // mirrors netlify.toml
+  const url = new URL(req.url, "http://x");
+  const clean = cleanAddress(url.pathname);
+  if (clean) { res.writeHead(301, { location: clean + url.search }).end(); return; }
+  let rel = decodeURIComponent(url.pathname);
+  if (rel === "/admin") rel = "/admin.html";
   let file = path.join(site, rel);
   if (!file.startsWith(site)) { res.writeHead(403).end(); return; }
   try {

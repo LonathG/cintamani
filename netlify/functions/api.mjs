@@ -281,8 +281,7 @@ function forAdmin(o) {
 }
 
 async function listOrders() {
-  const orders = await openStore("orders");
-  const all = (await Promise.all((await orders.keys()).map((k) => orders.getJSON(k)))).filter(Boolean);
+  const all = await (await openStore("orders")).all();
   all.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   return json({ orders: all.map(forAdmin), statuses: STATUSES });
 }
@@ -325,8 +324,7 @@ async function deleteOrder(id) {
 }
 
 async function readAll(name) {
-  const store = await openStore(name);
-  return (await Promise.all((await store.keys()).map((k) => store.getJSON(k)))).filter(Boolean);
+  return (await openStore(name)).all();
 }
 
 const colombo = (iso) => iso

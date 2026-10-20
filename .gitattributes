@@ -1,0 +1,3 @@
+# server files must keep Unix line endings
+deploy/*.sh text eol=lf
+deploy/*.conf text eol=lf

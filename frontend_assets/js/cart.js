@@ -444,7 +444,7 @@
     if (!cart.length) {
       return html +
         '<div class="cm-r_empty"><p>Your selection is quietly waiting.</p>' +
-        '<a class="cm-r_btn" href="' + ROOT + 'gallery.html">View collection</a></div></div>';
+        '<a class="cm-r_btn" href="/gallery">View collection</a></div></div>';
     }
 
     html += '<ul class="cm-r_items">' + cart.map(function (line, i) {
@@ -654,7 +654,7 @@
       (isRegister
         ? '<div class="cm-r_field cm-a_agree" data-field="acc_terms">' +
             '<label class="cm-a_check"><input type="checkbox" name="acc_terms"><span class="cm-a_box" aria-hidden="true"></span>' +
-            '<span>I have read and agree to the <a href="' + asset("terms.html") + '" target="_blank" rel="noopener">Terms &amp; Conditions</a></span></label>' +
+            '<span>I have read and agree to the <a href="/terms" target="_blank" rel="noopener">Terms &amp; Conditions</a></span></label>' +
             '<p class="cm-r_fielderr" aria-live="polite"></p>' +
           "</div>"
         : "") +
@@ -1311,15 +1311,22 @@
     if (e.key === CART_KEY) { cart = read(CART_KEY, []).filter(function (l) { return PRODUCTS[l.id]; }); updateTrigger(); }
   });
 
+  // product pages live at /collection/<slug> (older links: art/u-N.html)
+  function pageProductId() {
+    var last = location.pathname.replace(/\.html$/, "").replace(/\/+$/, "").split("/").pop();
+    for (var id in PRODUCTS) if (PRODUCTS[id].slug === last) return id;
+    return PRODUCTS[last] ? last : null;
+  }
+
   // "Add to cart" on product pages (works however the page was reached)
   document.addEventListener("click", function (e) {
     var btn = e.target.closest && e.target.closest(".art_cart");
     if (!btn) return;
     e.preventDefault();
     e.stopPropagation();
-    var m = location.pathname.match(/u-(\d+)(\.html)?\/?$/);
+    var id = pageProductId();
     var rail = document.querySelector(".cm-colours");
-    if (m) add("u-" + m[1], rail && rail.getAttribute("data-selected"));
+    if (id) add(id, rail && rail.getAttribute("data-selected"));
   }, true);
 
   // following a link from inside the popup (e.g. "View collection") closes it
