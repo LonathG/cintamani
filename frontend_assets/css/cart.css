@@ -2574,3 +2574,63 @@ html.cm-intro-lock body { overflow: hidden !important; overscroll-behavior: none
   .section_art_next .artworks_container { width: auto; padding-left: 6vw; padding-right: 6vw; }
   .section_art_next .art_link_wrap { flex: 0 0 auto; }
 }
+
+/* Tablets in landscape and small laptops (768–1199px): the nav links ran into the decorative
+   "20 · 26" either side of the logo — hide those two numbers there */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .nav_logo_wrap .u-text-style-muted { display: none; }
+}
+
+/* phone layout on wider screens (tablets held upright, ~768px): the big headings scale with the
+   width, so their descenders reached the line below — give them a little more room */
+@media (max-width: 767px) {
+  .cm-hero_inner .home_hero_heading { margin-bottom: 0.12em; }
+  .home_gallery_absolute .home_gallery_heading { margin-top: 0.12em; }
+}
+
+/* ---------- phones turned sideways ----------
+   The design is built around tall screens (full-height scenes, sideways product scroll), so on a
+   phone held sideways we ask to turn it upright; "Continue anyway" hides this for the visit. */
+.cm-rotate { display: none; }
+@media (orientation: landscape) and (max-height: 500px) and (pointer: coarse) {
+  html:not(.cm-rotate-ok) .cm-rotate {
+    position: fixed;
+    inset: 0;
+    z-index: 5000;
+    display: grid;
+    place-items: center;
+    padding: 1.5rem;
+    background: radial-gradient(120% 120% at 50% 40%, #1d1912 0%, #0b0a08 70%);
+    color: #f2ede4;
+    text-align: center;
+    font-family: var(--font--secondary-family, "LA Neue Montreal", Arial, sans-serif);
+  }
+  html:not(.cm-rotate-ok) { overflow: hidden; }
+}
+.cm-rotate_box { display: grid; justify-items: center; gap: 0.9rem; max-width: 26rem; }
+.cm-rotate_logo { width: 3.4rem; height: auto; opacity: 0.9; }
+.cm-rotate_phone {
+  width: 1.9rem;
+  height: 3.1rem;
+  border: 1.5px solid #c9b46d;
+  border-radius: 0.45rem;
+  animation: cm-rotate-turn 2.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+@keyframes cm-rotate-turn { 0%, 20% { transform: rotate(-90deg); } 55%, 100% { transform: rotate(0deg); } }
+.cm-rotate_title { margin: 0; font-family: var(--font--primary-family, "La Ivyprestodisplay", "Times New Roman", serif); font-size: 1.7rem; font-weight: 300; line-height: 1.1; }
+.cm-rotate_title em { color: #e2d3a8; }
+.cm-rotate_text { margin: 0; font-size: 0.85rem; line-height: 1.5; color: rgba(242, 237, 228, 0.65); }
+.cm-rotate_skip {
+  margin-top: 0.3rem;
+  padding: 0.45rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(242, 237, 228, 0.8);
+  font: inherit;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+@media (prefers-reduced-motion: reduce) { .cm-rotate_phone { animation: none; } }

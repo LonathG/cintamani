@@ -546,3 +546,35 @@
   new MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true });
 })();
 
+
+/* Phones turned sideways: a calm "turn your phone upright" screen (styles in cart.css, shown only
+ * for touch screens in landscape under 500px tall). "Continue anyway" hides it for this visit.
+ */
+(function () {
+  "use strict";
+  var KEY = "cintamani_rotate_ok";
+  try { if (sessionStorage.getItem(KEY)) document.documentElement.classList.add("cm-rotate-ok"); } catch (e) { /* storage blocked */ }
+  function add() {
+    if (document.querySelector(".cm-rotate") || !document.body) return;
+    var logo = document.querySelector(".navbar_logo, .nav_logo_wrap img");
+    var el = document.createElement("div");
+    el.className = "cm-rotate";
+    el.setAttribute("role", "dialog");
+    el.setAttribute("aria-label", "Turn your phone upright");
+    el.innerHTML =
+      '<div class="cm-rotate_box">' +
+        (logo ? '<img class="cm-rotate_logo" alt="" src="' + logo.getAttribute("src") + '">' : "") +
+        '<span class="cm-rotate_phone" aria-hidden="true"></span>' +
+        '<p class="cm-rotate_title">Turn your phone <em>upright</em></p>' +
+        '<p class="cm-rotate_text">Cintamani is designed to be explored with your phone held upright.</p>' +
+        '<button type="button" class="cm-rotate_skip">Continue anyway</button>' +
+      "</div>";
+    el.querySelector(".cm-rotate_skip").addEventListener("click", function () {
+      document.documentElement.classList.add("cm-rotate-ok");
+      try { sessionStorage.setItem(KEY, "1"); } catch (e) { /* storage blocked */ }
+    });
+    document.body.appendChild(el);
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", add);
+  else add();
+})();
