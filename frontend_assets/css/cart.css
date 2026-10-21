@@ -2556,3 +2556,15 @@ html.cm-intro-lock body { overflow: hidden !important; overscroll-behavior: none
   .cm-buybar .cm-buybar_btn:active { background: #e2d3a8; }
 }
 @media (max-width: 767px) and (prefers-reduced-motion: reduce) { .cm-buybar { transition: none; } }
+
+/* Product pages, desktop sideways scroll: every section was a full screen wide, which left a
+   wide empty stretch between the product, the close-ups and the next piece. The first section
+   stays full width (the piece is centred when the page opens); the other two fit their content.
+   The template measures the strip's real width, so the scroll distance follows automatically. */
+@media (min-width: 768px) {
+  .section_art_details,
+  .section_art_next { min-width: 0; width: max-content; flex: none; }
+  .section_art_details .artworks_container,
+  .section_art_next .artworks_container { width: auto; padding-left: 6vw; padding-right: 6vw; }
+  .section_art_next .art_link_wrap { flex: 0 0 auto; }
+}
