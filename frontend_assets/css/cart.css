@@ -1450,7 +1450,8 @@
   .cm-cart_stage {
     width: min(94vw, 30rem);
     aspect-ratio: auto;
-    margin: 4.75rem auto 2.5rem;
+    /* room below the last button for the phone's own toolbar / home bar */
+    margin: 4.75rem auto calc(4rem + env(safe-area-inset-bottom));
   }
 
   .cm-receipt { inset: 0 0 auto 0; }

@@ -62,6 +62,9 @@
       "box-shadow:0 20px 50px rgba(0,0,0,.5);color:#f2ede4;font-family:var(--font--secondary-family,'LA Neue Montreal',Arial,sans-serif);" +
       "opacity:0;transform:translateY(1rem);pointer-events:none;transition:opacity .5s ease,transform .6s cubic-bezier(.22,1,.36,1)}" +
     ".cm-consent.is-shown{opacity:1;transform:none;pointer-events:auto}" +
+    // the cart / checkout is a full-screen dialog: the notice steps aside while it is open
+    // (it covered the checkout buttons) and comes back when it closes
+    "body:has(.cm-cart.is-open) .cm-consent{z-index:2900;opacity:0;pointer-events:none}" +
     ".cm-consent_title{margin:0 0 .5rem;font-family:var(--font--primary-family,'La Ivyprestodisplay','Times New Roman',serif);font-size:1.35rem;font-weight:300;line-height:1.1}" +
     ".cm-consent_title em{color:#e2d3a8}" +
     ".cm-consent_text{margin:0 0 1rem;font-size:.85rem;line-height:1.55;color:rgba(255,255,255,.72)}" +
