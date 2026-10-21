@@ -2559,12 +2559,13 @@ html.cm-intro-lock body { overflow: hidden !important; overscroll-behavior: none
 
 /* Product pages, desktop sideways scroll: every section was a full screen wide, which left a
    wide empty stretch between the product, the close-ups and the next piece. The first section
-   stays full width (the piece is centred when the page opens); the other two fit their content.
+   stays full width (the piece is centred and alone when the page opens); the other two fit their content.
    The template measures the strip's real width, so the scroll distance follows automatically. */
 @media (min-width: 768px) {
   .section_art_details,
   .section_art_next { min-width: 0; width: max-content; flex: none; }
-  .section_art_details .artworks_container,
+  /* the close-ups start just past the edge of the first screen (that screen shows only the piece) */
+  .section_art_details .artworks_container { width: auto; padding-left: 4vw; padding-right: 6vw; }
   .section_art_next .artworks_container { width: auto; padding-left: 6vw; padding-right: 6vw; }
   .section_art_next .art_link_wrap { flex: 0 0 auto; }
 }
