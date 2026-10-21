@@ -73,7 +73,7 @@
     // "Colour: …" line with the details under the name and price
     var label = document.createElement("div");
     label.className = "cm-colour_label";
-    label.innerHTML = 'Colour <strong></strong><em></em><span>· ' + COLOURS.length + " colours available</span>";
+    label.innerHTML = 'Colour <strong></strong><em></em><span>' + COLOURS.length + " colours available</span>";
 
     place(rail, image);
     var details = document.querySelector(".art_main_details");

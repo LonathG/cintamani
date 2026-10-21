@@ -1646,10 +1646,15 @@
 .cm-colour_label {
   width: 100%;
   font-size: 0.72rem;
+  line-height: 1.8;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.55);
+  /* same height whichever colour is picked, so a long name never makes the page jump */
+  min-height: calc(2 * 1.8em);
 }
+.cm-colour_label span { display: block; }
+@media (max-width: 767px) { .cm-colour_label { min-height: calc(3 * 1.8em); } } /* long names can wrap on phones */
 .cm-colour_label strong { margin: 0 0.35rem; font-weight: 500; color: #e2d3a8; }
 .cm-colour_label em { margin-right: 0.35rem; font-style: normal; color: rgba(242, 237, 228, 0.6); }
 
