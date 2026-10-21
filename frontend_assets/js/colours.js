@@ -219,6 +219,7 @@
     el.className = "cm-scrollhint";
     el.setAttribute("aria-hidden", "true");
     el.innerHTML = '<span class="cm-scrollhint_text">Scroll to explore</span>' +
+      '<span class="cm-scrollhint_text--phone">Scroll for more details</span>' +
       '<span class="cm-scrollhint_line"><span class="cm-scrollhint_dot"></span></span>';
     return el;
   }

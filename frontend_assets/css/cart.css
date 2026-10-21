@@ -1179,7 +1179,8 @@
 }
 .cm-toast_btn:hover { background: #f4ece1; color: #140d08; }
 @media (max-width: 767px) {
-  .cm-toast { top: auto; bottom: 1.25rem; right: 1rem; left: 1rem; justify-content: space-between; }
+  /* at the top, just under the menu buttons (the bottom is where the Add to cart bar sits) */
+  .cm-toast { top: calc(5.4rem + env(safe-area-inset-top, 0px)); bottom: auto; right: 1rem; left: 1rem; justify-content: space-between; }
 }
 
 
@@ -2007,30 +2008,33 @@
   animation: cm-scrollhint-x 1.8s cubic-bezier(.65, 0, .35, 1) infinite;
 }
 @keyframes cm-scrollhint-x { 0% { left: 0; opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { left: calc(100% - 5px); opacity: 0; } }
-/* phones: a small round "more below" cue just above the Add to cart bar — a down arrow that
-   gently bobs (no words, so it doesn't sit on top of the text) */
+/* phones: a "Scroll for more details" pill with a bobbing down-arrow, just above the
+   Add to cart bar; fades away as soon as the page is scrolled */
+.cm-scrollhint_text--phone { display: none; }
 @media (max-width: 767px) {
   .cm-scrollhint {
     right: auto;
     left: 50%;
     bottom: calc(5.85rem + env(safe-area-inset-bottom, 0px));
-    width: 2.4rem;
-    height: 2.4rem;
-    margin-left: -1.2rem;
-    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.55rem 1rem 0.55rem 1.1rem;
     border: 1px solid rgba(201, 180, 109, 0.45);
-    border-radius: 50%;
-    background: rgba(14, 12, 9, 0.72);
+    border-radius: 999px;
+    background: rgba(14, 12, 9, 0.78);
     -webkit-backdrop-filter: blur(8px);
             backdrop-filter: blur(8px);
+    font-size: 0.66rem;
+    white-space: nowrap;
+    translate: -50% 0;
   }
   .cm-scrollhint_text,
   .cm-scrollhint_line { display: none; }
-  .cm-scrollhint::before {
+  .cm-scrollhint_text--phone { display: inline; }
+  .cm-scrollhint::after {
     content: "";
-    width: 0.55rem;
-    height: 0.55rem;
-    margin-top: -0.3rem;
+    width: 0.45rem;
+    height: 0.45rem;
+    margin-top: -0.2rem;
     border-right: 1.5px solid #c9b46d;
     border-bottom: 1.5px solid #c9b46d;
     transform: rotate(45deg);
@@ -2038,7 +2042,7 @@
   }
 }
 @keyframes cm-scrollhint-bob { 0%, 100% { translate: 0 -2px; } 50% { translate: 0 3px; } }
-@media (max-width: 767px) and (prefers-reduced-motion: reduce) { .cm-scrollhint::before { animation: none; } }
+@media (max-width: 767px) and (prefers-reduced-motion: reduce) { .cm-scrollhint::after { animation: none; } }
 @media (prefers-reduced-motion: reduce) { .cm-scrollhint_dot { animation: none; left: calc(50% - 2.5px); } }
 
 /* About hero: real worn-wall photo, so the overlay multiplies it down (darker centre, near-black edges) to keep the headline readable */
