@@ -856,3 +856,11 @@
 .cm-a_confirm .cm-a_confirm_yes:hover { background: rgba(214, 120, 104, 0.15); }
 .cm-a_confirm .cm-a_confirm_no:hover { border-color: var(--gold-soft); color: var(--gold); }
 .cm-a_card.is-removing { opacity: 0; transform: translateX(1rem); transition: opacity 0.35s, transform 0.35s; }
+
+/* phones: six step labels don't fit side by side (they ran into each other). The status badge
+   above already names the current step, so keep just the dots and the gold progress line. */
+@media (max-width: 600px) {
+  .cm-a_track { margin: 1rem 0 0.9rem; }
+  .cm-a_track li { font-size: 0; gap: 0; }
+  .cm-a_track li span { font-size: 1rem; }
+}

@@ -385,3 +385,98 @@
   addTab();
   new MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true });
 })();
+
+/* Product photo gallery: the main photo plus the extra photos listed in shop-data.js (gallery),
+ * with ‹ › arrows on the photo, dots, swipe on phones and arrow keys. The extra photos are
+ * portrait, so they're shown whole over a soft blurred copy of themselves inside the square frame.
+ */
+(function () {
+  "use strict";
+
+  var SHOP = window.CINTAMANI_SHOP;
+  if (!SHOP) return;
+  var PRODUCTS = {};
+  SHOP.products.forEach(function (p) { PRODUCTS[p.id] = p; });
+
+  function productId() {
+    var last = location.pathname.replace(/\.html$/, "").replace(/\/+$/, "").split("/").pop();
+    for (var id in PRODUCTS) if (PRODUCTS[id].slug === last) return id;
+    return PRODUCTS[last] ? last : null;
+  }
+  var asset = function (p) { return "/" + p.split("/").map(encodeURIComponent).join("/"); };
+  var CHEVRON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>';
+
+  function build() {
+    var id = productId();
+    var product = id && PRODUCTS[id];
+    if (!product || !product.gallery || !product.gallery.length) return;
+    var box = document.querySelector(".section_art_hero .art_main_image") || document.querySelector(".art_main_image");
+    if (!box || box.querySelector(".cm-gal")) return;
+
+    var photos = product.gallery;
+    var total = photos.length + 1;
+    var gal = document.createElement("div");
+    gal.className = "cm-gal";
+    gal.innerHTML =
+      photos.map(function (src, i) {
+        return '<div class="cm-gal_slide" data-i="' + (i + 1) + '" aria-hidden="true">' +
+          '<img class="cm-gal_bg" alt="" loading="lazy" src="' + asset(src) + '">' +
+          '<img class="cm-gal_img" alt="' + product.name + ', photo ' + (i + 2) + " of " + total + '" loading="lazy" src="' + asset(src) + '">' +
+        "</div>";
+      }).join("") +
+      '<button type="button" class="cm-gal_arrow is-prev" aria-label="Previous photo">' + CHEVRON + "</button>" +
+      '<button type="button" class="cm-gal_arrow is-next" aria-label="Next photo">' + CHEVRON + "</button>" +
+      '<div class="cm-gal_dots" role="tablist" aria-label="Photos">' +
+        Array.apply(null, { length: total }).map(function (_, i) {
+          return '<button type="button" class="cm-gal_dot" role="tab" data-go="' + i + '" aria-label="Photo ' + (i + 1) + " of " + total + '"></button>';
+        }).join("") +
+      "</div>" +
+      '<p class="cm-gal_count" aria-live="polite"></p>';
+    box.appendChild(gal);
+    box.classList.add("has-gallery");
+
+    var at = 0;
+    function show(i) {
+      at = (i + total) % total;
+      gal.querySelectorAll(".cm-gal_slide").forEach(function (s) {
+        var on = Number(s.getAttribute("data-i")) === at;
+        s.classList.toggle("is-on", on);
+        s.setAttribute("aria-hidden", String(!on));
+      });
+      gal.querySelectorAll(".cm-gal_dot").forEach(function (d, k) { d.setAttribute("aria-selected", String(k === at)); });
+      gal.querySelector(".cm-gal_count").textContent = "Photo " + (at + 1) + " of " + total;
+    }
+    show(0);
+
+    gal.addEventListener("click", function (e) {
+      var t = e.target.closest("button");
+      if (!t) return;
+      e.preventDefault();
+      e.stopPropagation(); // never reaches "Add to cart" or the photo's own click
+      if (t.classList.contains("is-prev")) show(at - 1);
+      else if (t.classList.contains("is-next")) show(at + 1);
+      else if (t.hasAttribute("data-go")) show(Number(t.getAttribute("data-go")));
+    });
+    gal.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowLeft") { e.preventDefault(); show(at - 1); }
+      if (e.key === "ArrowRight") { e.preventDefault(); show(at + 1); }
+    });
+    // swipe on touch screens
+    var x0 = null, y0 = null;
+    box.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+    box.addEventListener("touchend", function (e) {
+      if (x0 === null) return;
+      var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.3) show(at + (dx < 0 ? 1 : -1));
+      x0 = y0 = null;
+    }, { passive: true });
+  }
+
+  var pending = null;
+  function schedule() {
+    if (pending) return;
+    pending = setTimeout(function () { pending = null; build(); }, 120);
+  }
+  build();
+  new MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true });
+})();

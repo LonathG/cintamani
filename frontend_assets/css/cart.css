@@ -2356,3 +2356,89 @@ html.cm-intro-lock body { overflow: hidden !important; overscroll-behavior: none
   text-transform: none;
   opacity: 0.7;
 }
+
+/* ---------- product photo gallery (main photo + extra photos, arrows, dots) ---------- */
+.cm-gal { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.cm-gal_slide {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.cm-gal_slide.is-on { opacity: 1; }
+/* portrait photo shown whole over a soft blurred copy of itself */
+.cm-gal_bg { position: absolute; inset: -8%; width: 116%; height: 116%; object-fit: cover; filter: blur(22px) brightness(0.82) saturate(1.05); }
+.cm-gal_img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.cm-gal_arrow {
+  position: absolute;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 2.8rem;
+  height: 2.8rem;
+  margin-top: -1.4rem;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  background: rgba(18, 15, 11, 0.42);
+  -webkit-backdrop-filter: blur(6px);
+          backdrop-filter: blur(6px);
+  color: #f2ede4;
+  cursor: pointer;
+  pointer-events: auto;
+  opacity: 0;
+  transition: opacity 0.35s, background-color 0.3s, border-color 0.3s, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.cm-gal_arrow svg { width: 1.15rem; height: 1.15rem; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.cm-gal_arrow.is-prev { left: 1rem; }
+.cm-gal_arrow.is-next { right: 1rem; }
+.cm-gal_arrow.is-next svg { transform: rotate(180deg); }
+.art_main_image.has-gallery:hover .cm-gal_arrow,
+.cm-gal_arrow:focus-visible { opacity: 1; }
+.cm-gal_arrow:hover,
+.cm-gal_arrow:focus-visible { background: rgba(18, 15, 11, 0.7); border-color: #c9b46d; outline: none; }
+.cm-gal_arrow.is-prev:hover { transform: translateX(-2px); }
+.cm-gal_arrow.is-next:hover { transform: translateX(2px); }
+/* dots in the bottom-left corner: clear of faces and of the "Add to cart" bar */
+.cm-gal_dots {
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
+  display: flex;
+  gap: 0.45rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(18, 15, 11, 0.32);
+  pointer-events: auto;
+}
+.cm-gal_dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 999px;
+  background: rgba(18, 15, 11, 0.25);
+  cursor: pointer;
+  transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.3s, border-color 0.3s;
+}
+.cm-gal_dot[aria-selected="true"] { width: 1.4rem; border-color: #c9b46d; background: #c9b46d; }
+.cm-gal_dot:focus-visible { outline: 1px solid #c9b46d; outline-offset: 3px; }
+.cm-gal_count { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); margin: 0; }
+/* "Add to cart" stays on top of the photos */
+.art_main_image.has-gallery .art_cart { z-index: 3; }
+/* touch screens: no hover, so the arrows stay visible (smaller) */
+@media (hover: none) {
+  .cm-gal_arrow { opacity: 1; width: 2.3rem; height: 2.3rem; margin-top: -1.15rem; }
+  .cm-gal_arrow.is-prev { left: 0.6rem; }
+  .cm-gal_arrow.is-next { right: 0.6rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cm-gal_slide, .cm-gal_arrow, .cm-gal_dot { transition: none; }
+}
+
+/* phones: the "Expressions Of Colors" heading's tall letters reached up into the small
+   "Cintamani Linen" label above it (the template removes the gap there) */
+@media (max-width: 767px) {
+  .home_gallery_absolute { row-gap: 0.9rem; }
+}
