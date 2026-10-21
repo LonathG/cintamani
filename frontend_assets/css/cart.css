@@ -2007,8 +2007,38 @@
   animation: cm-scrollhint-x 1.8s cubic-bezier(.65, 0, .35, 1) infinite;
 }
 @keyframes cm-scrollhint-x { 0% { left: 0; opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { left: calc(100% - 5px); opacity: 0; } }
-/* phones scroll downwards as usual, so no cue there */
-@media (max-width: 767px) { .cm-scrollhint { display: none; } }
+/* phones: a small round "more below" cue just above the Add to cart bar — a down arrow that
+   gently bobs (no words, so it doesn't sit on top of the text) */
+@media (max-width: 767px) {
+  .cm-scrollhint {
+    right: auto;
+    left: 50%;
+    bottom: calc(5.85rem + env(safe-area-inset-bottom, 0px));
+    width: 2.4rem;
+    height: 2.4rem;
+    margin-left: -1.2rem;
+    justify-content: center;
+    border: 1px solid rgba(201, 180, 109, 0.45);
+    border-radius: 50%;
+    background: rgba(14, 12, 9, 0.72);
+    -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+  }
+  .cm-scrollhint_text,
+  .cm-scrollhint_line { display: none; }
+  .cm-scrollhint::before {
+    content: "";
+    width: 0.55rem;
+    height: 0.55rem;
+    margin-top: -0.3rem;
+    border-right: 1.5px solid #c9b46d;
+    border-bottom: 1.5px solid #c9b46d;
+    transform: rotate(45deg);
+    animation: cm-scrollhint-bob 1.6s ease-in-out infinite;
+  }
+}
+@keyframes cm-scrollhint-bob { 0%, 100% { translate: 0 -2px; } 50% { translate: 0 3px; } }
+@media (max-width: 767px) and (prefers-reduced-motion: reduce) { .cm-scrollhint::before { animation: none; } }
 @media (prefers-reduced-motion: reduce) { .cm-scrollhint_dot { animation: none; left: calc(50% - 2.5px); } }
 
 /* About hero: real worn-wall photo, so the overlay multiplies it down (darker centre, near-black edges) to keep the headline readable */
@@ -2441,3 +2471,84 @@ html.cm-intro-lock body { overflow: hidden !important; overscroll-behavior: none
 @media (max-width: 767px) {
   .home_gallery_absolute { row-gap: 0.9rem; }
 }
+
+
+/* ---------- product pages on phones ---------- */
+@media (max-width: 767px) {
+  /* the template leaves 128px above and below every section; between sections that made big
+     empty gaps (the first section keeps its top space for the fixed menu) */
+  .section_art_hero .artworks_container { padding-bottom: 2.75rem; }
+  .section_art_details .artworks_container { padding-top: 2.75rem; padding-bottom: 2.75rem; }
+  .section_art_next .artworks_container { padding-top: 2.75rem; }
+  /* soft dark band where one section's background meets the next (no hard line) */
+  .section_art_hero::after,
+  .section_art_details::before,
+  .section_art_details::after,
+  .section_art_next::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 3.5rem;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .section_art_hero::after,
+  .section_art_details::after { bottom: 0; background: linear-gradient(to top, rgba(5, 5, 4, 0.9), rgba(5, 5, 4, 0)); }
+  .section_art_details::before,
+  .section_art_next::before { top: 0; background: linear-gradient(to bottom, rgba(5, 5, 4, 0.9), rgba(5, 5, 4, 0)); }
+}
+
+/* "Add to cart" bar pinned to the bottom on phones while the page's own button is off screen */
+.cm-buybar { display: none; }
+@media (max-width: 767px) {
+  .cm-buybar {
+    position: fixed;
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+    z-index: 45;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.55rem 0.55rem 0.55rem 1rem;
+    border: 1px solid rgba(201, 180, 109, 0.35);
+    border-radius: 999px;
+    background: rgba(14, 12, 9, 0.86);
+    -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5);
+    color: #f2ede4;
+    font-family: var(--font--secondary-family, "LA Neue Montreal", Arial, sans-serif);
+    transform: translateY(calc(100% + 1.5rem));
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
+  }
+  .cm-buybar.is-shown { transform: none; opacity: 1; pointer-events: auto; }
+  .cm-buybar_info { flex: 1; min-width: 0; line-height: 1.2; }
+  .cm-buybar_name {
+    display: block;
+    overflow: hidden;
+    font-family: var(--font--primary-family, "La Ivyprestodisplay", "Times New Roman", serif);
+    font-size: 1.05rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .cm-buybar_price { font-size: 0.72rem; letter-spacing: 0.08em; color: rgba(242, 237, 228, 0.7); }
+  .cm-buybar .cm-buybar_btn {
+    flex: none;
+    padding: 0.8rem 1.15rem;
+    border: 0;
+    border-radius: 999px;
+    background: #c9b46d;
+    color: #120d08;
+    font: inherit;
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .cm-buybar .cm-buybar_btn:active { background: #e2d3a8; }
+}
+@media (max-width: 767px) and (prefers-reduced-motion: reduce) { .cm-buybar { transition: none; } }

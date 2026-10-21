@@ -479,3 +479,68 @@
   build();
   new MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true });
 })();
+
+/* Phones: an "Add to cart" bar pinned to the bottom of product pages. It shows while the page's
+ * own Add to cart button is off screen and steps aside once that button is in view. The button
+ * carries the same .art_cart class, so cart.js adds the piece in the colour picked on the rail.
+ */
+(function () {
+  "use strict";
+
+  var SHOP = window.CINTAMANI_SHOP;
+  if (!SHOP || !window.IntersectionObserver) return;
+  var PRODUCTS = {};
+  SHOP.products.forEach(function (p) { PRODUCTS[p.id] = p; });
+  var phone = window.matchMedia("(max-width: 767px)");
+
+  function productId() {
+    var last = location.pathname.replace(/\.html$/, "").replace(/\/+$/, "").split("/").pop();
+    for (var id in PRODUCTS) if (PRODUCTS[id].slug === last) return id;
+    return PRODUCTS[last] ? last : null;
+  }
+  var lkr = function (n) { return "LKR " + Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+
+  var bar = null, watch = null, inView = false;
+
+  function update() {
+    if (!bar) return;
+    bar.classList.toggle("is-shown", phone.matches && !inView);
+  }
+
+  function build() {
+    var id = productId();
+    var own = document.querySelector(".art_cart--button");
+    if (!id || !own) { teardown(); return; }
+    if (bar && bar.getAttribute("data-id") === id && document.body.contains(bar)) return;
+    teardown();
+    var p = PRODUCTS[id];
+    bar = document.createElement("div");
+    bar.className = "cm-buybar";
+    bar.setAttribute("data-id", id);
+    bar.innerHTML =
+      '<span class="cm-buybar_info"><span class="cm-buybar_name">' + p.name + '</span><span class="cm-buybar_price">' + lkr(p.price) + "</span></span>" +
+      '<button type="button" class="art_cart cm-buybar_btn">Add to cart</button>';
+    document.body.appendChild(bar);
+    inView = false;
+    watch = new IntersectionObserver(function (entries) {
+      inView = entries.some(function (e) { return e.isIntersecting; });
+      update();
+    });
+    watch.observe(own);
+    setTimeout(update, 600);
+  }
+
+  function teardown() {
+    if (watch) { watch.disconnect(); watch = null; }
+    if (bar) { bar.remove(); bar = null; }
+  }
+
+  if (phone.addEventListener) phone.addEventListener("change", update);
+  var pending = null;
+  function schedule() {
+    if (pending) return;
+    pending = setTimeout(function () { pending = null; build(); }, 150);
+  }
+  build();
+  new MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true });
+})();
