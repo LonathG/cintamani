@@ -2346,3 +2346,13 @@ html.cm-intro-lock body { overflow: hidden !important; overscroll-behavior: none
   .footer_column_right { align-items: center; }
   .footer_logo_text { text-align: center; }
 }
+
+/* receipt: "SL Post courier · 0.6 kg" under the delivery line */
+.cm-r_totals dt small {
+  display: block;
+  margin-top: 0.15em;
+  font-size: 0.78em;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  opacity: 0.7;
+}

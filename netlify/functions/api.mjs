@@ -125,7 +125,9 @@ async function createOrder(req) {
   if (!kind) return fail("The slip must be a photo (JPG, PNG, WEBP, HEIC) or a PDF.");
 
   const subtotal = items.reduce((s, i) => s + i.lineTotal, 0);
-  const total = subtotal + shop.deliveryFee;
+  // delivery by parcel weight (SL Post courier rates in shop-data.js), worked out here, not trusted from the browser
+  const parcel = shop.parcelFor(items);
+  const total = subtotal + parcel.fee;
 
   const orders = await openStore("orders");
   const slips = await openStore("slips");
@@ -149,7 +151,8 @@ async function createOrder(req) {
 
     items,
     subtotal,
-    deliveryFee: shop.deliveryFee,
+    deliveryFee: parcel.fee,
+    parcelGrams: parcel.grams,
     total,
     amount: formatLKR(total),
 
@@ -343,12 +346,12 @@ async function exportXlsx() {
     {
       name: "Orders",
       columns: [col("Order", 11), col("Placed (Colombo)", 17), col("Stage", 15), col("Record", 9), col("Customer", 22), col("Phone", 15),
-        col("Email", 26), col("Delivery address", 40), col("Pieces", 46), col("Qty", 6), col("Subtotal (LKR)", 14), col("Delivery (LKR)", 13),
+        col("Email", 26), col("Delivery address", 40), col("Pieces", 46), col("Qty", 6), col("Subtotal (LKR)", 14), col("Parcel (kg)", 11), col("Delivery (LKR)", 13),
         col("Total (LKR)", 12), col("Tracking no.", 16), col("Paid from", 18), col("Reference", 16), col("Note", 30),
         col("Last updated", 17), col("Deleted on", 17), col("Account", 26)],
       rows: all.map((o) => [o.orderId, colombo(o.createdAt), o.status, o.record, o.customerName, o.contactNumber, o.email,
         o.shippingAddress, o.items.map((i) => `${i.name} (${i.colour}, ${i.size}) ×${i.qty}`).join("; "),
-        o.items.reduce((n, i) => n + i.qty, 0), o.subtotal, o.deliveryFee, o.total, o.deliveryBarcode || "",
+        o.items.reduce((n, i) => n + i.qty, 0), o.subtotal, o.parcelGrams ? Math.round(o.parcelGrams / 100) / 10 : "", o.deliveryFee, o.total, o.deliveryBarcode || "",
         o.receiptDetails?.bank || "", o.receiptDetails?.reference || "", o.notes || "",
         colombo(o.updatedAt), colombo(o.deletedAt), o.customerAccount || ""]),
     },

@@ -73,6 +73,12 @@
 
   function save() { write(CART_KEY, cart); updateTrigger(); }
   function pieces() { return cart.reduce(function (n, l) { return n + l.qty; }, 0); }
+  // island-wide delivery for what's in the cart, by parcel weight (shop-data.js -> parcelFor)
+  function delivery() {
+    return SHOP.parcelFor(cart.map(function (l) { return { id: l.id, qty: l.qty }; }));
+  }
+  function kg(grams) { return (Math.round(grams / 100) / 10).toFixed(1) + " kg"; }
+
   function subtotal() { return cart.reduce(function (s, l) { return s + PRODUCTS[l.id].price * l.qty; }, 0); }
 
   var pendingAdd = null; // piece chosen while signed out; added right after sign-in
@@ -493,12 +499,13 @@
       : '<button type="button" class="cm-r_clear" data-act="clear">Clear selection</button>';
 
     var sub = subtotal();
+    var parcel = delivery();
     html +=
       '<hr class="cm-r_rule">' +
       '<dl class="cm-r_totals">' +
         "<dt>Subtotal</dt><dd>" + lkr(sub) + "</dd>" +
-        "<dt>Island-wide delivery</dt><dd>" + lkr(SHOP.deliveryFee) + "</dd>" +
-        '<dt class="is-total">Total</dt><dd class="is-total">' + lkr(sub + SHOP.deliveryFee) + "</dd>" +
+        "<dt>Delivery <small>" + esc(SHOP.delivery.courier) + " · " + kg(parcel.grams) + "</small></dt><dd>" + lkr(parcel.fee) + "</dd>" +
+        '<dt class="is-total">Total</dt><dd class="is-total">' + lkr(sub + parcel.fee) + "</dd>" +
       "</dl>" +
       "</div>" + // end of the order summary
       '<div class="cm-r_col cm-r_col--form">' +
@@ -520,7 +527,7 @@
   }
 
   function renderPayment() {
-    var total = subtotal() + SHOP.deliveryFee;
+    var total = subtotal() + delivery().fee;
     var b = SHOP.bank;
     return (
       '<div class="cm-receipt_scroll" data-lenis-prevent>' +
@@ -605,7 +612,7 @@
         '<div class="cm-a_orders">' +
           (n
             ? '<div class="cm-a_card is-selection">' +
-                '<div class="cm-a_order_top"><span>Your selection</span><span>' + lkr(subtotal() + SHOP.deliveryFee) + "</span></div>" +
+                '<div class="cm-a_order_top"><span>Your selection</span><span>' + lkr(subtotal() + delivery().fee) + "</span></div>" +
                 '<div class="cm-a_order_meta"><span>' + n + (n === 1 ? " piece" : " pieces") + " · not yet paid</span></div>" +
                 tracker(0) +
                 '<button type="button" class="cm-a_btn cm-a_btn--ghost" data-act="acc-to-cart">Continue to checkout</button>' +

@@ -687,6 +687,14 @@
 			html { scroll-behavior: auto; }
 			.t_hero, .t_layout { animation: none; }
 		}
+		/* delivery rates */
+		.t_rates { width: 100%; max-width: 30rem; margin: 0.4rem 0 0.8rem; border-collapse: collapse; font-size: 0.92rem; font-variant-numeric: tabular-nums; }
+		.t_rates caption { padding-bottom: 0.6rem; text-align: left; font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
+		.t_rates th, .t_rates td { padding: 0.45rem 0.2rem; border-bottom: 1px solid var(--line); text-align: left; }
+		.t_rates th { font-weight: 500; font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+		.t_rates td:last-child, .t_rates th:last-child { text-align: right; }
+		.t_rates td { color: var(--text); }
+		.t_note { margin: 0; font-size: 0.85rem; color: var(--muted); }
 	</style>
 </head>
 
@@ -786,7 +794,7 @@
 				<section class="t_section" id="orders">
 					<h2><span>03</span>Orders &amp; pricing</h2>
 					<ul>
-						<li>All prices are in Sri Lankan Rupees (LKR). The island-wide delivery charge is shown on your receipt before you pay.</li>
+						<li>All prices are in Sri Lankan Rupees (LKR). The delivery charge, based on parcel weight (see <a href="#delivery">Delivery</a>), is shown on your receipt before you pay.</li>
 						<li>Placing an order is an offer to buy. Your order is <strong>accepted</strong> only once we have verified your payment; you can follow this on your account page.</li>
 						<li>Each piece is made in limited quantities. If we cannot fulfil an order — for example, if a fabric runs out — we will contact you and offer an alternative or a full refund.</li>
 						<li>If a price is displayed incorrectly because of an error, we will contact you before accepting the order.</li>
@@ -815,11 +823,37 @@
 				<section class="t_section" id="delivery">
 					<h2><span>06</span>Delivery</h2>
 					<ul>
-						<li>We deliver island-wide within Sri Lanka by courier. Once your order is dispatched, a tracking reference appears on your account page.</li>
+						<li>We deliver island-wide within Sri Lanka by SL Post courier. Once your order is dispatched, a tracking reference appears on your account page.</li>
+						<li>The delivery charge depends on the weight of your parcel (your pieces plus packaging) and follows SL Post courier rates, below. The exact charge for your order is shown on your receipt before you pay.</li>
 						<li>Delivery normally takes two to five working days after dispatch. Delays caused by couriers, weather or public holidays are outside our control.</li>
 						<li>Please make sure someone can receive the parcel at the address given. If a parcel is returned because of an incorrect address or failed delivery, re-delivery may be charged.</li>
 						<li>Inspect your parcel on arrival and tell us within 48 hours if it is damaged or anything is missing.</li>
 					</ul>
+					<table class="t_rates">
+						<caption>SL Post courier rates by parcel weight</caption>
+						<thead><tr><th scope="col">Parcel weight</th><th scope="col">Delivery</th></tr></thead>
+						<tbody>
+							<tr><td>Up to 250 g</td><td>LKR 200</td></tr>
+							<tr><td>250 g – 500 g</td><td>LKR 250</td></tr>
+							<tr><td>500 g – 1 kg</td><td>LKR 350</td></tr>
+							<tr><td>1 kg – 2 kg</td><td>LKR 400</td></tr>
+							<tr><td>2 kg – 3 kg</td><td>LKR 450</td></tr>
+							<tr><td>3 kg – 4 kg</td><td>LKR 500</td></tr>
+							<tr><td>4 kg – 5 kg</td><td>LKR 550</td></tr>
+							<tr><td>5 kg – 6 kg</td><td>LKR 600</td></tr>
+							<tr><td>6 kg – 7 kg</td><td>LKR 650</td></tr>
+							<tr><td>7 kg – 8 kg</td><td>LKR 700</td></tr>
+							<tr><td>8 kg – 9 kg</td><td>LKR 750</td></tr>
+							<tr><td>9 kg – 10 kg</td><td>LKR 800</td></tr>
+							<tr><td>10 kg – 15 kg</td><td>LKR 850</td></tr>
+							<tr><td>15 kg – 20 kg</td><td>LKR 1,100</td></tr>
+							<tr><td>20 kg – 25 kg</td><td>LKR 1,600</td></tr>
+							<tr><td>25 kg – 30 kg</td><td>LKR 2,100</td></tr>
+							<tr><td>30 kg – 35 kg</td><td>LKR 2,600</td></tr>
+							<tr><td>35 kg – 40 kg</td><td>LKR 3,100</td></tr>
+						</tbody>
+					</table>
+					<p class="t_note">Most orders of one or two pieces weigh under 2 kg (LKR 250 – 400).</p>
 				</section>
 
 				<section class="t_section" id="exchanges">
