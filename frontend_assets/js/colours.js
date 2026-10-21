@@ -388,7 +388,7 @@
 
 /* Product photo gallery: the main photo plus the extra photos listed in shop-data.js (gallery),
  * with ‹ › arrows on the photo, dots, swipe on phones and arrow keys. The extra photos are
- * portrait, so they're shown whole over a soft blurred copy of themselves inside the square frame.
+ * portrait; they fill the square frame (cropped a little top and bottom).
  */
 (function () {
   "use strict";
@@ -420,7 +420,6 @@
     gal.innerHTML =
       photos.map(function (src, i) {
         return '<div class="cm-gal_slide" data-i="' + (i + 1) + '" aria-hidden="true">' +
-          '<img class="cm-gal_bg" alt="" loading="lazy" src="' + asset(src) + '">' +
           '<img class="cm-gal_img" alt="' + product.name + ', photo ' + (i + 2) + " of " + total + '" loading="lazy" src="' + asset(src) + '">' +
         "</div>";
       }).join("") +

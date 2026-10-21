@@ -686,7 +686,9 @@
         TRACK.map(function (label, i) {
           return '<li class="' + (i < step ? "is-done" : i === step ? "is-current" : "") + '"' + (i === step ? ' aria-current="step"' : "") + "><span></span>" + label + "</li>";
         }).join("") +
-      "</ol>"
+      "</ol>" +
+      '<p class="cm-a_track_now"><b>Step ' + (step + 1) + " of " + TRACK.length + "</b><strong>" + TRACK[step] + "</strong>" +
+        (step < TRACK.length - 1 ? "<span>Next: " + TRACK[step + 1] + "</span>" : "") + "</p>"
     );
   }
 

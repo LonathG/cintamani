@@ -85,8 +85,8 @@
 .cm-auth_card {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-  width: min(880px, 100%);
+  grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+  width: min(66rem, 100%); /* wide enough for the six order steps side by side */
   /* fixed height + a shrinkable row so the form side scrolls instead of being clipped */
   height: min(680px, calc(100svh - 6.5rem));
   grid-template-rows: minmax(0, 1fr);
@@ -857,10 +857,22 @@
 .cm-a_confirm .cm-a_confirm_no:hover { border-color: var(--gold-soft); color: var(--gold); }
 .cm-a_card.is-removing { opacity: 0; transform: translateX(1rem); transition: opacity 0.35s, transform 0.35s; }
 
-/* phones: six step labels don't fit side by side (they ran into each other). The status badge
-   above already names the current step, so keep just the dots and the gold progress line. */
+/* "Step 2 of 6 · Payment review — Next: Accepted" under the dots; used where the six
+   labels can't fit side by side (phones) */
+.cm-a_track_now { display: none; }
 @media (max-width: 600px) {
-  .cm-a_track { margin: 1rem 0 0.9rem; }
+  .cm-a_track { margin: 1rem 0 0.5rem; }
   .cm-a_track li { font-size: 0; gap: 0; }
-  .cm-a_track li span { font-size: 1rem; }
+  .cm-a_track_now {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 0.6rem;
+    margin: 0 0 0.85rem;
+    font-size: 0.78rem;
+    line-height: 1.4;
+    color: var(--glass-muted);
+  }
+  .cm-a_track_now strong { font-weight: 500; color: var(--glass-text); }
+  .cm-a_track_now b { font-weight: 400; color: var(--gold); letter-spacing: 0.14em; text-transform: uppercase; font-size: 0.66rem; }
 }
