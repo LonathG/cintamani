@@ -1,3 +1,6 @@
 # server files must keep Unix line endings
 deploy/*.sh text eol=lf
 deploy/*.conf text eol=lf
+
+# copied third-party files must stay byte-for-byte as downloaded (no line-ending changes)
+frontend_assets/vendor/** -text
