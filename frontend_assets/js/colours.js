@@ -419,9 +419,12 @@
     var gal = document.createElement("div");
     gal.className = "cm-gal";
     gal.innerHTML =
-      photos.map(function (src, i) {
+      photos.map(function (photo, i) {
+        // a photo is a path, or { src, y } where y (0-100) picks which band of the portrait shows
+        var src = photo.src || photo;
+        var pos = photo.y != null ? ' style="object-position:50% ' + photo.y + '%"' : "";
         return '<div class="cm-gal_slide" data-i="' + (i + 1) + '" aria-hidden="true">' +
-          '<img class="cm-gal_img" alt="' + product.name + ', photo ' + (i + 2) + " of " + total + '" loading="lazy" src="' + asset(src) + '">' +
+          '<img class="cm-gal_img" alt="' + product.name + ', photo ' + (i + 2) + " of " + total + '" loading="lazy" src="' + asset(src) + '"' + pos + '>' +
         "</div>";
       }).join("") +
       '<button type="button" class="cm-gal_arrow is-prev" aria-label="Previous photo">' + CHEVRON + "</button>" +
