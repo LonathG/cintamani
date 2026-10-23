@@ -86,8 +86,11 @@
 
   function init() {
     addStyles();
-    if (!read()) setTimeout(show, 1200);
+    // shown straight away: on phones the notice is the largest text on screen, so a delayed
+    // fade-in became the page's "largest paint" in Google's speed test
+    if (!read()) show();
   }
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
-  else init();
+  // the script sits at the end of <body>, so it can show the notice without waiting for the rest
+  if (document.body) init();
+  else document.addEventListener("DOMContentLoaded", init);
 })();
