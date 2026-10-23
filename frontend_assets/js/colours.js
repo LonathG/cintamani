@@ -581,3 +581,62 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", add);
   else add();
 })();
+
+/* Images below the fold (data-cm-src, see the pages): the template's intro downloads every <img>
+ * on the page before it finishes, so those images carry a same-sized stand-in until needed.
+ * Each one gets its real photo as it nears the screen, and any left over a few seconds after
+ * the page is ready (marquees slide in from off-screen, so they can't wait to be seen).
+ */
+(function () {
+  "use strict";
+
+  function show(img) {
+    var src = img.getAttribute("data-cm-src");
+    if (!src) return;
+    img.removeAttribute("data-cm-src");
+    img.src = src;
+  }
+
+  var near = window.IntersectionObserver
+    ? new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          near.unobserve(e.target);
+          show(e.target);
+        });
+      }, { rootMargin: "900px 0px" })
+    : null;
+
+  var restTimer = null;
+  function showRest() {
+    restTimer = null;
+    document.querySelectorAll("img[data-cm-src]").forEach(show);
+  }
+
+  var pending = false;
+  function scan() {
+    pending = false;
+    var found = false;
+    document.querySelectorAll("img[data-cm-src]:not([data-cm-watched])").forEach(function (img) {
+      img.setAttribute("data-cm-watched", "");
+      found = true;
+      if (near) near.observe(img);
+      else show(img);
+    });
+    // the rest follow once the page (and its intro) has had its turn
+    if (found && !restTimer) {
+      restTimer = setTimeout(function () {
+        if (window.requestIdleCallback) requestIdleCallback(showRest, { timeout: 2000 });
+        else showRest();
+      }, document.readyState === "complete" ? 3500 : 6000);
+    }
+  }
+  function schedule() {
+    if (pending) return;
+    pending = true;
+    requestAnimationFrame(scan);
+  }
+
+  scan();
+  new MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true });
+})();
