@@ -1042,29 +1042,54 @@
     });
   }
 
+  // Same check the server makes: what the file really is (its first bytes), not its name or the
+  // type the browser reports. Anything else is turned away as soon as it is dropped or picked.
+  function slipKind(file) {
+    if (!file.slice || !file.arrayBuffer) return Promise.resolve(true); // very old browser: the server still checks
+    return file.slice(0, 12).arrayBuffer().then(function (buf) {
+      var b = new Uint8Array(buf);
+      var ascii = function (from, to) { return String.fromCharCode.apply(null, b.subarray(from, to)); };
+      return (b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff) ||          // JPG
+        (b[0] === 0x89 && ascii(1, 4) === "PNG") ||                        // PNG
+        (ascii(0, 4) === "RIFF" && ascii(8, 12) === "WEBP") ||             // WEBP
+        ascii(0, 4) === "%PDF" ||                                          // PDF
+        (ascii(4, 8) === "ftyp" && /^(heic|heix|mif1|heif)$/.test(ascii(8, 12))); // HEIC (iPhone)
+    }, function () { return true; });
+  }
+
   function takeSlip(file, scope) {
     if (!file) return;
-    compressImage(file).then(function (f) {
-      if (f.size > MAX_SLIP) { showError(scope, "That file is over 5 MB — please upload a smaller photo or a PDF."); return; }
-      slipFile = f;
-      // cross-fade: new layer fades in over the old one in the same spot, then the old is removed
-      var zone = scope.querySelector("[data-slip]");
-      var input = zone.querySelector("input");
-      var old = zone.querySelectorAll(".cm-r_slip_layer");
-      var holder = document.createElement("span");
-      holder.innerHTML = slipInner();
-      var layer = holder.firstChild;
-      layer.classList.remove("is-shown");
-      zone.insertBefore(layer, input);
-      void layer.offsetWidth;
-      layer.classList.add("is-shown");
-      old.forEach(function (el) {
-        el.classList.remove("is-shown");
-        setTimeout(function () { el.remove(); }, 650);
-      });
-      zone.classList.remove("is-invalid");
-      showError(scope, "");
+    slipKind(file).then(function (ok) {
+      if (!ok) {
+        // a slip already attached stays attached; only an empty box turns red
+        if (!slipFile) scope.querySelector("[data-slip]").classList.add("is-invalid");
+        showError(scope, "That file isn't a photo or PDF. Please upload your slip as a JPG, PNG, HEIC or PDF.");
+        return;
+      }
+      return compressImage(file).then(function (f) { useSlip(f, scope); });
     });
+  }
+
+  function useSlip(f, scope) {
+    if (f.size > MAX_SLIP) { showError(scope, "That file is over 5 MB — please upload a smaller photo or a PDF."); return; }
+    slipFile = f;
+    // cross-fade: new layer fades in over the old one in the same spot, then the old is removed
+    var zone = scope.querySelector("[data-slip]");
+    var input = zone.querySelector("input");
+    var old = zone.querySelectorAll(".cm-r_slip_layer");
+    var holder = document.createElement("span");
+    holder.innerHTML = slipInner();
+    var layer = holder.firstChild;
+    layer.classList.remove("is-shown");
+    zone.insertBefore(layer, input);
+    void layer.offsetWidth;
+    layer.classList.add("is-shown");
+    old.forEach(function (el) {
+      el.classList.remove("is-shown");
+      setTimeout(function () { el.remove(); }, 650);
+    });
+    zone.classList.remove("is-invalid");
+    showError(scope, "");
   }
 
   // ---------- submit ----------
