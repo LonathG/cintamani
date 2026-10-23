@@ -2635,3 +2635,67 @@ html.cm-intro-lock body { overflow: hidden !important; overscroll-behavior: none
   cursor: pointer;
 }
 @media (prefers-reduced-motion: reduce) { .cm-rotate_phone { animation: none; } }
+
+/* =====================================================================
+   Social links ("Follow"): under the footer links, and at the foot of the phone menu
+   ===================================================================== */
+.cm-social {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  margin-top: 2.5rem;
+}
+.cm-social_label {
+  font-size: 0.7rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+/* desktop: a short list, like the footer menu above it */
+.cm-social_links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+.cm-social_link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.cm-social_link svg {
+  width: 1.05rem;
+  height: 1.05rem;
+  flex: none;
+}
+.cm-social_link:hover,
+.cm-social_link:focus-visible {
+  color: #e2d3a8;
+  outline: none;
+}
+.cm-social_link:focus-visible span { text-decoration: underline; text-underline-offset: 4px; }
+
+/* the menu row only exists in the phone menu (on larger screens the menu is the top bar) */
+.cm-social--menu { display: none; }
+
+@media (max-width: 767px) {
+  .cm-social { align-items: center; text-align: center; }
+  .cm-social_links { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 0.6rem 1.1rem; }
+  .cm-social_link { letter-spacing: 0.1em; gap: 0.45rem; }
+  .cm-social--footer { margin-top: 1.5rem; }
+  /* pinned to the bottom of the full-screen menu (its links are centred on the screen) */
+  .cm-social--menu {
+    display: flex;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(2.25rem + env(safe-area-inset-bottom));
+    margin: 0;
+  }
+}
