@@ -2700,8 +2700,8 @@ html.cm-intro-lock body { overflow: hidden !important; overscroll-behavior: none
   }
 }
 
-/* About, "A Timeless Linen Tradition": the template pulls this block up over the photo. The
-   heading keeps that overlap; the paragraphs start below the photo, on the dark background. */
+/* About, "A Timeless Linen Tradition": the template pulls this block up over the photo; the
+   title and paragraphs now both start just below it, on the dark background, level with each other. */
 @media (min-width: 768px) {
-  .about_tradition_container-2 .about_text_wrap { padding-top: calc(12svh + 1.5rem); }
+  .about_tradition_container-2.u-container { margin-top: 0; padding-top: 1.5rem; }
 }
