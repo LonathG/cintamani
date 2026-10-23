@@ -2167,7 +2167,7 @@ textarea.w-select {
 
 @font-face {
   font-family: LA Neue Montreal;
-  src: url("https://cdn.prod.website-files.com/6734928e2af1829d3c568460/67468cf4115d4cae430d1000_PPNeueMontreal-Regular.woff2") format("woff2"), url("https://cdn.prod.website-files.com/6734928e2af1829d3c568460/67468cf46695c1d06355ab73_PPNeueMontreal-Regular.woff") format("woff");
+  src: url("/vendor/cdn.prod.website-files.com/6734928e2af1829d3c568460/67468cf4115d4cae430d1000_PPNeueMontreal-Regular.woff2") format("woff2"), url("/vendor/cdn.prod.website-files.com/6734928e2af1829d3c568460/67468cf46695c1d06355ab73_PPNeueMontreal-Regular.woff") format("woff");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -2175,7 +2175,7 @@ textarea.w-select {
 
 @font-face {
   font-family: LA Playground;
-  src: url("https://cdn.prod.website-files.com/6734928e2af1829d3c568460/67468d1ed015b389e2c000ea_PPPlayground-Light.woff2") format("woff2"), url("https://cdn.prod.website-files.com/6734928e2af1829d3c568460/67468d1f6061a724e7b8a536_PPPlayground-Light.woff") format("woff");
+  src: url("/vendor/cdn.prod.website-files.com/6734928e2af1829d3c568460/67468d1ed015b389e2c000ea_PPPlayground-Light.woff2") format("woff2"), url("/vendor/cdn.prod.website-files.com/6734928e2af1829d3c568460/67468d1f6061a724e7b8a536_PPPlayground-Light.woff") format("woff");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -2183,7 +2183,7 @@ textarea.w-select {
 
 @font-face {
   font-family: LA Neue Montreal;
-  src: url("https://cdn.prod.website-files.com/6734928e2af1829d3c568460/67763af0e2a5feb145718b95_PPNeueMontreal-Book.woff2") format("woff2"), url("https://cdn.prod.website-files.com/6734928e2af1829d3c568460/67763af07844b403616586d3_PPNeueMontreal-Book.woff") format("woff");
+  src: url("/vendor/cdn.prod.website-files.com/6734928e2af1829d3c568460/67763af0e2a5feb145718b95_PPNeueMontreal-Book.woff2") format("woff2"), url("/vendor/cdn.prod.website-files.com/6734928e2af1829d3c568460/67763af07844b403616586d3_PPNeueMontreal-Book.woff") format("woff");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -2191,7 +2191,7 @@ textarea.w-select {
 
 @font-face {
   font-family: La Ivyprestodisplay;
-  src: url("https://cdn.prod.website-files.com/6734928e2af1829d3c568460/67c7c873dcbabf9fbbce3654_LA%20IvyPrestoDisplay-ThinItalic.woff2") format("woff2"), url("https://cdn.prod.website-files.com/6734928e2af1829d3c568460/67c7c87329a61762ffcb4907_LA%20IvyPrestoDisplay-ThinItalic.woff") format("woff");
+  src: url("/vendor/cdn.prod.website-files.com/6734928e2af1829d3c568460/67c7c873dcbabf9fbbce3654_LA-IvyPrestoDisplay-ThinItalic.woff2") format("woff2"), url("/vendor/cdn.prod.website-files.com/6734928e2af1829d3c568460/67c7c87329a61762ffcb4907_LA-IvyPrestoDisplay-ThinItalic.woff") format("woff");
   font-weight: 100;
   font-style: italic;
   font-display: swap;
@@ -2199,7 +2199,7 @@ textarea.w-select {
 
 @font-face {
   font-family: La Ivyprestodisplay;
-  src: url("https://cdn.prod.website-files.com/6734928e2af1829d3c568460/67c7c873ca5be9b253a19c47_LA%20IvyPrestoDisplay-Thin.woff2") format("woff2"), url("https://cdn.prod.website-files.com/6734928e2af1829d3c568460/67c7c873c9e672221f147baa_LA%20IvyPrestoDisplay-Thin.woff") format("woff");
+  src: url("/vendor/cdn.prod.website-files.com/6734928e2af1829d3c568460/67c7c873ca5be9b253a19c47_LA-IvyPrestoDisplay-Thin.woff2") format("woff2"), url("/vendor/cdn.prod.website-files.com/6734928e2af1829d3c568460/67c7c873c9e672221f147baa_LA-IvyPrestoDisplay-Thin.woff") format("woff");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
@@ -3971,7 +3971,7 @@ figure {
 
 .styleguide_flex_wrap {
   aspect-ratio: 1;
-  background-image: url("https://cdn.prod.website-files.com/6734928e2af1829d3c568460/6734928e2af1829d3c5684ea_dots.svg");
+  background-image: url("/vendor/cdn.prod.website-files.com/6734928e2af1829d3c568460/6734928e2af1829d3c5684ea_dots.svg");
   background-position: 50%;
   background-repeat: no-repeat;
   background-size: 88%;
