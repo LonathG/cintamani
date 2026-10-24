@@ -2705,3 +2705,23 @@ html.cm-intro-lock body { overflow: hidden !important; overscroll-behavior: none
 @media (min-width: 768px) {
   .about_tradition_container-2.u-container { margin-top: 0; padding-top: 1.5rem; }
 }
+
+/* Product pages: the whole piece in the main photo (js/colours.js), with a blurred copy of the
+   same photo filling the strips either side */
+.section_art_hero .art_main_image.cm-full { overflow: hidden; }
+.section_art_hero .art_main_image.cm-full > .art_main_img {
+  position: relative;
+  z-index: 1;
+  object-fit: contain;
+}
+.section_art_hero .art_main_image > .cm-main-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(22px) brightness(0.92);
+  transform: scale(1.15);
+  pointer-events: none;
+}

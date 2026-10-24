@@ -640,3 +640,41 @@
   scan();
   new MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true });
 })();
+
+/* Product pages: the main photo shows the whole piece. The studio shots are tall portraits in a
+ * square frame, so cropping to fill it cut off long dresses (head and hem). The photo now sits
+ * whole in the frame, and a soft blurred copy of it fills the strips either side.
+ */
+(function () {
+  "use strict";
+
+  function dress(box) {
+    var img = box.querySelector(":scope > img.art_main_img");
+    if (!img) return;
+    var back = box.querySelector(":scope > img.cm-main-backdrop");
+    var src = img.currentSrc || img.src;
+    if (back && back.getAttribute("src") === src) return;
+    if (!back) {
+      back = document.createElement("img");
+      back.className = "cm-main-backdrop";
+      back.alt = "";
+      back.setAttribute("aria-hidden", "true");
+      box.insertBefore(back, box.firstChild);
+    }
+    back.src = src;
+    box.classList.add("cm-full");
+  }
+
+  var pending = false;
+  function scan() {
+    pending = false;
+    document.querySelectorAll(".section_art_hero .art_main_image").forEach(dress);
+  }
+  function schedule() {
+    if (pending) return;
+    pending = true;
+    requestAnimationFrame(scan);
+  }
+  scan();
+  new MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true });
+})();
