@@ -2713,6 +2713,11 @@ html.cm-intro-lock body { overflow: hidden !important; overscroll-behavior: none
   position: relative;
   z-index: 1;
   object-fit: contain;
+  /* on shorter screens the frame is less tall than wide; the photo follows the frame's real
+     height instead of staying square, so its bottom is never cut */
+  aspect-ratio: auto;
+  width: 100%;
+  height: 100%;
 }
 .section_art_hero .art_main_image > .cm-main-backdrop {
   position: absolute;
